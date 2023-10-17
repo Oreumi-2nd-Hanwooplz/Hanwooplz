@@ -1,0 +1,63 @@
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: consolas;
+    }
+
+    body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        background: #000;
+    }
+
+    .wavy {
+        position: relative;
+        -webkit-box-reflect: below -12px linear-gradient(transparent, rgba(0, 0, 0, 0.2));
+    }
+
+    .wavy span {
+        position: relative;
+        display: inline-block;
+        color: #fff;
+        font-size: 2em;
+        text-transform: uppercase;
+        animation: animate 1.5s ease-in-out infinite;
+        animation-delay: calc(.1s * var(--i))
+    }
+
+    @keyframes animate {
+
+        0%,
+        100% {
+            transform: translateY(0px);
+        }
+
+        20% {
+            transform: translateY(-20px);
+        }
+
+        40% {
+            transform: translateY(0px);
+        }
+    }
+</style>
+
+<body>
+    <div class="wavy">
+        <span style="--i:1">저</span>
+        <span style="--i:2">기</span>
+        <span style="--i:3">압</span>
+        <span style="--i:4">일</span>
+        <span style="--i:5">땐</span>
+        <span style="--i:6">고</span>
+        <span style="--i:7">기</span>
+        <span style="--i:8">앞</span>
+        <span style="--i:9">으</span>
+        <span style="--i:10">로</span>
+
+    </div>
+</body>
