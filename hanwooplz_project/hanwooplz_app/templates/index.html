@@ -7,7 +7,111 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="{% static 'css/nav.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/footer.css' %}" />
     <title>저기압일땐 고기앞으로</title>
+    <style>
+        /* Basic styles for the body */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Styling for the section */
+        section {
+            padding: 20px;
+        }
+
+        /* Styling for the top menu and buttons */
+        .section_top_tag {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        #slide-left,
+        #slide-right {
+            background-color: #333;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        /* Styling for the video thumbnail */
+        .thumbnail {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #f4f4f4;
+            border-radius: 10px;
+            padding: 10px;
+            margin: 10px;
+        }
+
+        .thumbnail img {
+            width: 320px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .thumnail_card {
+            display: flex;
+            margin-top: 10px;
+        }
+
+        .thumnail_profile img {
+            width: 38px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .thumnail_profile a {
+            text-decoration: none;
+        }
+
+        .thumnail_card a {
+            text-decoration: none;
+            color: #333;
+        }
+
+        .thumnail_card .thumnail_title {
+            font-size: 16px;
+            color: #333;
+        }
+
+        .thumnail_card .account_info,
+        .thumnail_card .followers,
+        .thumnail_card .upload_date {
+            color: #aaa;
+            margin-right: 10px;
+        }
+
+        @media (max-width: 700px) {
+            .menu-btn {
+                display: block;
+            }
+
+            /* 기타 반응형 스타일을 추가할 수 있습니다. */
+        }
+
+        @media (max-width: 500px) {
+            .home-cards {
+                grid-template-columns: 1fr;
+            }
+
+            .links .links-inner {
+                grid-template-columns: 1fr;
+            }
+
+            .links .links-inner ul {
+                margin-bottom: 20px;
+            }
+
+            /* 추가적인 반응형 스타일을 설정할 수 있습니다. */
+        }
+    </style>
 </head>
 
 <body>
@@ -16,9 +120,10 @@
         <div id="section" class="section">
             <topMenu>
                 <div class="section_top_tag">
-                    <button id="slide-left" type="button"><</button>
-                    <div class="tag_button" id="tag_button"></div>
-                    <button id="slide-right" type="button">></button>
+                    <button id="slide-left" type="button">
+                        << /button>
+                            <div class="tag_button" id="tag_button"></div>
+                            <button id="slide-right" type="button">></button>
                 </div>
             </topMenu>
 
@@ -26,19 +131,21 @@
                 <div id="videoList">
                     <div class="thumbnail">
                         <a href="#">
-                        <img src="https://t2.daumcdn.net/thumb/R720x0/?fname=http://t1.daumcdn.net/brunch/service/user/ono/image/WjJoqOJ_qXTUP6CFyrJq7zWv2r4.jpg" style="width: 320px; cursor: pointer; border-radius:5px;"/>
+                            <img src="https://t2.daumcdn.net/thumb/R720x0/?fname=http://t1.daumcdn.net/brunch/service/user/ono/image/WjJoqOJ_qXTUP6CFyrJq7zWv2r4.jpg"
+                                style="width: 320px; cursor: pointer; border-radius:5px;" />
                         </a>
                         <div class="thumnail_card" style="display:flex;">
-                            <div class = "thumnail_profile">
-                              <a href="#">
-                              <img src="https://cdn.huffingtonpost.kr/news/photo/202102/106356_200066.jpeg" style="width: 38px; cursor: pointer; border-radius:5px;"/>
+                            <div class="thumnail_profile">
+                                <a href="#">
+                                    <img src="https://cdn.huffingtonpost.kr/news/photo/202102/106356_200066.jpeg"
+                                        style="width: 38px; cursor: pointer; border-radius:5px;" />
                             </div>
                             <div style="margin-left: 20px; margin-bottom: 20px;">
                                 <a href="#">
-                                <div style="color:#fff;font-size:16px;">portfolio_title</div>
+                                    <div style="color:#fff;font-size:16px;">portfolio_title</div>
                                 </a>
                                 <a href="#">
-                                <div style="color:#aaa;">account_info</div>
+                                    <div style="color:#aaa;">account_info</div>
                                 </a>
                                 <span style="color:#aaa;">followers</span>
                                 <span style="color:#aaa;">upload_date</span>
@@ -49,6 +156,7 @@
             </div>
         </div>
     </section>
+    {% include 'footer.html' %}
 </body>
 
 </html>
