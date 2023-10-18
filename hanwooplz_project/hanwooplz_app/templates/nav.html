@@ -1,3 +1,49 @@
+<style>
+    .search-bar {
+        display: flex;
+        align-items: center;
+        position: relative;
+    }
+
+    .search-bar input {
+        padding: 10px;
+        border: none;
+        border-radius: 25px;
+        font-size: 16px;
+        outline: none;
+        transition: width 0.4s;
+        width: 0;
+        opacity: 0;
+    }
+
+    .search-bar input::placeholder {
+        color: #ccc;
+    }
+
+    .search-bar button {
+        background: #262626;
+        color: #fff;
+        border: none;
+        border-radius: 50%;
+        cursor: pointer;
+        padding: 10px;
+    }
+
+    .search-bar:hover input {
+        width: 180px;
+        opacity: 1;
+    }
+
+    @media (max-width: 768px) {
+        .search-bar input {
+            width: 100%;
+        }
+
+        .search-bar:hover input {
+            width: 100%;
+        }
+    }
+</style>
 <nav class="navbar">
     <div class="navbar-container container">
         <input type="checkbox" name="" id="">
@@ -7,6 +53,10 @@
             <span class="line line3"></span>
         </div>
         <ul class="menu-items">
+            <div class="search-bar">
+                <input type="text" placeholder="Search">
+                <button><i class="fas fa-search"></i></button>
+            </div>
             <li><a href="#">Home</a></li>
             <li><a href="#">About</a></li>
             <li><a href="#">Category</a></li>
