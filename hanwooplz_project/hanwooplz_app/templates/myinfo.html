@@ -1,0 +1,35 @@
+{% load static%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/myinfo.css' %}">
+    <title>내 정보</title>
+</head>
+<body>
+    {% include 'nav.html' %}
+    <div class="myinfo">
+        <div>
+            회원 아이디, 비밀번호, 메일주소
+        </div>
+        <div>
+            {% comment %} 나중에 forms.py로 작성 {% endcomment %}
+            <p>이름</p>
+            <p>경력</p>
+            <p>직무</p>
+            <p>기술스택</p>
+            <p>프로젝트</p>
+            <a href="">작성된 이력서 목록</a>
+            <a href="">작성한 글 목록</a>
+        </div>
+    </div>
+    <div class="button-box">
+        <div class="box-divider" style="gap: 10px">
+            {% comment %} 수정버튼 {% endcomment %}
+            <a href="">
+                <button class="edit-button">수정하기</button>
+            </a>            
+    </div>
+</body>
+</html>
