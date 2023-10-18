@@ -1,0 +1,84 @@
+{% load static%}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="stylesheet" type="text/css" href="{% static 'css/chat.css' %}" />
+  <link rel="stylesheet" type="text/css" href="{% static 'css/nav.css' %}" />
+  <title>채팅하기</title>
+</head>
+
+<body>
+    
+  {% include 'nav.html' %}
+  
+    <section class="container">
+      <div class="post-box">
+        <!-- 채팅선택창 -->
+        <div class="chat-select-container">
+          <!-- 채팅 리스트 -->
+          <div class="chat-info flex-box">
+            <p class="bold"> 채팅방 리스트</p>
+          </div>
+          <!-- 채팅방리스트 -->
+        </div>
+        <!-- 채팅창-->
+        <div class="chat-main-container">
+          <div>
+            <div class="contact-info flex-box">
+              상대아이디
+            </div>
+            <!--채팅창 메인-->
+            <div class="chat-container" id="chat-log">
+              <div class="message-box from-you">
+                <div class="message-text">메세지를 보내주세요.</div>
+                  <p class="s-text">방금 전</p>
+                </div>
+              <!-- 메세지 주고받기-->
+              {% comment %} {% for chat in chat_msgs %}
+              {% if request.user.username != chat.username %}
+              <div class="message-box from-you">
+                {% if chat.id > first_unread_index %}
+                <div class="message-text unread">{{ chat.message }}</div>
+                {% else %}
+                <div class="message-text">{{ chat.message }}</div>
+                {% endif %}
+                <p class="s-text">{{ chat.created_at }}</p>
+                {% if chat.is_read == False %}
+                <p class="s-text unread">읽지 않음</p>
+                {% endif %}
+              </div>
+              {% else %}
+              <div class="message-box from-me">
+                {% if chat.is_read %}
+                <p class="s-text">읽음</p>
+                {% else %}
+                <p class="s-text unread-message">읽지 않음</p>
+                {% endif %}
+                <p class="s-text">{{ chat.created_at }}</p>
+                <div class="message-text">{{ chat.message }}</div>
+              </div>
+              {% endif %}
+              {% endfor %} {% endcomment %}
+              </div>
+            </div>
+            <form class="chat-input" id="chat-form">
+              {%csrf_token%}
+              <textarea type="text" id="chat-message-input" name="message"
+                placeholder="메세지를 입력해주세요"></textarea>
+              <div>
+                <button id="chat-message-submit" type="button">전송</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+
+</body>
+<script>
+</script>
+
+</html>

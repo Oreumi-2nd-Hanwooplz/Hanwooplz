@@ -1,10 +1,12 @@
-from django.urls import path
+from django.urls import path, include
 from . import views
 
 app_name = 'hanwooplz_app'
 
 urlpatterns = [
     path('', views.index, name='index'),
+    path('write/',views.write, name='write'),
+    path('chat/', views.current_chat, name='chat'),
     #path("login/", auth_views.LoginView.as_view(template_name="registration/login.html"), name="login"),
     path("login/", views.custom_login, name="login"),
     path("register/", views.register, name="register"),
