@@ -1,0 +1,20 @@
+.main-container {
+    position: absolute;
+    top: 64px;
+    width: 100%;
+}
+
+main {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.subsidiary {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.card {
+    background-color: #f8f9fa;
+}

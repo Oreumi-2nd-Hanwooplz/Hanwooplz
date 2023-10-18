@@ -1,0 +1,47 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <title>Question List</title>
+    <style>
+        .main-container {
+            position: absolute;
+            top: 64px;
+            width: 100%;
+        }
+        
+        .question-list {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+    {% include "nav.html" %}
+    <div class="main-container">
+        <div class="question-list">
+            <table>
+                <thead>
+                    <tr>
+                        <th>번호</th>
+                        <th>제목</th>
+                        <th>글쓴이</th>
+                        <th>작성일자</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <td>1</td>
+                    <td>한우 먹고 싶어요</td>
+                    <td>한우</td>
+                    <td>2023. 10. 18.</td>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+</body>
+</html>
