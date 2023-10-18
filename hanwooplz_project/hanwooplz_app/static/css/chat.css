@@ -1,0 +1,148 @@
+body{
+    background-color: #f8f9fa;
+}
+
+button:hover{
+    opacity: 0.8;
+}
+
+.post-box{
+    display: flex;
+    flex-direction: row;
+}
+
+/* 채팅선택창 */
+.chat-select-container{
+    width: 30%;
+    background-color: #fff;
+    border-right: 1px solid #e2e2e2;
+    margin-top: 70px;
+}
+
+.s-text{
+    margin-left: 4px;
+    font-size: 13px;
+    opacity: 0.5;
+}
+
+/* 채팅창 */
+.chat-main-container{
+    width: 70%;
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    margin-top: 70px;
+}
+
+.chat-info{
+    padding: 14px 20px;
+    border-bottom: 1px solid #e2e2e2;
+}
+
+.contact-info{
+    padding: 14px 20px;
+    border-bottom: 1px solid #e2e2e2;
+}
+
+.goods-box{
+    padding: 14px 20px;
+    border-bottom: 1px solid #e2e2e2;
+
+}
+
+.selected-thumbnail-box{
+    width: 48px;
+    height: 48px;
+}
+
+.goods-box button{
+    padding: 6px 12px;
+    background-color: #fff;
+    border-radius: 4px;
+    border: 1px solid #818181;
+}
+
+/* 채팅창 메인 */
+.chat-container{
+    padding: 14px 20px 0px 20px;
+    height: 280px;
+    overflow-y: auto; 
+}
+
+.message-box{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.message-text{
+    padding: 14px 20px;
+    background-color: #eaeaea;
+    width: fit-content;
+    border-radius: 20px;
+}
+
+.from-me{
+    justify-content: flex-end;
+    
+}
+
+.from-you div {
+    margin: 5px;
+}
+
+/* 작성창 */
+.chat-input{
+    background-color: #fff;
+    margin: 10px 20px 20px 20px;
+    border:1px solid #818181;
+    border-radius: 8px;
+    justify-content: space-between;
+    /* position: absolute; chat-main-container에 대해 상대적인 위치 설정 */
+    bottom: 5px;
+    width: 95%;
+}
+
+.chat-input textarea{
+    width: 100%;
+    /* width: -webkit-fill-available; */
+    display: block;
+    border: none;
+    resize: none;
+    border-radius: 8px;
+    height: 100%;
+    padding: 12px;
+    font-size: 15px;
+}
+
+.chat-input textarea:focus{
+    outline: none;
+    resize: none;
+}
+
+.chat-input div{
+    display: flex;
+    justify-content: flex-end;
+}
+
+.chat-input button{
+    background-color: #E1E1E1;
+    border:none;
+    padding: 6px 20px;
+    border-radius: 4px;
+    margin: 16px;
+}
+
+a{
+    text-decoration-line:none;
+}
+
+.unread_message_count {
+    font-size: 13px;
+    opacity: 0.8;
+    color: red;
+    justify-content: center;
+    align-items: center;
+}

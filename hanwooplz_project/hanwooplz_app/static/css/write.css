@@ -1,0 +1,147 @@
+textarea{
+  resize: none;
+  height: 500px;
+  width: 100%;
+  border: none;
+}
+
+body{
+  background-color: #f8f9fa;
+}
+
+a {
+  text-decoration: none;
+  color: #111;
+}
+
+.main {
+  position: relative;
+  top: 70px;
+  display: flex;
+  padding-top: 30px;
+  justify-content: center;
+  margin-bottom: 400px;
+}
+
+.main > form {
+  display: flex;
+  flex-direction: row; 
+  gap: 20px;
+}
+
+.post-write label {
+  display: none;
+}
+
+.post-write p {
+  padding-bottom: 10px;
+}
+
+.post-write input {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  border: none;
+
+  width: 740px;
+  padding: 11px 16px;
+  outline: none;
+  margin-bottom: 18px;
+}
+
+.content {
+  border-radius: 0px !important;
+  width: 740px !important;
+}
+
+aside {
+  width: 250px;
+}
+
+.box {
+  display: block;
+  border: 1px solid #cac8c5;
+  border-radius: 3px;
+  padding: 10px 0px 0px 10px;
+  justify-content: left;
+  height: 150px;
+  line-height: 1.5;
+  background-color: #fff;
+}
+
+.save-box {
+  display: inline-block;
+  width: 100%;
+  height: 30%;
+  margin-top: 10%;
+}
+
+.save-button-wrapper {
+  display: inline-flex;
+  width: 100%;
+  height: 25px;
+  justify-content: space-evenly;
+}
+
+.temp-save-button {
+  appearance: none;
+  display: flex;
+  width: 100px;
+  height: 25px;
+  border: 1px solid #1e1e1e;
+  border-radius: 3px;
+  background-color: #f8f9fa;
+  justify-content: center;
+  color: #1e1e1e;
+}
+
+.save-button {
+  appearance: none;
+  display: flex;
+  width: 100px;
+  height: 25px;
+  border: 1px solid #1e1e1e;
+  border-radius: 3px;
+  background-color: #1e1e1e;
+  justify-content: center;
+  color: #f9f8f4;
+}
+
+input[type="checkbox"] {
+  appearance: none;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background-clip: content-box;
+  border: 1px solid black;
+  background-color: #f9f8f4;
+}
+
+input[type="checkbox"]:checked {
+  background-color: black;
+  padding: 2px;
+  border: 1px solid black;
+}
+
+.temp-post-box {
+  margin-top: 15px;
+  border: 1px solid #cac8c5;
+  border-radius: 3px;
+  width: 100%;
+  padding: 10px;
+}
+
+.temp-post-box > h5 {
+  padding-bottom: 10px;
+}
+
+.popup-title {
+  display: flex;
+  gap: 10px;
+  flex-direction: column;
+  padding-bottom: 10px;
+}
+
+.popup-title:hover {
+  cursor: pointer;
+}
