@@ -23,6 +23,7 @@ def write(request):
 #     return render(request, 'write.html', {'post': post})
 
 def current_chat(request):
+    return render(request, "chat.html")
 
 def register(request):
     return render(request, "registration/register.html")
