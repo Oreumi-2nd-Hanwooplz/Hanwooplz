@@ -18,3 +18,9 @@ def question_detail(request):
 
 def create_question(request):
     return render(request, "question_form.html")
+
+def myinfo(request):
+    return render(request, "myinfo.html")
+
+def post(request):
+    return render(request, "post.html")

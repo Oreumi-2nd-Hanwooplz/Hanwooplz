@@ -11,4 +11,6 @@ urlpatterns = [
     path("question_list/", views.question_list, name="question_list"),
     path("question/", views.question_detail, name="question_detail"),
     path("write_question/", views.create_question, name="question"),
+    path("myinfo/", views.myinfo, name="myinfo"),
+    path("post/", views.post, name="post"),
 ]
