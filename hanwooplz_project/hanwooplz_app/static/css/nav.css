@@ -110,11 +110,13 @@
 
 .menu-items {
     order: 2;
+    /* 변경: order를 3으로 변경 */
     display: flex;
 }
 
 .logo {
     order: 1;
+    /* 변경: order를 2로 변경 */
     font-size: 2.3rem;
 }
 
@@ -276,7 +278,7 @@
     .navbar-container input[type="checkbox"]:checked~.hamburger-lines .line3 {
         transform: rotate(-45deg);
     }
-
+  
     .search-bar input {
         width: 100%;
     }

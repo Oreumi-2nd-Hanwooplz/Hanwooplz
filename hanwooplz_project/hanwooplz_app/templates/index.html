@@ -1,60 +1,149 @@
 {% load static %}
-
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/chatbot.css' %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'css/index.css' %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'css/nav.css' %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'css/footer.css' %}" />
     <title>저기압일땐 고기앞으로</title>
 </head>
-
 <body>
     {% include 'nav.html' %}
-    <section>
-        <div id="section" class="section">
-            <topMenu>
-                <div class="section_top_tag">
-                    <button id="slide-left" type="button">
-                        << /button>
-                            <div class="tag_button" id="tag_button"></div>
-                            <button id="slide-right" type="button">></button>
-                </div>
-            </topMenu>
+    <div class="wrapper">
+        <section class="main-container">
+            <div class="location" id="home">
+                <div class="box">
+                    <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/p1.PNG?raw=true"
+                            alt=""></a>
+                    <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/p2.PNG?raw=true"
+                            alt=""></a>
+                    <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/p3.PNG?raw=true"
+                            alt=""></a>
+                    <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/p4.PNG?raw=true"
+                            alt=""></a>
+                    <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/p5.PNG?raw=true"
+                            alt=""></a>
+                    <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/p6.PNG?raw=true"
+                            alt=""></a>
 
-            <div id="mainContainer">
-                <div id="videoList">
-                    <div class="thumbnail">
-                        <a href="#">
-                            <img src="https://t2.daumcdn.net/thumb/R720x0/?fname=http://t1.daumcdn.net/brunch/service/user/ono/image/WjJoqOJ_qXTUP6CFyrJq7zWv2r4.jpg"
-                                style="width: 320px; cursor: pointer; border-radius:5px;" />
-                        </a>
-                        <div class="thumnail_card" style="display:flex;">
-                            <div class="thumnail_profile">
-                                <a href="#">
-                                    <img src="https://cdn.huffingtonpost.kr/news/photo/202102/106356_200066.jpeg"
-                                        style="width: 38px; cursor: pointer; border-radius:5px;" />
-                            </div>
-                            <div style="margin-left: 20px; margin-bottom: 20px;">
-                                <a href="#">
-                                    <div style="color:#fff;font-size:16px;">portfolio_title</div>
-                                </a>
-                                <a href="#">
-                                    <div style="color:#aaa;">account_info</div>
-                                </a>
-                                <span style="color:#aaa;">followers</span>
-                                <span style="color:#aaa;">upload_date</span>
-                            </div>
-                        </div>
-                    </div>
+                    <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/p7.PNG?raw=true"
+                            alt=""></a>
+                    <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/p8.PNG?raw=true"
+                            alt=""></a>
+                    <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/p9.PNG?raw=true"
+                            alt=""></a>
+                    <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/p10.PNG?raw=true"
+                            alt=""></a>
+                    <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/p11.PNG?raw=true"
+                            alt=""></a>
+                    <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/p12.PNG?raw=true"
+                            alt=""></a>
                 </div>
             </div>
-        </div>
-    </section>
-    {% include 'footer.html' %}
+
+            <h1 id="myList">Trending Now</h1>
+            <div class="box">
+                <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/t1.PNG?raw=true"
+                        alt=""></a>
+                <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/t2.PNG?raw=true"
+                        alt=""></a>
+                <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/t3.PNG?raw=true"
+                        alt=""></a>
+                <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/t4.PNG?raw=true"
+                        alt=""></a>
+                <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/t5.PNG?raw=true"
+                        alt=""></a>
+                <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/t6.PNG?raw=true"
+                        alt=""></a>
+            </div>
+
+            <h1 id="tvShows">TV Shows</h1>
+            <div class="box">
+                <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/tv1.PNG?raw=true"
+                        alt=""></a>
+                <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/tv2.PNG?raw=true"
+                        alt=""></a>
+                <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/tv3.PNG?raw=true"
+                        alt=""></a>
+                <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/tv4.PNG?raw=true"
+                        alt=""></a>
+                <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/tv5.PNG?raw=true"
+                        alt=""></a>
+                <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/tv6.PNG?raw=true"
+                        alt=""></a>
+
+                <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/tv7.PNG?raw=true"
+                        alt=""></a>
+                <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/tv8.PNG?raw=true"
+                        alt=""></a>
+                <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/tv9.PNG?raw=true"
+                        alt=""></a>
+                <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/tv10.PNG?raw=true"
+                        alt=""></a>
+                <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/tv11.PNG?raw=true"
+                        alt=""></a>
+                <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/tv12.PNG?raw=true"
+                        alt=""></a>
+            </div>
+
+            <h1 id="movies">Blockbuster Action & Adventure</h1>
+            <div class="box">
+                <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/m1.PNG?raw=true"
+                        alt=""></a>
+                <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/m2.PNG?raw=true"
+                        alt=""></a>
+                <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/m3.PNG?raw=true"
+                        alt=""></a>
+                <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/m4.PNG?raw=true"
+                        alt=""></a>
+                <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/m5.PNG?raw=true"
+                        alt=""></a>
+                <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/m6.PNG?raw=true"
+                        alt=""></a>
+            </div>
+
+            <h1 id="originals">Netflix Originals</h1>
+            <div class="box">
+                <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/o1.PNG?raw=true"
+                        alt=""></a>
+                <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/o2.PNG?raw=true"
+                        alt=""></a>
+                <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/o3.PNG?raw=true"
+                        alt=""></a>
+                <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/o4.PNG?raw=true"
+                        alt=""></a>
+                <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/o5.PNG?raw=true"
+                        alt=""></a>
+                <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/o6.PNG?raw=true"
+                        alt=""></a>
+            </div>
+
+            {% include 'footer.html' %}
+            {% include 'chatbot.html' %}
 </body>
+<script src="{% static 'js/chatbot.js' %}"></script>
+<script>
+    $(document).ready(function () {
+        $('#list').click(function (event) { event.preventDefault(); $('#products .item').addClass('list-group-item'); });
+        $('#grid').click(function (event) { event.preventDefault(); $('#products .item').removeClass('list-group-item'); $('#products .item').addClass('grid-group-item'); });
+    });
+    async function generateResponse(input) {
+        const response = await fetch('/execute_chatbot/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': '{{ csrf_token }}',
+            },
+            body: JSON.stringify({ question: input }),
+        });
+
+        const data = await response.json();
+        return data;
+    }
+</script>
 
 </html>

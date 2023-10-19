@@ -1,23 +1,86 @@
+{% load static %}
+<style>
+    .search-bar {
+        display: flex;
+        align-items: center;
+        position: relative;
+    }
+
+    .search-bar input {
+        padding: 10px;
+        border: none;
+        border-radius: 25px;
+        font-size: 16px;
+        outline: none;
+        transition: width 0.4s;
+        width: 0;
+        opacity: 0;
+    }
+
+    .search-bar input::placeholder {
+        color: #ccc;
+    }
+
+    .search-bar button {
+        background: #262626;
+        color: #fff;
+        border: none;
+        border-radius: 50%;
+        cursor: pointer;
+        padding: 10px;
+    }
+
+    .search-bar:hover input {
+        width: 180px;
+        opacity: 1;
+    }
+
+    #logo {
+        cursor: pointer;
+    }
+
+    @media (max-width: 768px) {
+        .search-bar input {
+            width: 100%;
+        }
+
+        .search-bar:hover input {
+            width: 100%;
+        }
+    }
+</style>
 <nav class="navbar">
     <div class="navbar-container container">
         <input type="checkbox" name="" id="">
+        <h2 class="logo" id="logo">Hanwooplz</h2>
         <div class="hamburger-lines">
             <span class="line line1"></span>
             <span class="line line2"></span>
             <span class="line line3"></span>
         </div>
         <ul class="menu-items">
-            <div class="search-bar">
-                <input type="text" placeholder="Search">
-                <button><i class="fas fa-search"></i></button>
-            </div>
-            <li><a href="#">Home</a></li>
-            <li><a href="#">About</a></li>
-            <li><a href="#">Category</a></li>
-            <li><a href="#">Post</a></li>
-            <li><a href="#">Write</a></li>
-            <li><a href="#">Recruiting team members</a></li>
+            <li class="icon-item">
+                <div class="search-bar">
+                    <input type="text" placeholder="Search">
+                    <button><i class="fas fa-search"></i></button>
+                </div>
+            </li>
+            <li>
+                <a href="#">
+                    <i id="microphone" class="fas fa-microphone"></i>
+                </a>
+            </li>
+            <li><a href="#">홈</a></li>
+            <li><a href="#">회원정보</a></li>
+            <li><a href="#">포트폴리오</a></li>
+            <li><a href="#">팀원모집</a></li>
+            <li><a href="#">채팅</a></li>
+            <li><a href="#">질의응답</a></li>
+            <li class="icon-item"><a href="#"><i class="fas fa-bell"></i></a></li>
+            <li class="icon-item"><a href="#"><i class="fas fa-user"></i></a></li>
+            <li class="icon-item"><a href="#"><i class="fas fa-cog"></i></a></li>
+            <li class="icon-item"><a href="#"><i class="fas fa-sign-in-alt"></i></a></li>
+            <li class="icon-item"><a href="#"><i class="fas fa-sign-out-alt"></i></a></li>
         </ul>
-        <h1 class="logo">Hanwooplz</h1>
     </div>
 </nav>
