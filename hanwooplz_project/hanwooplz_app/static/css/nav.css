@@ -137,6 +137,41 @@
     color: #117964;
 }
 
+.search-bar {
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.search-bar input {
+    padding: 10px;
+    border: none;
+    border-radius: 25px;
+    font-size: 16px;
+    outline: none;
+    transition: width 0.4s;
+    width: 0;
+    opacity: 0;
+}
+
+.search-bar input::placeholder {
+    color: #ccc;
+}
+
+.search-bar button {
+    background: #262626;
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    padding: 10px;
+}
+
+.search-bar:hover input {
+    width: 180px;
+    opacity: 1;
+}
+
 @media (max-width: 768px) {
     .navbar {
         opacity: 0.95;
@@ -242,6 +277,14 @@
 
     .navbar-container input[type="checkbox"]:checked~.hamburger-lines .line3 {
         transform: rotate(-45deg);
+    }
+  
+    .search-bar input {
+        width: 100%;
+    }
+
+    .search-bar:hover input {
+        width: 100%;
     }
 }
 
