@@ -1,0 +1,11 @@
+.main-container {
+    position: absolute;
+    top: 64px;
+    width: 100%;
+}
+
+.question-list {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
