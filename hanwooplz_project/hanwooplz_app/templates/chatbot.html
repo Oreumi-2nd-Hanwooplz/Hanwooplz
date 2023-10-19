@@ -1,0 +1,61 @@
+{% load static %}
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/emojionearea/3.4.2/emojionearea.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/emojionearea/3.4.2/emojionearea.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.0.0/animate.min.css" />
+
+<div class="container-fluid">
+    <div style="position : fixed; bottom: 5px; right: 0px; z-index:9999">
+        <div id="chatBox" class="orca-chat closed animate__animated animate__heartbeat">
+            <div class=" contact bar" onclick="openChatBox()">
+
+                <div class="pic stark"
+                    style="background-image: url('https://cdn.huffingtonpost.kr/news/photo/202102/106356_200066.jpeg');">
+                </div>
+                <span id="online-status"></span>
+                <div class="name">
+                    AI 한우
+                </div>
+                <div class="seen">
+                    온라인
+
+                </div>
+            </div>
+            <div id="closeButton" style="position: absolute; top: 2rem; right: 2rem;" onclick="closeChatBox()">
+                <i class="fas fa-times"></i>
+            </div>
+
+
+            <div class="messages" id="chat">
+
+                <div class="message stark" id="initial-message">
+                    안녕하세요! 무엇을 도와드릴까요?
+                </div>
+                <img id="preview" />
+            </div>
+
+
+            <div>
+                <div id="hidden_emoji_box" class="emojisArea">
+                    <div id="hidden_emoji_box1">
+
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="input">
+                <i class="far fa-laugh-beam" id="emoji_select_inactive" onclick="emojifn(this)"></i>
+                <input type="file" id="real-file" hidden="hidden" name="file" accept="image/*"
+                    onchange="previewImage();" />
+
+                <input id="Query" placeholder="Type your message here!" type="text" autocomplete="off" name="msg-txt"
+                    onkeyup="changeIcon('micIcon')" />
+                <i class="fas fa-microphone" onclick="iconFunction()" id="micIcon"></i>
+            </div>
+
+        </div>
+    </div>
+</div>

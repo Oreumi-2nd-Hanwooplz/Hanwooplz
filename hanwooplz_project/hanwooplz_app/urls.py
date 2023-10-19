@@ -15,4 +15,5 @@ urlpatterns = [
     path("write_question/", views.create_question, name="question"),
     path("myinfo/", views.myinfo, name="myinfo"),
     path("post/", views.post, name="post"),
+    path('execute_chatbot/', views.execute_chatbot, name='execute_chatbot'),
 ]
