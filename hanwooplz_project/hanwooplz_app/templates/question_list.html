@@ -4,21 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/question_list.css' %}">
     <link rel="stylesheet" href="{% static 'css/nav.css' %}">
     <title>Question List</title>
-    <style>
-        .main-container {
-            position: absolute;
-            top: 64px;
-            width: 100%;
-        }
-        
-        .question-list {
-            width: 100%;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-    </style>
 </head>
 <body>
     {% include "nav.html" %}
