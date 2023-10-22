@@ -172,6 +172,10 @@
     opacity: 1;
 }
 
+#logo {
+    cursor: pointer;
+}
+
 @media (max-width: 768px) {
     .navbar {
         opacity: 0.95;
@@ -293,3 +297,4 @@
         display: none;
     }
 }
+
