@@ -15,13 +15,4 @@
     </div>
     <script src="https://kit.fontawesome.com/66aa7c98b3.js" crossorigin="anonymous"></script>
 </footer>
-<script>
-    let currentFrame = 1;
-
-    const gif = document.getElementById("animated-gif");
-
-    setInterval(function () {
-        currentFrame = (currentFrame % 10) + 1;
-        gif.src = `{% static 'img/hanwoo' %}${currentFrame}.gif`;
-    }, 3000);
-</script>
+<script src="{% static 'js/footer.js' %}"></script>
