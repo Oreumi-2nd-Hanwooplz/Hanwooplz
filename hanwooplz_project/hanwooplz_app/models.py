@@ -40,9 +40,11 @@ class post_portfolio(post_pnp):
 
 class post_project(post_pnp):
     status = models.IntegerField(default=1)
-        # 모집중단: 0
-        # 모집중: 1
-        # 모집완료: 2
+    '''
+    - 모집중단: 0
+    - 모집중: 1
+    - 모집완료: 2
+    '''
     members = models.ManyToManyField(user_profile, through='project_members')
 
 class project_members(models.Model):
