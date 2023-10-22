@@ -11,6 +11,9 @@ class user_profile(AbstractUser):
     - PW: password
     - Email: email
     '''
+    first_name = None
+    last_name = None
+    
     # custom column
     full_name = models.CharField(max_length=6)
     job = models.CharField(max_length=50)

@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+import os, json
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,7 +21,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-k(1fjgyv=nvl-hg!%zz-vp$2cv25mir45)rjc)u8e(--ex#l&r'
+SECRETS_DIR = BASE_DIR / 'hanwooplz_project'
+secrets = json.load(open(os.path.join(SECRETS_DIR, 'secrets.json')))
+SECRET_KEY = secrets['SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -76,11 +79,23 @@ WSGI_APPLICATION = 'hanwooplz_project.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': secrets['NAME'],
+        'USER': secrets['USER'],
+        'PASSWORD': secrets['PASSWORD'],
+        'HOST': secrets['HOST'],
+        'PORT': secrets['PORT'],
     }
 }
 
+{
+	'SECRET_KEY': 'django-insecure-k(1fjgyv=nvl-hg!%zz-vp$2cv25mir45)rjc)u8e(--ex#l&r', 
+    'NAME': 'DATABASE NAME',
+    'USER': 'USER NAME',
+    'PASSWORD': 'USER NAME',
+    'HOST': '????.ap-northeast-2.rds.amazonaws.com',
+    'PORT': '5432',
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
