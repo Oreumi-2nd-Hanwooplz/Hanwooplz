@@ -36,7 +36,7 @@ class post_pnp(models.Model):
         abstract = True
 
 class post_portfolio(post_pnp):
-    members = models.IntegerField()
+    members = models.IntegerField(default=1)
 
 class post_project(post_pnp):
     status = models.IntegerField(default=1)
