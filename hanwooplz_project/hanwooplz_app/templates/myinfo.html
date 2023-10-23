@@ -18,29 +18,24 @@
         <div class="profile-top">
             <div class="profile-left">
                 <form class="profile-pic-upload" method="post" action="" enctype="multipart/form-data">
-                    <div class="profile-pic-wrapper">
-                        <fieldset class="profile-pic-upload-input">
-                            <input type="file" name="image" id="choose-profile-picture" value="Velg bilde"
-                                accept="images">
-                        </fieldset>
-                        <a class="profile-pic"><img src="{{ user_profile.profile_picture.url }}" alt="">
-                            <!-- 프로필 이미지 출력 -->
-                        </a>
-                        <div class="profile-pic-note flexbox">
-                            <p>Upload Photo</p>
-                        </div>
-                    </div>
+                    {% csrf_token %}
+                    {{ profile_form.as_p }}
                 </form>
+                <div class="profile-pic-wrapper">
+                    <a class="profile-pic"><img src="{{ user_profile.profile_picture.url }}" alt="">
+                        <input type="submit" value="프로필 업데이트">
+                    </a>
+                </div>
             </div>
 
             <div class="profile-right flexbox-start-col">
                 <div class="profile-right-top">
-                    <h3 class="profile-name">{{ user_profile.full_name }}</h3> 오르미<!-- 유저 이름 출력 -->
+                    <h3 class="profile-name">{{ user_profile.full_name }}오르미</h3>
                 </div>
                 <div class="profile-right-bottom">
                     <div class="profile-bio-wrapper">
-                        <p class="profile-bio">
-                            {{ user_profile.bio }} 안녕하세요<!-- 프로필 설명 출력 -->
+                        <p class="profile-bio" style="margin-top: 20px;">
+                            {{ user_profile.introduction }}안녕하세요
                         </p>
                     </div>
                 </div>
@@ -54,39 +49,23 @@
                 </div>
             </div>
             <div class="profile-page-inner">
-                <!--게시물 예제-->
-                <div id="img3" class="image-wrapper flexbox">
-                    <div id="iov3" class="img-overlay-wrapper">
-                        <div class="img-btns">
-                            <p>888 <i class="uil uil-heart-alt"></i> &nbsp&nbsp 167 <i class="uil uil-comment"></i></p>
-                        </div>
-                        <div class="img-overlay"></div>
-                    </div>
-                    <img src="https://images.unsplash.com/photo-1567270671170-fdc10a5bf831?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2134&q=80"
-                        alt="">
-                </div>
-                <!--게시물 예제-->
-                {% for img_info in image_info_list %}
-                <div id="{{ img_info.id }}" class="image-wrapper flexbox">
-                    <a href="{% url 'post_detail' img_info.id %}">
-                        <div id="iov{{ img_info.id }}" class="img-overlay-wrapper">
+                {% for post in user_profile.post_set.all %}
+                <div class="image-wrapper flexbox">
+                    <a href="{% url 'post_detail' post.id %}">
+                        <div class="img-overlay-wrapper">
                             <div class="img-btns">
-                                <p>{{ img_info.likes }} <i class="uil uil-heart-alt"></i> &nbsp&nbsp {{
-                                    img_info.comments }}
+                                <p>{{ post.likes }} <i class="uil uil-heart-alt"></i> &nbsp&nbsp {{ post.comments }}
                                     <i class="uil uil-comment"></i>
                                 </p>
                             </div>
                             <div class="img-overlay"></div>
                         </div>
-                        <img src="{{ img_info.image_url }}" alt="">
+                        <img src="{{ post.image.url }}" alt="">
                     </a>
                 </div>
                 {% endfor %}
             </div>
-
         </div>
-
-
     </main>
     {% include 'footer.html' %}
     {% include 'chatbot.html' %}
