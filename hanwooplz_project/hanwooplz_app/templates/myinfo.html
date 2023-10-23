@@ -14,30 +14,135 @@
 
 <body>
     {% include 'nav.html' %}
-    <div class="myinfo">
-        <div>
-            회원 아이디, 비밀번호, 메일주소
+    <main class="flexbox-col">
+        <div class="profile-top">
+            <div class="profile-left">
+                <form class="profile-pic-upload" method="post" action="" enctype="multipart/form-data">
+                    <div class="profile-pic-wrapper">
+                        <fieldset class="profile-pic-upload-input">
+                            <input type="file" name="image" id="choose-profile-picture" value="Velg bilde"
+                                accept="images">
+                        </fieldset>
+                        <a class="profile-pic"><img src="{{ user_profile.profile_picture.url }}" alt="">
+                            <!-- 프로필 이미지 출력 -->
+                        </a>
+                        <div class="profile-pic-note flexbox">
+                            <p>Upload Photo</p>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="profile-right flexbox-start-col">
+                <div class="profile-right-top">
+                    <h3 class="profile-name">{{ user_profile.full_name }}</h3> 오르미<!-- 유저 이름 출력 -->
+                </div>
+                <div class="profile-right-bottom">
+                    <div class="profile-bio-wrapper">
+                        <p class="profile-bio">
+                            {{ user_profile.bio }} 안녕하세요<!-- 프로필 설명 출력 -->
+                        </p>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div>
-            {% comment %} 나중에 forms.py로 작성 {% endcomment %}
-            <p>이름</p>
-            <p>경력</p>
-            <p>직무</p>
-            <p>기술스택</p>
-            <p>프로젝트</p>
-            <a href="">작성된 이력서 목록</a>
-            <a href="">작성한 글 목록</a>
+
+        <div class="profile-page flexbox-col">
+            <div class="profile-page-nav flexbox">
+                <div class="profile-page-block">
+                    <a><i class="uil uil-chat"></i>My Posts</a>
+                </div>
+            </div>
+            <div class="profile-page-inner">
+                <!--게시물 예제-->
+                <div id="img3" class="image-wrapper flexbox">
+                    <div id="iov3" class="img-overlay-wrapper">
+                        <div class="img-btns">
+                            <p>888 <i class="uil uil-heart-alt"></i> &nbsp&nbsp 167 <i class="uil uil-comment"></i></p>
+                        </div>
+                        <div class="img-overlay"></div>
+                    </div>
+                    <img src="https://images.unsplash.com/photo-1567270671170-fdc10a5bf831?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2134&q=80"
+                        alt="">
+                </div>
+                <!--게시물 예제-->
+                {% for img_info in image_info_list %}
+                <div id="{{ img_info.id }}" class="image-wrapper flexbox">
+                    <a href="{% url 'post_detail' img_info.id %}">
+                        <div id="iov{{ img_info.id }}" class="img-overlay-wrapper">
+                            <div class="img-btns">
+                                <p>{{ img_info.likes }} <i class="uil uil-heart-alt"></i> &nbsp&nbsp {{
+                                    img_info.comments }}
+                                    <i class="uil uil-comment"></i>
+                                </p>
+                            </div>
+                            <div class="img-overlay"></div>
+                        </div>
+                        <img src="{{ img_info.image_url }}" alt="">
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+
         </div>
-    </div>
-    <div class="button-box">
-        <div class="box-divider" style="gap: 10px">
-            {% comment %} 수정버튼 {% endcomment %}
-            <a href="">
-                <button class="edit-button">수정하기</button>
-            </a>
-        </div>
-        {% include 'footer.html' %}
-        {% include 'chatbot.html' %}
+
+
+    </main>
+    {% include 'footer.html' %}
+    {% include 'chatbot.html' %}
 </body>
+<script>
+    let profilePicWrapper = $(".profile-pic-wrapper");
+    let profilePicNote = $(".profile-pic-note");
+    profilePicWrapper.on({
+        mouseenter: function () {
+            profilePicNote.css("top", "110%");
+            profilePicNote.css("opacity", "1");
+        },
+        mouseleave: function () {
+            profilePicNote.css("top", "105%");
+            profilePicNote.css("opacity", "0");
+        }
+    });
+
+    let profileHeaderWrapper = $(".profile-header-img-wrapper");
+    let profileHeaderNote = $(".profile-header-note");
+    profileHeaderWrapper.on({
+        mouseenter: function () {
+            profileHeaderNote.css("top", "110%");
+            profileHeaderNote.css("opacity", "1");
+        },
+        mouseleave: function () {
+            profileHeaderNote.css("top", "105%");
+            profileHeaderNote.css("opacity", "0");
+        }
+    });
+
+
+    for (let i = 1; i <= 12; i++) {
+        $(`#img${i}`).on({
+            mouseenter: function () {
+                $(`#iov${i}`).css("opacity", "1");
+            },
+            mouseleave: function () {
+                $(`#iov${i}`).css("opacity", "0");
+            }
+        });
+    }
+
+
+    $("#switch").on('click', function () {
+        if ($("body").hasClass("light")) {
+            $("body").removeClass("light");
+            $("#switch").removeClass("switched");
+            $("#switch a").html('<i class="uil uil-sunset"></i> Light Mode');
+        }
+        else {
+            $("body").addClass("light");
+            $(".switch").addClass("switched");
+            $("#switch a").html('<i class="uil uil-moonset"></i> Dark Mode');
+        }
+    });
+</script>
 
 </html>
