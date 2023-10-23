@@ -29,8 +29,11 @@
             <li class="icon-item"><a href="#"><i class="fas fa-bell"></i></a></li>
             <li class="icon-item"><a href="#"><i class="fas fa-user"></i></a></li>
             <li class="icon-item"><a href="#"><i class="fas fa-cog"></i></a></li>
-            <li class="icon-item"><a href="#"><i class="fas fa-sign-in-alt"></i></a></li>
-            <li class="icon-item"><a href="#"><i class="fas fa-sign-out-alt"></i></a></li>
+            {% if user.is_authenticated %}
+            <li class="icon-item"><a href="{% url 'hanwooplz_app:logout' %}"><i class="fas fa-sign-out-alt"></i></a></li>
+            {% else %}
+            <li class="icon-item"><a href="{% url 'hanwooplz_app:login' %}"><i class="fas fa-sign-in-alt"></i></a></li>
+            {% endif %}
         </ul>
     </div>
 </nav>
