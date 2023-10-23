@@ -12,18 +12,10 @@
 <body>
     <div class="main-container">
         <div class="login-container">
-            <form action="" method="post">
-                <h2>회원가입</h2>
-                <p>아이디</p>
-                <input type="text" name="username" id="">
-                <br>
-                <p>비밀번호</p>
-                <input type="password" name="password" id="">
-                <br>
-                <p>비밀번호 확인</p>
-                <input type="password" name="confirm" id="">
-                <br>
-                <input type="submit" value="회원가입">
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit">Register</button>
             </form>
         </div>
     </div>
