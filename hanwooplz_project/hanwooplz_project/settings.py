@@ -88,14 +88,6 @@ DATABASES = {
     }
 }
 
-{
-	'SECRET_KEY': 'django-insecure-k(1fjgyv=nvl-hg!%zz-vp$2cv25mir45)rjc)u8e(--ex#l&r', 
-    'NAME': 'DATABASE NAME',
-    'USER': 'USER NAME',
-    'PASSWORD': 'USER NAME',
-    'HOST': '????.ap-northeast-2.rds.amazonaws.com',
-    'PORT': '5432',
-}
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
