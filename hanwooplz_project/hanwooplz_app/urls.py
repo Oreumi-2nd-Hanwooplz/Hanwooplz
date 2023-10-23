@@ -5,7 +5,8 @@ from .views import LoginView
 app_name = 'hanwooplz_app'
 
 urlpatterns = [
-    path('', views.index, name='index'),
+    path('', views.main, name='main'),
+    path('index/',views.index, name='index'),
     path('write/',views.write, name='write'),
     path('chat/', views.current_chat, name='chat'),
     #path("login/", auth_views.LoginView.as_view(template_name="registration/login.html"), name="login"),
