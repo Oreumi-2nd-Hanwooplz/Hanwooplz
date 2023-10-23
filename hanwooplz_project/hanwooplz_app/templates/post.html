@@ -1,14 +1,18 @@
 {% load static%}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="{% static 'css/post.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/nav.css' %}" />
-    
+    <link rel="stylesheet" type="text/css" href="{% static 'css/footer.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/chatbot.css' %}">
+
     <title>게시글</title>
 </head>
+
 <body>
     {% include 'nav.html' %}
     {% comment %} 본문 {% endcomment %}
@@ -25,32 +29,34 @@
                     게시글이 올라올 부분
                 </div>
             </div>
-    </div>
-    <div class="button-box">
-        <div class="box-divider" style="gap: 10px">
-            {% comment %} 수정버튼 {% endcomment %}
-            <a href="">
-                <button class="edit-button">수정하기</button>
-            </a>
-            {% comment %} 삭제버튼 {% endcomment %}
-            <button class="delete-button">삭제하기</button>
         </div>
-        <button class='share-button' onclick='copyUrl()'>공유하기</button>
-    </div>
-    <div class="comments-section">
-        <h3>댓글</h3>
-        <div class="comment-form">
-            <form>
-                <label for="comment-content"></label>
-                <textarea id="comment-content" name="comment-content" rows="4" required></textarea>
-                <button type="submit">Submit</button>
-            </form>
+        <div class="button-box">
+            <div class="box-divider" style="gap: 10px">
+                {% comment %} 수정버튼 {% endcomment %}
+                <a href="">
+                    <button class="edit-button">수정하기</button>
+                </a>
+                {% comment %} 삭제버튼 {% endcomment %}
+                <button class="delete-button">삭제하기</button>
+            </div>
+            <button class='share-button' onclick='copyUrl()'>공유하기</button>
         </div>
-        <div class="comment">
-            <p><strong>홍길동:</strong> 댓글 예제</p>
+        <div class="comments-section">
+            <h3>댓글</h3>
+            <div class="comment-form">
+                <form>
+                    <label for="comment-content"></label>
+                    <textarea id="comment-content" name="comment-content" rows="4" required></textarea>
+                    <button type="submit">Submit</button>
+                </form>
+            </div>
+            <div class="comment">
+                <p><strong>홍길동:</strong> 댓글 예제</p>
+            </div>
         </div>
-    </div>
-  
-    
+
+        {% include 'footer.html' %}
+        {% include 'chatbot.html' %}
 </body>
+
 </html>
