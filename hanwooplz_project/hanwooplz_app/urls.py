@@ -7,7 +7,8 @@ app_name = 'hanwooplz_app'
 urlpatterns = [
     path('', views.index, name='index'),
     path('write/',views.write, name='write'),
-    path('chat/', views.current_chat, name='chat'),
+    path('chat/<int:room_number>/<int:seller_id>', views.current_chat, name='chat'),
+    path('chat_msg/<int:room_number>', views.chat_msg, name='chat_msg'),
     #path("login/", auth_views.LoginView.as_view(template_name="registration/login.html"), name="login"),
     path('login/', LoginView.as_view(), name="login"),
     path('register/', views.register, name='register'),
