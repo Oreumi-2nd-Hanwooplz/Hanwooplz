@@ -8,12 +8,7 @@ User = get_user_model()
 class CustomUserCreationForm(UserCreationForm):
     password1 = forms.CharField(
         widget=forms.PasswordInput,
-        label="비밀번호(최소 8자리, [영어 , 숫자, 특수문자] 중 최소 2개 이상 섞어서)",
-        error_messages={
-            '이 비밀번호는 너무 짧습니다.': "too_short",
-            '이 비밀번호는 너무 단순합니다.': "password_too_common",
-            '영어와 숫자를 섞어서 비밀번호를 만들어 주세요': "password_entirely_numeric"
-        }
+        label="비밀번호(최소 8자리, [영어 , 숫자, 특수문자] 중 2개 이상 섞어서)",
     )
     password2 = forms.CharField(widget=forms.PasswordInput, label="비밀번호 확인")
     email = forms.EmailField()
@@ -43,6 +38,12 @@ class CustomUserCreationForm(UserCreationForm):
         if password1 and password2 and password1 != password2:
             raise forms.ValidationError("비밀번호가 일치하지 않습니다.")
         return password2
+    
+    error_messages = {
+        'password_too_short': "비밀번호가 너무 짧습니다. 최소 8자리 이상이어야 합니다.",
+        'password_entirely_numeric': "비밀번호는 숫자로만 이루어질 수 없습니다.",
+        'password_common': "비밀번호가 너무 일반적입니다. 영어, 숫자, 특수문자를 섞어 사용하세요."
+    }
 
     def __init__(self, *args, **kwargs):
         super(CustomUserCreationForm, self).__init__(*args, **kwargs)
