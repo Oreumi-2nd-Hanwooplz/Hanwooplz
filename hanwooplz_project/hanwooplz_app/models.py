@@ -70,10 +70,10 @@ class post_answer(post_qna):
     question = models.ForeignKey(post_question, on_delete=models.CASCADE)
 
 class comment(models.Model):
-    post = models.ForeignKey(post, on_delete=models.CASCADE)
-    author = models.ForeignKey(user_profile, on_delete=models.CASCADE)
+    post = models.ForeignKey(post, on_delete=models.CASCADE, null=True)
+    author = models.ForeignKey(user_profile, on_delete=models.CASCADE, related_name="comments_written")
     content = models.TextField()
-    like = models.IntegerField(default=0)
+    like = models.ManyToManyField(user_profile, related_name="liked_comments")
     created_at = models.DateTimeField(auto_now_add=True)
 
 # would be modified

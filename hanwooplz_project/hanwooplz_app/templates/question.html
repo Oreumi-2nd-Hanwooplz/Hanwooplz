@@ -36,6 +36,7 @@
             </div>
             {% comment %} {% if user.is_authenticated %} {% endcomment %}
             <form action="" method="post">
+                {% csrf_token %}
                 <textarea name="comment" id="comment-input" cols="30" rows="5"></textarea>
                 <button type="button" id="submit-button">댓글 등록</button>
             </form>
