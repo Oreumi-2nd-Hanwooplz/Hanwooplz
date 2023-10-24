@@ -1,5 +1,5 @@
 from django.urls import path, include
-from .views import views, chat_views
+from .viewsviews import views, chat_views, comment_views
 
 app_name = 'hanwooplz_app'
 
@@ -19,7 +19,10 @@ urlpatterns = [
     path("write_question/", views.create_question, name="question"),
     path("myinfo/", views.myinfo, name="myinfo"),
     path("post/", views.post, name="post"),
-    path("api/comments/", views.CommentList.as_view(), name="comment_list"),
-    path("api/comments/<int:pk>/", views.CommentDetail.as_view(), name="comment_detail"),
     path('execute_chatbot/', views.execute_chatbot, name='execute_chatbot'),
+
+    # comment_views.py
+    path("api/comments/", comment_views.CommentList.as_view(), name="comment_list"),
+    path("api/comments/<int:pk>/", comment_views.CommentDetail.as_view(), name="comment_detail"),
+    path("api/comment/<int:pk>/like/", comment_views.CommentLikeView.as_view(), name="comment_like"),
 ]
