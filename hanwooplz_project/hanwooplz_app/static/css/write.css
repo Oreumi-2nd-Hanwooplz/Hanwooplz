@@ -9,11 +9,6 @@ body{
   background-color: #f8f9fa;
 }
 
-a {
-  text-decoration: none;
-  color: #111;
-}
-
 .main {
   position: relative;
   top: 70px;
@@ -29,15 +24,7 @@ a {
   gap: 20px;
 }
 
-.post-write label {
-  display: none;
-}
-
-.post-write p {
-  padding-bottom: 10px;
-}
-
-.post-write input {
+.write-box input {
   display: flex;
   align-items: flex-start;
   gap: 10px;
@@ -47,11 +34,6 @@ a {
   padding: 11px 16px;
   outline: none;
   margin-bottom: 18px;
-}
-
-.content {
-  border-radius: 0px !important;
-  width: 740px !important;
 }
 
 aside {
@@ -105,22 +87,6 @@ aside {
   background-color: #1e1e1e;
   justify-content: center;
   color: #f9f8f4;
-}
-
-input[type="checkbox"] {
-  appearance: none;
-  width: 15px;
-  height: 15px;
-  border-radius: 50%;
-  background-clip: content-box;
-  border: 1px solid black;
-  background-color: #f9f8f4;
-}
-
-input[type="checkbox"]:checked {
-  background-color: black;
-  padding: 2px;
-  border: 1px solid black;
 }
 
 .temp-post-box {

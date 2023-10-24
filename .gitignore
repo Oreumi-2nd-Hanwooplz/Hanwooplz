@@ -1,6 +1,8 @@
 hanwooplz_env/
 hanwooplz_project/hanwooplz_app/migrations/
 hanwooplz_project/hanwooplz_project/secrets.json
+hanwooplz_project/hanwooplz_app/static/js/tinymce
+
 # Created by https://www.toptal.com/developers/gitignore/api/django,macos,windows,visualstudiocode
 # Edit at https://www.toptal.com/developers/gitignore?templates=django,macos,windows,visualstudiocode
 
