@@ -86,15 +86,11 @@
                 {% endif %}
               </div>
               {% else %}
-              <div class="message-box from-me">
-                {% if chat.is_read %}
-                <p class="s-text">읽음</p>
-                {% else %}
-                <p class="s-text unread-message">읽지 않음</p>
-                {% endif %}
-                <p class="s-text">{{ chat.created_at }}</p>
-                <div class="message-text">{{ chat.message }}</div>
-              </div>
+              <div class="message-text">{{ chat.message }}</div>
+              {% endif %}
+              <p class="s-text">{{ chat.created_at }}</p>
+              {% if chat.is_read == False %}
+              <p class="s-text unread">읽지 않음</p>
               {% endif %}
               {% endfor %}
             </div>

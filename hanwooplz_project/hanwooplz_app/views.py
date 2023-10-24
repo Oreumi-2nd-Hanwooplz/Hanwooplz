@@ -176,6 +176,7 @@ class CommentDetail(APIView):
         comment.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+
 from django.utils import timezone
 from .models import post as Post, user_profile as UserProfile, chat_room, chat_messages
 from django.db.models import Q
@@ -597,3 +598,4 @@ def chat_msg(request, room_number):
     }
 
     return render(request, 'chat.html', context)
+

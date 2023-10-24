@@ -7,70 +7,40 @@
     <link rel="stylesheet" type="text/css" href="{% static 'css/write.css' %}"/>
     <link rel="stylesheet" type="text/css" href="{% static 'css/nav.css' %}" />
     <title>게시글 작성</title>
-    
 </head>
+
 <body>
-    
+
     {% include 'nav.html' %}
 
-    <section class ="main">
-        <form id="post_write" method="POST" action="/">
-            <div class="post-write">
-                {% csrf_token %}
-                {{ form.media }}
-                <div class="write-box">
-                    <input
-                      type="text"
-                      id="title"
-                      name="title"
-                      class="title"
-                      placeholder="제목"
-                      value="{{ post.title }}"
-                    />
-                    
-                    {% if post.content %}
-                    <textarea
-                      id="content"
-                      name="content"
-                    >{{ post.content}}</textarea>
-                    {% else %}
-                    <textarea
-                      id="content"
-                      name="content"
-                    ></textarea>
-                    {%endif%}
-
-        
-                  </div>
-
+    <section class="main">
+        <form id="post" method="POST" action="/">
+            <div class="write-box">
+                <input id="title" type="text" placeholder="제목">
+                <textarea id="content"></textarea>
             </div>
 
             <aside>
                 <div class="box">
-                    <div class="info">
-                    <h2>UPLOAD INFO</h2>
-                    <p>공개여부: 
-                        <label for="in_private"><input type="checkbox" name="in_private" 
-                            {% if post.in_private %} checked {% endif %}
-                            id="in_private">비공개</label></p>
-                    <input type="file" name="file" id="imageUpload" style="display:none;">
-                    <button type="button" class="button-line" onclick="document.getElementById('imageUpload').click();">이미지 업로드</button>
+                    <div class="info-box">
+                        <h2>UPLOAD INFO</h2>
+                        <input type="file" name="file" id="imageUpload" style="display:none;">
+                        <button type="button" class="button-line" onclick="document.getElementById('imageUpload').click();">이미지 업로드</button>
                     </div>
                     <div class="save-box">
                         <div class="save-button-wrapper">
                         {% if edit_mode %}
-                            <input type="submit" name="delete-button"  class="temp-save-button" value="삭제"/>
+                            <input type="submit" class="temp-save-button" value="삭제"/>
                             <input type="submit" class="save-button" value="수정"/>
                         {% else %}
-                            <input type="submit" name="temp-save-button" class="temp-save-button" value="임시저장" />
+                            <input type="submit" class="temp-save-button" value="임시저장"/>
                             <input id="temporary-btn" class="temporary-btn" type="button" value="{{ temporary|length }}">
-                            <input type="submit" name="save-button" class="save-button" value="글 작성" />
+                            <input type="submit" class="save-button" value="글 작성"/>
                         {% endif %}
                         </div>
                     </div>
-
                 </div>
-
+                
                 <div class="temp-post-box" style="display: none;">
                     <h5>임시저장된 글</h5>
 
@@ -84,12 +54,12 @@
                     {% endfor %}
                 </div>
             </aside>
-
         </form>
-
     </section>
-
+    
     {% include 'footer.html' %}
-
+    
 </body>
+<script src="{% static 'js/tinymce/tinymce.min.js' %}"></script>
+<script src="{% static 'js/tinymce.js' %}"></script>
 </html>
