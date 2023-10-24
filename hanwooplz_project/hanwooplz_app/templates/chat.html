@@ -5,45 +5,86 @@
 
 <head>
   <meta charset="UTF-8" />
-  <link rel="stylesheet" type="text/css" href="{% static 'css/chat.css' %}" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" type="text/css" href="{% static 'css/nav.css' %}" />
   <link rel="stylesheet" type="text/css" href="{% static 'css/footer.css' %}" />
-  <link rel="stylesheet" type="text/css" href="{% static 'css/chatbot.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'css/chat.css' %}" />
+  <link rel="stylesheet" type="text/css" href="{% static 'css/chatbot.css' %}" />
   <title>채팅하기</title>
 </head>
 
 <body>
-
+  
   {% include 'nav.html' %}
 
-  <section class="container">
-    <div class="post-box">
-      <!-- 채팅선택창 -->
-      <div class="chat-select-container">
-        <!-- 채팅 리스트 -->
-        <div class="chat-info flex-box">
-          <p class="bold"> 채팅방 리스트</p>
-        </div>
-        <!-- 채팅방리스트 -->
-      </div>
-      <!-- 채팅창-->
-      <div class="chat-main-container">
-        <div>
-          <div class="contact-info flex-box">
-            상대아이디
-          </div>
-          <!--채팅창 메인-->
-          <div class="chat-container" id="chat-log">
-            <div class="message-box from-you">
-              <div class="message-text">메세지를 보내주세요.</div>
-              <p class="s-text">방금 전</p>
+    <section class="container">
+      <div class="post-box">
+
+        <!-- 채팅선택창 -->
+        <div class="chat-select-container">
+          <!-- 채팅 리스트 -->
+          <div class="chat-list-box flex-box column">
+            <p clss="bold">채팅방 리스트</p>
+            <!-- 채팅방리스트 -->
+            {% for msg in latest_messages %}
+
+            <div class="flex-box chat-box between" onclick="redirectToChat({{ msg.chat_room_id }}, {{ msg.sender_id }})"
+              data-chat-room-id="{{ msg.chat_room_id }}">
+
+              <div>
+                <div class="flex-box">
+                  <p class="bold">{{ msg.sender }}</p>
+                  <p class="s-text">{{ msg.created_at }}</p>
+                </div>
+                <div class="message-content">
+                  <p class="chat-thumb-text">{{ msg.message }}</p>
+                  {% if msg.unread_message_count > 0 %}
+                  <p class="unread_message_count">{{ msg.unread_message_count }}</p>
+                  {% endif %}
+                </div>
+              </div>
+              {% if msg.goods_img != None %}
+              <div class="thumbnail-box">
+                <img src="{% static msg.goods_img.images.url %}" alt="">
+              </div>
+              {% endif %}
             </div>
-            <!-- 메세지 주고받기-->
-            {% comment %} {% for chat in chat_msgs %}
-            {% if request.user.username != chat.username %}
-            <div class="message-box from-you">
-              {% if chat.id > first_unread_index %}
-              <div class="message-text unread">{{ chat.message }}</div>
+            {% endfor %}
+          </div>
+        </div>
+
+        <!-- 채팅창-->
+        <div class="chat-main-container">
+
+          {% if room_number > 0 or room_number == -1 %}
+          <div style="height:500px">
+            <div class="contact-info flex-box">
+              {% if sender %}
+              {{ sender.username }}
+              {% else %}
+              상대아이디
+              {% endif %}
+            </div>
+            <!--채팅창 메인-->
+            <div class="chat-container" id="chat-log" style="{% if not goods %}height: 350px;{% endif %}">
+              {% if room_number == -1 %}
+              <div class="message-box from-you">
+                <p class="s-text">방금 전</p>
+              </div>
+              {% endif %}
+              {% for chat in chat_msgs %}
+              {% if request.user.username != chat.username %}
+              <div class="message-box from-you">
+                {% if chat.id > first_unread_index %}
+                <div class="message-text unread">{{ chat.message }}</div>
+                {% else %}
+                <div class="message-text">{{ chat.message }}</div>
+                {% endif %}
+                <p class="s-text">{{ chat.created_at }}</p>
+                {% if chat.is_read == False %}
+                <p class="s-text unread">읽지 않음</p>
+                {% endif %}
+              </div>
               {% else %}
               <div class="message-text">{{ chat.message }}</div>
               {% endif %}
@@ -51,36 +92,315 @@
               {% if chat.is_read == False %}
               <p class="s-text unread">읽지 않음</p>
               {% endif %}
+              {% endfor %}
             </div>
-            {% else %}
-            <div class="message-box from-me">
-              {% if chat.is_read %}
-              <p class="s-text">읽음</p>
-              {% else %}
-              <p class="s-text unread-message">읽지 않음</p>
-              {% endif %}
-              <p class="s-text">{{ chat.created_at }}</p>
-              <div class="message-text">{{ chat.message }}</div>
-            </div>
-            {% endif %}
-            {% endfor %} {% endcomment %}
           </div>
+
+          <form class="chat-input" id="chat-form">
+            {%csrf_token%}
+            <textarea type="text" id="chat-message-input" name="message" cols="30" rows="10"
+              placeholder="메세지를 입력해주세요"></textarea>
+            <div><button id="chat-message-submit" type="button">전송</button></div>
+          </form>
+
+          {% elif room_number == 0 %}
+          {% comment %} <div class="awesome_logo">
+            <img src="{% static 'img/awesome_logo.png' %}">
+          </div> {% endcomment %}
+          {% endif %}
         </div>
-        <form class="chat-input" id="chat-form">
-          {%csrf_token%}
-          <textarea type="text" id="chat-message-input" name="message" placeholder="메세지를 입력해주세요"></textarea>
-          <div>
-            <button id="chat-message-submit" type="button">전송</button>
-          </div>
-        </form>
+
       </div>
-    </div>
-    </div>
-  </section>
-  {% include 'footer.html' %}
-  {% include 'chatbot.html' %}
+    </section>
+  {% comment %} {% include 'footer.html' %} {% endcomment %}
+  {% comment %} {% include 'chatbot.html' %} {% endcomment %}
+
 </body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/uuid/8.3.2/uuid.min.js"></script>
 <script>
+  const chatLog = document.querySelector('#chat-log');
+  let room_number = parseInt("{{ room_number }}");
+  let change_room_number = parseInt("{{ room_number }}");
+  if (change_room_number == -1) {
+    change_room_number = 0;
+  }
+
+  const ws = new WebSocket('ws://127.0.0.1:8000/ws/chat/' + change_room_number + '/');
+
+  function generateMessageId() {
+    return uuid.v4();
+  }
+
+  document.addEventListener("DOMContentLoaded", function () {
+    const messageInputDom = document.querySelector('#chat-message-input');
+    const chatMessageSubmitBtn = document.querySelector('#chat-message-submit');
+    const username = "{{ user.username }}";
+
+    function getCurrentTime() {
+      const now = new Date();
+      const hours = now.getHours();
+      const minutes = now.getMinutes();
+
+      const amOrPm = hours >= 12 ? 'PM' : 'AM';
+      const formattedHours = hours % 12 || 12;
+      const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
+
+      const currentTime = `오늘 ${amOrPm} ${formattedHours}:${formattedMinutes}`;
+
+      return currentTime;
+    }
+
+    const currentTime = getCurrentTime();
+
+    function showNewMessagePopup(messageContent) {
+      const toastPopup = document.querySelector('.toast');
+      toastPopup.style.display = 'flex';
+      let message = document.querySelector('.toast-message');
+      message.textContent = messageContent;
+
+      setTimeout(function () {
+        toastPopup.style.display = 'none';
+      }, 2500);
+    }
+
+    ws.onmessage = function (e) {
+      const data = JSON.parse(e.data);
+
+      if (data.type === 'chat_message') {
+
+        const messageContainer = document.createElement('div');
+
+        const currentUser = data.username;
+        const messageId = data.message_id;
+
+        if (currentUser === username) {
+          messageContainer.className = 'message-box from-me';
+          messageContainer.innerHTML = `
+            <p class="s-text unread-message">읽지 않음</p>
+            <p class="s-text">${data.created_at}</p>
+            <div class="message-text">${data.message}</div>
+          `;
+        } else {
+          messageContainer.className = 'message-box from-you';
+          messageContainer.innerHTML = `
+            <div class="message-text">${data.message}</div>
+            <p class="s-text">${data.created_at}</p>
+          `;
+
+          const messageText = data.message.length > 10 ? data.message.slice(0, 10) + '...' : data.message;
+
+          if (!isScrolledToBottom()) {
+            showNewMessagePopup(messageText);
+          }
+        }
+        chatLog.appendChild(messageContainer);
+
+        if (currentUser == username) {
+          scrollToBottom();
+        }
+
+        if (isScrolledToBottom()) {
+          scrollToBottom();
+        }
+      };
+
+      if (data.type === 'chat_message_read') {
+        let unreadMessages = document.querySelectorAll('.unread-message');
+        unreadMessages.forEach(message => {
+          message.textContent = '읽음';
+        });
+      }
+
+      if (data.type === 'chat_bot_send') {
+        const loadingMessage = document.querySelectorAll('.loading-message');
+        loadingMessage.forEach(element => {
+          element.remove(); 
+        });
+
+        const messageContainer = document.createElement('div');
+
+        const currentUser = 'chatbot';
+
+        messageContainer.className = 'message-box from-you';
+        messageContainer.innerHTML = `
+            <div class="message-text">${data.message}</div>
+            <p class="s-text">${data.created_at}</p>
+          `;
+
+        chatLog.appendChild(messageContainer);
+        scrollToBottom();
+      }
+    }
+
+    function scrollToBottom() {
+      chatLog.scrollTop = chatLog.scrollHeight;
+    }
+
+    if (room_number > 0 || room_number == -1) {
+      chatMessageSubmitBtn.addEventListener('click', function () {
+        const message = messageInputDom.value;
+
+        if (message.trim() !== '') { // 빈 메시지는 추가하지 않음
+
+          let uuid = generateMessageId();
+          if (room_number > 0) {
+            ws.send(JSON.stringify({
+              'type': 'chat_message',
+              'message': message,
+              'username': username,
+              'receiver': "{{ seller.username }}",
+              'room_number': room_number,
+              'created_at': currentTime,
+              'chat_uuid': uuid
+            }));
+          } else if (room_number == -1) {
+            const messageContainer = document.createElement('div');
+            messageContainer.className = 'message-box from-me';
+            messageContainer.innerHTML = `
+              <p class="s-text">${currentTime}</p>
+              <div class="message-text">${message}</div>
+            `;
+            chatLog.appendChild(messageContainer);
+
+            ws.send(JSON.stringify({
+              'type': 'chat_bot',
+              'message': message,
+              'created_at': currentTime
+            }));
+
+            let second = document.createElement('div');
+            second.className = 'message-box from-you';
+            second.innerHTML = `
+              <p class="message-text loading-message">
+                <img class="autobotImg" src="{% static 'img/autobot.png'%}" style="height: 300px !important; width:500px;">
+                <span>생각 로동 중...</span>
+              </p>
+            `;
+
+            chatLog.appendChild(second);
+            const loadingMessage = document.getElementById('loading-message');
+            scrollToBottom();
+          }
+
+          messageInputDom.value = '';
+
+        };
+      });
+
+      document.querySelector('#chat-message-input').addEventListener('keydown', function (e) {
+        if (e.keyCode === 13) {  // enter, return
+          e.preventDefault(); // 폼 제출을 막음
+          document.querySelector('#chat-message-submit').click();
+        }
+      });
+
+    }
+  });
+
+  function redirectToChat(chatRoomId, senderId) {
+    const chatBoxes = document.querySelectorAll('.chat-box');
+    chatBoxes.forEach(chatBox => {
+      chatBox.classList.remove('selected-chat');
+    });
+
+    const selectedChat = document.querySelector(`[data-chat-room-id="${chatRoomId}"]`);
+    if (selectedChat) {
+      selectedChat.classList.add('selected-chat');
+    }
+
+    window.location.href = `/chat/${chatRoomId}/${senderId}`;
+  }
+
+  function isScrolledToBottom() {
+    const scrollThreshold = 54;
+    return chatLog.scrollHeight - chatLog.scrollTop <= chatLog.clientHeight + scrollThreshold;
+  }
+
+  window.addEventListener('focus', function () {
+    if (isScrolledToBottom(chatLog)) {
+      const room_number = parseInt("{{ room_number }}");
+
+      if (room_number > 0) {
+        ws.send(JSON.stringify({
+          'type': 'chat_message_read',
+          'receiver': "{{ request.user.username }}",
+          'room_number': room_number,
+          'chat_uuid': generateMessageId(),
+          'is_read': true
+        }));
+      }
+    }
+  });
+
+  document.addEventListener("DOMContentLoaded", function () {
+    window.addEventListener('load', function () {
+      const currentUrl = window.location.href;
+      const match = currentUrl.match(/chat\/(\d+)/);
+      let chatRoomId = 0;
+
+      if (match) {
+        chatRoomId = match[1];
+      }
+
+      const selectedChat = document.querySelector(`[data-chat-room-id="${chatRoomId}"]`);
+      if (selectedChat) {
+        selectedChat.classList.add('selected-chat');
+      }
+
+      const firstUnreadIndex = "{{ first_unread_index }}";
+
+      if (firstUnreadIndex > 0) {
+        const unreadChat = chatLog.querySelectorAll('.unread')[0];
+        if (unreadChat) {
+          unreadChat.scrollIntoView({ behavior: "smooth", block: "center" });
+        } else {
+          chatLog.scrollTop = chatLog.scrollHeight;
+        }
+      } else {
+        if (chatLog) {
+          chatLog.scrollTop = chatLog.scrollHeight;
+        }
+      }
+    });
+
+    const chatListItems = document.querySelectorAll('.chat-box');
+
+    chatListItems.forEach(item => {
+      const textElement = item.querySelector('.chat-thumb-text');
+      const maxTextLength = 15;
+
+      if (textElement.textContent.length > maxTextLength) {
+        const truncatedText = textElement.textContent.slice(0, maxTextLength) + '...';
+        textElement.textContent = truncatedText;
+      }
+    });
+
+  });
+
+  
+
+  document.addEventListener("DOMContentLoaded", function () {
+    const toggleBtn = document.querySelector('#toggle-goods-button');
+    const goodsCount = "{{ goods | length }}";
+    if (goodsCount == 1) {
+      toggleBtn.style.display = 'none';
+    }
+  });
+
+  document.addEventListener("DOMContentLoaded", function () {
+    const currentUrl = window.location.href;
+    const chatBotAi = document.querySelector('.chatBotAi');
+
+    if (currentUrl.includes('/0/12')) {
+      chatBotAi.classList.add('selected-chat');
+    } else {
+      chatBotAi.classList.remove('selected-chat');
+    }
+
+  });
+
+  
+
 </script>
 
 </html>

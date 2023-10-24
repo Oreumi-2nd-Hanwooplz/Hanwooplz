@@ -175,3 +175,427 @@ class CommentDetail(APIView):
         comment = get_object_or_404(comment, pk=pk)
         comment.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+from django.utils import timezone
+from .models import post as Post, user_profile as UserProfile, chat_room, chat_messages
+from django.db.models import Q
+from django.contrib.auth.models import User
+
+
+# UserProfile.objects.create(
+
+# )
+
+# chat_messages.objects.create(
+#         id = 1,
+#         chat_room = '1',
+#         sender = 'user1',
+#         receiver = 'user2',
+#         message = '안녕하세요',
+#         read_or_not = 'False',
+#         created_at="2023-10-23 10:30:00",
+# )
+
+tmp_chat_rooms = [
+        {
+            'id': 1,  # 임의의 채팅 룸 ID
+            'post': {
+                'title': 'Post 1',  # 게시물 제목
+                'author': {
+                    'id': 1,  # 게시물 작성자 ID
+                    'username': 'User1'  # 게시물 작성자 이름
+                }
+            },
+            'sender': {
+                'id': 2,  # 채팅을 보낸 사용자 ID
+                'username': 'User2'  # 채팅을 보낸 사용자 이름
+            },
+            'receiver': {
+                'id': 3,  # 채팅을 받은 사용자 ID
+                'username': 'User3'  # 채팅을 받은 사용자 이름
+            },
+            'created_at': '2023-10-20 10:30:00',  # 채팅 룸 생성 일자 및 시간
+            # 기타 필요한 데이터 추가
+        },
+        {
+            'id': 2,  # 임의의 채팅 룸 ID
+            'post': {
+                'title': 'Post 1',  # 게시물 제목
+                'author': {
+                    'id': 1,  # 게시물 작성자 ID
+                    'username': 'User1'  # 게시물 작성자 이름
+                }
+            },
+            'sender': {
+                'id': 4,  # 채팅을 보낸 사용자 ID
+                'username': 'User4'  # 채팅을 보낸 사용자 이름
+            },
+            'receiver': {
+                'id': 3,  # 채팅을 받은 사용자 ID
+                'username': 'User3'  # 채팅을 받은 사용자 이름
+            },
+            'created_at': '2023-10-20 12:30:00',  # 채팅 룸 생성 일자 및 시간
+            # 기타 필요한 데이터 추가
+        },
+        # 다른 채팅 룸 데이터도 추가 가능
+    ]
+
+tmp_chat_messages = [
+        {
+            'id':1, # 임의의 메세지 ID
+            'chat_room':{
+                'id': 1,  # 임의의 채팅 룸 ID
+                'post': {
+                    'title': 'Post 1',  # 게시물 제목
+                    'author': {
+                        'id': 1,  # 게시물 작성자 ID
+                        'username': 'User1'  # 게시물 작성자 이름
+                    }
+                },
+                'sender': {
+                    'id': 2,  # 채팅을 보낸 사용자 ID
+                    'username': 'User2'  # 채팅을 보낸 사용자 이름
+                },
+                'receiver': {
+                    'id': 3,  # 채팅을 받은 사용자 ID
+                    'username': 'User3'  # 채팅을 받은 사용자 이름
+                },
+                'created_at': '2023-10-20 10:30:00',  # 채팅 룸 생성 일자 및 시간
+                # 기타 필요한 데이터 추가
+            },
+            'sender': {
+                    'id': 2,  # 채팅을 보낸 사용자 ID
+                    'username': 'User2'  # 채팅을 보낸 사용자 이름
+                },
+            'receiver': {
+                    'id': 3,  # 채팅을 받은 사용자 ID
+                    'username': 'User3'  # 채팅을 받은 사용자 이름
+                },
+            'message': '안녕하세요',
+            'read_or_not': 'False',
+            'created_at': '2023-10-20 10:30:00',
+        },
+        {
+            'id':2, # 임의의 메세지 ID
+            'chat_room':{
+                'id': 2,  # 임의의 채팅 룸 ID
+                'post': {
+                    'title': 'Post 1',  # 게시물 제목
+                    'author': {
+                        'id': 1,  # 게시물 작성자 ID
+                        'username': 'User1'  # 게시물 작성자 이름
+                    }
+                },
+                'sender': {
+                    'id': 4,  # 채팅을 보낸 사용자 ID
+                    'username': 'User4'  # 채팅을 보낸 사용자 이름
+                },
+                'receiver': {
+                    'id': 3,  # 채팅을 받은 사용자 ID
+                    'username': 'User3'  # 채팅을 받은 사용자 이름
+                },
+                'created_at': '2023-10-20 12:30:00',  # 채팅 룸 생성 일자 및 시간
+                # 기타 필요한 데이터 추가
+            },
+            'sender': {
+                    'id': 4,  # 채팅을 보낸 사용자 ID
+                    'username': 'User4'  # 채팅을 보낸 사용자 이름
+                },
+            'receiver': {
+                    'id': 3,  # 채팅을 받은 사용자 ID
+                    'username': 'User3'  # 채팅을 받은 사용자 이름
+                },
+            'message': '누구세요',
+            'read_or_not': 'False',
+            'created_at': '2023-10-20 10:30:00',
+        },
+        
+]
+
+def format_datetime(dt):
+    today = timezone.now().date()
+    if dt.date() == today:
+        return dt.strftime("오늘 %p %I:%M")
+    yesterday = today - timezone.timedelta(days=1)
+    if dt.date() == yesterday:
+        return dt.strftime("어제 %p %I:%M")
+    return dt.strftime("%Y-%m-%d %p %I:%M")
+
+
+def get_rooms(request):
+    # chat_rooms = chat_room.objects.filter(Q(buyer=request.user.id) | Q(seller=request.user.id))
+    
+    latest_messages = []
+    for room in tmp_chat_rooms:
+        try:
+            # unread_message_count = chat_messages.objects.filter(
+            #     Q(chat_room=room),
+            #     ~Q(sender=request.user),
+            #     Q(read_or_not=False)
+            # ).count()
+            room_id = room['id']
+            unread_message_count = 0  # 임시로 0으로 설정
+
+            # latest_message = chat_messages.objects.filter(chat_room=room).latest('created_at')
+            latest_message = {
+                'message': tmp_chat_messages[room_id - 1]['message'],
+                'created_at': '2023-10-23 15:45:00',
+            }
+            # seller = None
+            sender = room['sender']  # seller을 receiver로 설정
+            goods_img = None
+
+            # if latest_message.chat_room.buyer == request.user:
+            #     seller = latest_message.chat_room.seller
+            # else:
+            #     seller = latest_message.chat_room.buyer
+
+            # try:
+            #     goods_img = Post.objects.filter(user=seller).latest('created_at')
+            # except Post.DoesNotExist:
+            #     pass
+
+            latest_messages.append({
+                'chat_room_id': room_id,
+                'sender_id': sender['id'],
+                'sender': sender['username'],
+                'message': latest_message['message'],
+                'created_at': latest_message['created_at'],
+                'unread_message_count': unread_message_count,
+                'goods_img': goods_img
+            })
+        except chat_messages.DoesNotExist:
+            sender = None
+
+            # if room.seller.id == request.user.id:
+            #     seller = UserProfile.objects.get(pk=request.user.id)
+            # else:
+            #     seller = room.seller
+            seller = room['receiver']  # seller을 receiver로 설정
+
+            latest_messages.append({
+                'chat_room_id': room_id,
+                'seneder_id': sender['id'],
+                'sender': sender['username'],
+                'message': '',
+                'created_at': '',
+                'unread_message_count': 0,
+                'goods_img': None,
+            })
+            pass
+
+    latest_messages.sort(key=lambda x: x['created_at'], reverse=True)
+
+    return latest_messages
+
+# def get_rooms(request):
+#     # 임시 데이터 생성
+#     chat_rooms = [
+#         {
+#             'id': 1,  # 임의의 채팅 룸 ID
+#             'post': {
+#                 'title': 'Post 1',  # 게시물 제목
+#                 'user': {
+#                     'id': 1,  # 게시물 작성자 ID
+#                     'username': 'User1'  # 게시물 작성자 이름
+#                 }
+#             },
+#             'sender': {
+#                 'id': 2,  # 채팅을 보낸 사용자 ID
+#                 'username': 'User2'  # 채팅을 보낸 사용자 이름
+#             },
+#             'receiver': {
+#                 'id': 3,  # 채팅을 받은 사용자 ID
+#                 'username': 'User3'  # 채팅을 받은 사용자 이름
+#             },
+#             'created_at': '2023-10-20 10:30:00',  # 채팅 룸 생성 일자 및 시간
+#             # 기타 필요한 데이터 추가
+#         },
+#         # 다른 채팅 룸 데이터도 추가 가능
+#     ]
+
+#     latest_messages = []
+#     for room in chat_rooms:
+#         # 데이터를 가져오는 부분 수정
+#         room_id = room['id']
+#         unread_message_count = 0  # 임시로 0으로 설정
+
+#         latest_message = {
+#             'message': 'Latest message for room ' + str(room_id),
+#             'created_at': '2023-10-23 15:45:00',
+#         }
+
+#         seller = room['receiver']  # seller을 receiver로 설정
+#         goods_img = None  # 임시로 None으로 설정
+
+#         latest_messages.append({
+#             'chat_room_id': room_id,
+#             'seller_id': seller['id'],
+#             'seller': seller,
+#             'message': latest_message['message'],
+#             'created_at': latest_message['created_at'],
+#             'unread_message_count': unread_message_count,
+#             'goods_img': goods_img
+#         })
+
+#     # 데이터 정렬
+#     latest_messages.sort(key=lambda x: x['created_at'], reverse=True)
+
+#     return latest_messages
+
+def current_chat(request, room_number, seller_id):
+    current_chat = None
+    formatted_chat_msgs = []
+    first_unread_index = -1
+
+    if room_number == 0 and seller_id == 12:
+        
+
+        context = {
+            "room_number" : -1,
+            "chat_msgs" : [],
+            "latest_messages" : get_rooms(request),
+            'first_unread_index': 0,    
+            
+        }
+
+        return render(request, 'chat.html', context)
+
+    if room_number == 0:
+        if seller_id == request.user.id:
+            pass
+        else:
+            seller = UserProfile.objects.get(id=seller_id)
+            buyer = UserProfile.objects.get(id=request.user.id)
+            new_chat_room = chat_room.objects.create(buyer=buyer, seller=seller)
+            room_number = new_chat_room.id
+    else:
+        # current_room = chat_room.objects.get(id=room_number)
+        current_room = [
+        {
+            'id': 1,  # 임의의 채팅 룸 ID
+            'post': {
+                'title': 'Post 1',  # 게시물 제목
+                'author': {
+                    'id': 1,  # 게시물 작성자 ID
+                    'username': 'User1'  # 게시물 작성자 이름
+                }
+            },
+            'sender': {
+                'id': 2,  # 채팅을 보낸 사용자 ID
+                'username': 'User2'  # 채팅을 보낸 사용자 이름
+            },
+            'receiver': {
+                'id': 3,  # 채팅을 받은 사용자 ID
+                'username': 'User3'  # 채팅을 받은 사용자 이름
+            },
+            'created_at': '2023-10-20 10:30:00',  # 채팅 룸 생성 일자 및 시간
+            # 기타 필요한 데이터 추가
+        },
+        # 다른 채팅 룸 데이터도 추가 가능
+    ]
+        # current_chat = chat_messages.objects.filter(chat_room=current_room).order_by('created_at')     
+        current_chat = [
+        {
+            'id':1, # 임의의 메세지 ID
+            'chat_room':{
+                'id': 1,  # 임의의 채팅 룸 ID
+                'post': {
+                    'title': 'Post 1',  # 게시물 제목
+                    'author': {
+                        'id': 1,  # 게시물 작성자 ID
+                        'username': 'User1'  # 게시물 작성자 이름
+                    }
+                },
+                'sender': {
+                    'id': 2,  # 채팅을 보낸 사용자 ID
+                    'username': 'User2'  # 채팅을 보낸 사용자 이름
+                },
+                'receiver': {
+                    'id': 3,  # 채팅을 받은 사용자 ID
+                    'username': 'User3'  # 채팅을 받은 사용자 이름
+                },
+                'created_at': '2023-10-20 10:30:00',  # 채팅 룸 생성 일자 및 시간
+                # 기타 필요한 데이터 추가
+            },
+            'sender': {
+                    'id': 2,  # 채팅을 보낸 사용자 ID
+                    'username': 'User2'  # 채팅을 보낸 사용자 이름
+                },
+            'receiver': {
+                    'id': 3,  # 채팅을 받은 사용자 ID
+                    'username': 'User3'  # 채팅을 받은 사용자 이름
+                },
+            'message': '안녕하세요',
+            'read_or_not': 'False',
+            'created_at': '2023-10-20 10:30:00',
+        }
+]
+
+        # for i, chat in enumerate(current_chat):
+        #     if chat.read_or_not == False:
+        #         if chat.sender.id != request.user.id:
+        #             chat.read_or_not = True
+        #             chat.save()
+        #             if first_unread_index == -1:
+        #                 first_unread_index = chat.id
+
+        # for chat in current_chat:
+        #     formatted_chat_msgs.append({
+        #         'created_at': format_datetime(chat.created_at),
+        #         'message': chat.message,
+        #         'username': chat.sender.username,
+        #         'is_read': chat.read_or_not, 
+        #         'id': chat.id,
+        #     })
+
+    seller_profile = {
+        'username': '',
+        'rating_score': 37.5
+    }
+
+    # seller_profile['username'] = UserProfile.objects.get(id=seller_id).username
+
+
+    context = {
+        "room_number" : room_number,
+        "chat_msgs" : formatted_chat_msgs,
+        "latest_messages" : get_rooms(request),
+        'first_unread_index': first_unread_index,
+        # 'seller': seller_profile
+    }
+
+    return render(request, 'chat.html', context)
+
+
+def chat_msg(request, room_number):
+    room = get_object_or_404(chat_room, pk=room_number)
+
+    current_time = timezone.now()
+    three_days_ago = current_time - timezone.timedelta(days=3)
+    chat_msgs = chat_messages.objects.filter(chat_room=room, created_at__gte=three_days_ago).order_by('-created_at')
+
+    created_at = format_datetime(chat_msg.created_at)
+
+    if request.method == 'POST':
+        chatInput = request.POST.get('chat-send-msg')
+        sender = request.user
+        chat_msg = chat_messages(chat_room=room, sender=sender, message=chatInput, read_or_not=False)
+        chat_msg.save()
+
+        response_data = {
+            'created_at': created_at,
+            'message': chat_msg.message,
+            'username': chat_msg.sender.username,
+        }
+
+        return JsonResponse(response_data)
+
+    context = {
+        "room_number" : room_number,
+        "chat_msgs" : chat_msgs
+    }
+
+    return render(request, 'chat.html', context)
+

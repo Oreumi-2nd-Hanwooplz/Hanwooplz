@@ -77,19 +77,19 @@ class comment(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
 # would be modified
-'''
-class chat_room(models.Model):
-    sender = ForeignKey(user_profile, on_delete=models.CASCADE)
-    receiver = ForeignKey(user_profile, on_delete=models.CASCADE)
-    created_at = DateTimeField(auto_now_add=True)
-    updated_at = DateTimeField(auto_now_add=True)
-    last_message = TextField()
 
-class chat_messages(models.Model):
-    post = ForeignKey(post, on_delete=models.CASCADE, null=True)
-    sender = ForeignKey(user_profile, on_delete=models.CASCADE)
-    receiver = ForeignKey(user_profile, on_delete=models.CASCADE)
-    message = CharField(max_length=500)
-    read_or_not  = BooleanField()
-    created_at = DateTimeField(auto_now_add=True)
-'''
+class chat_room(models.Model):
+    post = models.ForeignKey(post, on_delete=models.CASCADE)
+    sender = models.ForeignKey(user_profile, on_delete=models.CASCADE, related_name='buyer')
+    receiver = models.ForeignKey(user_profile, on_delete=models.CASCADE, related_name='seller')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+
+class chat_messages(models.Model):  
+    chat_room = models.ForeignKey(chat_room, on_delete=models.CASCADE)
+    sender = models.ForeignKey(user_profile, on_delete=models.CASCADE, null=True, related_name='sender')
+    receiver = models.ForeignKey(user_profile, on_delete=models.CASCADE, null=True, related_name='receiver')
+    message = models.CharField(max_length=500)
+    read_or_not = models.BooleanField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    chat_uuid = models.UUIDField(editable=False, unique=True, null=True)

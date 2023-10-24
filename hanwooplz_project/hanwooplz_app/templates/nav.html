@@ -74,7 +74,8 @@
             <li><a href="{% url 'hanwooplz_app:myinfo' %}">회원정보</a></li>
             <li><a href="{% url 'hanwooplz_app:post' %}">포트폴리오</a></li>
             <li><a href="#">팀원모집</a></li>
-            <li><a href="{% url 'hanwooplz_app:chat' %}">채팅</a></li>
+            <li><a href="{% url 'hanwooplz_app:chat' 0 user.id %}">채팅</a></li>
+
             <li><a href="{% url 'hanwooplz_app:question_list' %}">질의응답</a></li>
             <li class="icon-item"><a href="#"><i class="fas fa-bell"></i></a></li>
             <li class="icon-item"><a href="{% url 'hanwooplz_app:myinfo' %}"><i class="fas fa-user"></i></a></li>
