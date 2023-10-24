@@ -1,6 +1,7 @@
 from django.urls import path, include
 from .views import views, chat_views, comment_views
 
+
 app_name = 'hanwooplz_app'
 
 urlpatterns = [
