@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', function () {
     var commentForm = document.querySelector('form');
     var commentText = document.getElementById('comment-input');
     var submitButton = document.getElementById('submit-button');
+    var csrfToken = document.querySelector('input[name=csrfmiddlewaretoken]').value;
 
     function fetchComments() {
         fetch('/api/comments/')
@@ -23,7 +24,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     // 댓글 내용
                     var commentContent = document.createElement('div');
                     commentContent.classList.add('comment-content');
-                    commentContent.textContent = comment.text;
+                    commentContent.textContent = comment.content;
 
                     commentBox.appendChild(commentAuthor);
                     commentBox.appendChild(commentContent);
@@ -44,6 +45,7 @@ document.addEventListener('DOMContentLoaded', function () {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'X-CSRFToken': csrfToken,
             },
             body: JSON.stringify(commentData),
         })
