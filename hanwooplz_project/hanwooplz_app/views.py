@@ -145,7 +145,7 @@ class CommentList(APIView):
         return Response(serializer.data)
     
     def post (self, request):
-        author = request.user if request.user.is_authenticated else None
+        author = request.user.id if request.user.is_authenticated else None
 
         comment_data = {
             "content": request.data.get("content"),
