@@ -11,6 +11,7 @@ urlpatterns = [
     path('chat_msg/<int:room_number>', chat_views.chat_msg, name='chat_msg'),
     #path("login/", auth_views.LoginView.as_view(template_name="registration/login.html"), name="login"),
     path('login/', views.LoginView.as_view(), name="login"),
+    path('login/', views.LoginView.as_view(), name="login"),
     path("logout/", views.log_out, name="logout"),
     path('register/', views.register, name='register'),
     path("question_list/", views.question_list, name="question_list"),
