@@ -6,7 +6,7 @@ from tinymce.models import HTMLField
 
 # Create your models here.
 
-class user_profile(AbstractUser):
+class UserProfile(AbstractUser):
     '''
     User model-builtin column with AbstractUser class
     - ID: username
@@ -16,7 +16,7 @@ class user_profile(AbstractUser):
     first_name = None
     last_name = None
     
-    # custom column
+    # Custom column
     full_name = models.CharField(max_length=6)
     job = models.CharField(max_length=50)
     tech_stack = ArrayField(models.CharField(max_length=20))
@@ -24,14 +24,14 @@ class user_profile(AbstractUser):
     career_detail = models.TextField() # could be modified
     introduction = models.TextField()
 
-class post(models.Model):
-    author = models.ForeignKey(user_profile, on_delete=models.CASCADE)
+class Post(models.Model):
+    author = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     title = models.CharField(max_length=100, default='Untitled')
     content = HTMLField()
 
-class post_pnp(models.Model):
-    post = models.ForeignKey(post, on_delete=models.CASCADE)
+class PostPnP(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
     start_date = models.DateField()
     end_date = models.DateField()
     tech_stack = ArrayField(models.CharField(max_length=20))
@@ -40,55 +40,56 @@ class post_pnp(models.Model):
     class Meta:
         abstract = True
 
-class post_portfolio(post_pnp):
+class PostPortfolio(PostPnP):
     members = models.IntegerField(default=1)
 
-class post_project(post_pnp):
+class PostProject(PostPnP):
     status = models.IntegerField(default=1)
     '''
     - 모집중단: 0
     - 모집중: 1
     - 모집완료: 2
     '''
-    members = models.ManyToManyField(user_profile, through='project_members')
+    members = models.ManyToManyField(UserProfile, through='ProjectMembers')
 
-class project_members(models.Model):
-    project = models.ForeignKey(post_project, on_delete=models.CASCADE)
-    members = models.ForeignKey(user_profile, on_delete=models.CASCADE)
+class ProjectMembers(models.Model):
+    project = models.ForeignKey(PostProject, on_delete=models.CASCADE)
+    members = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
 
-class post_qna(models.Model):
-    post = models.ForeignKey(post, on_delete=models.CASCADE)
+class PostQnA(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
     like = models.IntegerField(default=0)
 
     class Meta:
         abstract = True
 
-class post_question(post_qna):
+class PostQuestion(PostQnA):
     keyword = ArrayField(models.CharField(max_length=20))
 
-class post_answer(post_qna):
-    question = models.ForeignKey(post_question, on_delete=models.CASCADE)
+class PostAnswer(PostQnA):
+    question = models.ForeignKey(PostQuestion, on_delete=models.CASCADE)
 
-class comment(models.Model):
-    post = models.ForeignKey(post, on_delete=models.CASCADE, null=True)
-    author = models.ForeignKey(user_profile, on_delete=models.CASCADE, related_name="comments_written")
+class Comment(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, null=True)
+    author = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name="comments_written")
     content = models.TextField()
-    like = models.ManyToManyField(user_profile, related_name="liked_comments")
+    like = models.ManyToManyField(UserProfile, through="CommentLike")
     created_at = models.DateTimeField(auto_now_add=True)
 
-# would be modified
+class CommentLike(models.Model):
+    comment = models.ForeignKey(Comment, on_delete=models.CASCADE)
+    like = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
 
-class chat_room(models.Model):
-    post = models.ForeignKey(post, on_delete=models.CASCADE)
-    sender = models.ForeignKey(user_profile, on_delete=models.CASCADE, related_name='buyer')
-    receiver = models.ForeignKey(user_profile, on_delete=models.CASCADE, related_name='seller')
+class ChatRoom(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    sender = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='buyer')
+    receiver = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='seller')
     created_at = models.DateTimeField(auto_now_add=True)
 
-
-class chat_messages(models.Model):  
-    chat_room = models.ForeignKey(chat_room, on_delete=models.CASCADE)
-    sender = models.ForeignKey(user_profile, on_delete=models.CASCADE, null=True, related_name='sender')
-    receiver = models.ForeignKey(user_profile, on_delete=models.CASCADE, null=True, related_name='receiver')
+class ChatMessages(models.Model):  
+    chat_room = models.ForeignKey(ChatRoom, on_delete=models.CASCADE)
+    sender = models.ForeignKey(UserProfile, on_delete=models.CASCADE, null=True, related_name='sender')
+    receiver = models.ForeignKey(UserProfile, on_delete=models.CASCADE, null=True, related_name='receiver')
     message = models.CharField(max_length=500)
     read_or_not = models.BooleanField()
     created_at = models.DateTimeField(auto_now_add=True)
