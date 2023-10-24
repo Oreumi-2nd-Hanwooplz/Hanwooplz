@@ -77,7 +77,7 @@ class comment(models.Model):
 # would be modified
 
 class chat_room(models.Model):
-    # post = models.ForeignKey(post, on_delete=models.CASCADE)
+    post = models.ForeignKey(post, on_delete=models.CASCADE)
     sender = models.ForeignKey(user_profile, on_delete=models.CASCADE, related_name='buyer')
     receiver = models.ForeignKey(user_profile, on_delete=models.CASCADE, related_name='seller')
     created_at = models.DateTimeField(auto_now_add=True)

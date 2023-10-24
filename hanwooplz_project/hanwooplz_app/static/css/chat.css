@@ -8,7 +8,7 @@ button:hover{
 
 .post-box{
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
 }
 
 /* 채팅선택창 */

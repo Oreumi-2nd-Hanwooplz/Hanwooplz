@@ -6,47 +6,25 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  {% comment %}
-  <link rel="stylesheet" type="text/css" href="{% static 'css/test.css' %}" /> {% endcomment %}
   <link rel="stylesheet" type="text/css" href="{% static 'css/nav.css' %}" />
   <link rel="stylesheet" type="text/css" href="{% static 'css/footer.css' %}" />
   <link rel="stylesheet" type="text/css" href="{% static 'css/chat.css' %}" />
-  {% comment %} <link rel="icon" type="image/png" sizes="16x16" href="{% static 'favicon.ico' %}"/> {% endcomment %}
+  <link rel="stylesheet" type="text/css" href="{% static 'css/chatbot.css' %}" />
   <title>채팅하기</title>
 </head>
 
-<body class="back-ye">
+<body>
+  
   {% include 'nav.html' %}
-  <div class="content-box">
-    <div class="container column">
-      <div class="post-box flex-box">
+
+    <section class="container">
+      <div class="post-box">
 
         <!-- 채팅선택창 -->
         <div class="chat-select-container">
           <!-- 채팅 리스트 -->
           <div class="chat-list-box flex-box column">
-            <!-- 봇 -->
-            {% comment %} <a href="#" id="ai-chatbot-link">
-              <div class="chat-box flex-box">
-                <div class="ai-profile">
-                  <img src="{% static 'img/icon_aibot.png'%}" alt="">
-                </div>
-                <div>
-                  <p class="bold"> FAQ 린공 지능 로보-트</p>
-                  <p class="chat-thumb-text">퍼뜩 물어보라우</p>
-                </div>
-              </div>
-            </a>
-            <div class="chat-box flex-box chatBotAi" onclick="redirectToChat(0, 12)" data-chat-room-id="-1">
-              <div class="ai-profile">
-                <img src="{% static 'img/autochatbot.png'%}" alt="">
-              </div>
-              <div>
-                <p class="bold">린공 지능 로보-트</p>
-                <p class="chat-thumb-text">궁금한건 날래날래 물어보라</p>
-              </div>
-            </div> {% endcomment %}
-
+            <p clss="bold">채팅방 리스트</p>
             <!-- 채팅방리스트 -->
             {% for msg in latest_messages %}
 
@@ -56,7 +34,6 @@
               <div>
                 <div class="flex-box">
                   <p class="bold">{{ msg.sender }}</p>
-                  {% comment %} <p class="s-text">{{ msg.seller_location }}</p> {% endcomment %}
                   <p class="s-text">{{ msg.created_at }}</p>
                 </div>
                 <div class="message-content">
@@ -71,9 +48,7 @@
                 <img src="{% static msg.goods_img.images.url %}" alt="">
               </div>
               {% endif %}
-
             </div>
-
             {% endfor %}
           </div>
         </div>
@@ -84,27 +59,16 @@
           {% if room_number > 0 or room_number == -1 %}
           <div style="height:500px">
             <div class="contact-info flex-box">
-              {% if seller %}
-              {{ seller.username }}
-              {% comment %} <div class="temp">
-                {{ seller.rating_score }}도
-              </div> {% endcomment %}
+              {% if sender %}
+              {{ sender.username }}
               {% else %}
               상대아이디
-              {% comment %} <div class="temp">
-                36.9도
-              </div> {% endcomment %}
               {% endif %}
             </div>
-
-            <!--물품정보-->
-            
-
             <!--채팅창 메인-->
             <div class="chat-container" id="chat-log" style="{% if not goods %}height: 350px;{% endif %}">
               {% if room_number == -1 %}
               <div class="message-box from-you">
-                {% comment %} <div class="message-text">안녕한가 동무. 모르는건 뭐든 물어보라 기래.</div> {% endcomment %}
                 <p class="s-text">방금 전</p>
               </div>
               {% endif %}
@@ -134,15 +98,6 @@
               {% endif %}
               {% endfor %}
             </div>
-
-            <div class='toast'>
-              <div id="toast-popup" class="toast-popup">
-                <div class="toast-content">
-                  <p class="toast-message">새 메시지가 도착했습니다!</p>
-                </div>
-              </div>
-            </div>
-
           </div>
 
           <form class="chat-input" id="chat-form">
@@ -160,9 +115,9 @@
         </div>
 
       </div>
-    </div>
-  </div>
-  {% include 'footer.html' %}
+    </section>
+  {% comment %} {% include 'footer.html' %} {% endcomment %}
+  {% comment %} {% include 'chatbot.html' %} {% endcomment %}
 
 </body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/uuid/8.3.2/uuid.min.js"></script>

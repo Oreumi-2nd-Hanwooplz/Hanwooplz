@@ -176,22 +176,25 @@ class CommentDetail(APIView):
         comment.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
-
 from django.utils import timezone
 from .models import post as Post, user_profile as UserProfile, chat_room, chat_messages
 from django.db.models import Q
 from django.contrib.auth.models import User
 
-tmp_user = []
 
-def format_datetime(dt):
-    today = timezone.now().date()
-    if dt.date() == today:
-        return dt.strftime("오늘 %p %I:%M")
-    yesterday = today - timezone.timedelta(days=1)
-    if dt.date() == yesterday:
-        return dt.strftime("어제 %p %I:%M")
-    return dt.strftime("%Y-%m-%d %p %I:%M")
+# UserProfile.objects.create(
+
+# )
+
+# chat_messages.objects.create(
+#         id = 1,
+#         chat_room = '1',
+#         sender = 'user1',
+#         receiver = 'user2',
+#         message = '안녕하세요',
+#         read_or_not = 'False',
+#         created_at="2023-10-23 10:30:00",
+# )
 
 tmp_chat_rooms = [
         {
@@ -236,27 +239,6 @@ tmp_chat_rooms = [
         },
         # 다른 채팅 룸 데이터도 추가 가능
     ]
-
-
-# chat_room.objects.create(
-#     sender=UserProfile.objects.get(id=1),  # 채팅을 보내는 사용자
-#     receiver=UserProfile.objects.get(id=2),  # 채팅을 받는 사용자
-#     created_at="2023-10-23 10:30:00"  # 생성 일자 및 시간
-# )
-
-# UserProfile.objects.create(
-
-# )
-
-# chat_messages.objects.create(
-#         id = 1,
-#         chat_room = '1',
-#         sender = 'user1',
-#         receiver = 'user2',
-#         message = '안녕하세요',
-#         read_or_not = 'False',
-#         created_at="2023-10-23 10:30:00",
-# )
 
 tmp_chat_messages = [
         {
@@ -330,10 +312,19 @@ tmp_chat_messages = [
         
 ]
 
+def format_datetime(dt):
+    today = timezone.now().date()
+    if dt.date() == today:
+        return dt.strftime("오늘 %p %I:%M")
+    yesterday = today - timezone.timedelta(days=1)
+    if dt.date() == yesterday:
+        return dt.strftime("어제 %p %I:%M")
+    return dt.strftime("%Y-%m-%d %p %I:%M")
+
+
 def get_rooms(request):
     # chat_rooms = chat_room.objects.filter(Q(buyer=request.user.id) | Q(seller=request.user.id))
     
-
     latest_messages = []
     for room in tmp_chat_rooms:
         try:
