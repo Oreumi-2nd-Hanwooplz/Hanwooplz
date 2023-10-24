@@ -1,5 +1,5 @@
 from django.urls import path, include
-from .viewsviews import views, chat_views, comment_views
+from .views import views, chat_views, comment_views
 
 app_name = 'hanwooplz_app'
 
@@ -10,7 +10,6 @@ urlpatterns = [
     path('chat/<int:room_number>/<int:receiver_id>', chat_views.current_chat, name='chat'),
     path('chat_msg/<int:room_number>', chat_views.chat_msg, name='chat_msg'),
     #path("login/", auth_views.LoginView.as_view(template_name="registration/login.html"), name="login"),
-    path('login/', views.LoginView.as_view(), name="login"),
     path('login/', views.LoginView.as_view(), name="login"),
     path("logout/", views.log_out, name="logout"),
     path('register/', views.register, name='register'),
