@@ -39,12 +39,6 @@ class CustomUserCreationForm(UserCreationForm):
             raise forms.ValidationError("비밀번호가 일치하지 않습니다.")
         return password2
     
-    error_messages = {
-        'password_too_short': "비밀번호가 너무 짧습니다. 최소 8자리 이상이어야 합니다.",
-        'password_entirely_numeric': "비밀번호는 숫자로만 이루어질 수 없습니다.",
-        'password_common': "비밀번호가 너무 일반적입니다. 영어, 숫자, 특수문자를 섞어 사용하세요."
-    }
-
     def __init__(self, *args, **kwargs):
         super(CustomUserCreationForm, self).__init__(*args, **kwargs)
         self.fields['username'].help_text = ''
