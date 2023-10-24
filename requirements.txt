@@ -6,6 +6,7 @@ attrs==23.1.0
 certifi==2023.7.22
 charset-normalizer==3.3.0
 Django==4.2.6
+django-tinymce==3.6.1
 djangorestframework==3.14.0
 frozenlist==1.4.0
 idna==3.4
