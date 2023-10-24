@@ -1,18 +1,18 @@
 from django.shortcuts import render, redirect, get_object_or_404, reverse
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 from django.views import View
-from django.http import JsonResponse
-import json
-import openai
+from django.views.generic import FormView
 from django.http import HttpResponse
+from django.http import JsonResponse
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .serializers import CommentSerializer
-from .models import comment
-from django.views.generic import FormView
-from . import forms, models
-from .forms import CustomUserCreationForm, LoginForm
+from .forms import *
+from .models import *
+from .serializers import *
+import json
+import openai
 
 # Create your views here.
 def main(request):
@@ -140,7 +140,7 @@ def execute_chatbot(request):
 
 class CommentList(APIView):
     def get(self, request):
-        comments = comment.objects.all()
+        comments = Comment.objects.all()
         serializer = CommentSerializer(comments, many=True)
         return Response(serializer.data)
     
@@ -178,7 +178,6 @@ class CommentDetail(APIView):
 
 
 from django.utils import timezone
-from .models import post as Post, user_profile as UserProfile, chat_room, chat_messages
 from django.db.models import Q
 from django.contrib.auth.models import User
 
@@ -324,12 +323,12 @@ def format_datetime(dt):
 
 
 def get_rooms(request):
-    # chat_rooms = chat_room.objects.filter(Q(buyer=request.user.id) | Q(seller=request.user.id))
+    # chat_rooms = ChatRoom.objects.filter(Q(buyer=request.user.id) | Q(seller=request.user.id))
     
     latest_messages = []
     for room in tmp_chat_rooms:
         try:
-            # unread_message_count = chat_messages.objects.filter(
+            # unread_message_count = ChatMessages.objects.filter(
             #     Q(chat_room=room),
             #     ~Q(sender=request.user),
             #     Q(read_or_not=False)
@@ -337,7 +336,7 @@ def get_rooms(request):
             room_id = room['id']
             unread_message_count = 0  # 임시로 0으로 설정
 
-            # latest_message = chat_messages.objects.filter(chat_room=room).latest('created_at')
+            # latest_message = ChatMessages.objects.filter(chat_room=room).latest('created_at')
             latest_message = {
                 'message': tmp_chat_messages[room_id - 1]['message'],
                 'created_at': '2023-10-23 15:45:00',
@@ -365,7 +364,7 @@ def get_rooms(request):
                 'unread_message_count': unread_message_count,
                 'goods_img': goods_img
             })
-        except chat_messages.DoesNotExist:
+        except ChatMessages.DoesNotExist:
             sender = None
 
             # if room.seller.id == request.user.id:
@@ -468,10 +467,10 @@ def current_chat(request, room_number, seller_id):
         else:
             seller = UserProfile.objects.get(id=seller_id)
             buyer = UserProfile.objects.get(id=request.user.id)
-            new_chat_room = chat_room.objects.create(buyer=buyer, seller=seller)
+            new_chat_room = ChatRoom.objects.create(buyer=buyer, seller=seller)
             room_number = new_chat_room.id
     else:
-        # current_room = chat_room.objects.get(id=room_number)
+        # current_room = ChatRoom.objects.get(id=room_number)
         current_room = [
         {
             'id': 1,  # 임의의 채팅 룸 ID
@@ -495,7 +494,7 @@ def current_chat(request, room_number, seller_id):
         },
         # 다른 채팅 룸 데이터도 추가 가능
     ]
-        # current_chat = chat_messages.objects.filter(chat_room=current_room).order_by('created_at')     
+        # current_chat = ChatMessages.objects.filter(chat_room=current_room).order_by('created_at')     
         current_chat = [
         {
             'id':1, # 임의의 메세지 ID
@@ -574,14 +573,14 @@ def chat_msg(request, room_number):
 
     current_time = timezone.now()
     three_days_ago = current_time - timezone.timedelta(days=3)
-    chat_msgs = chat_messages.objects.filter(chat_room=room, created_at__gte=three_days_ago).order_by('-created_at')
+    chat_msgs = ChatMessages.objects.filter(chat_room=room, created_at__gte=three_days_ago).order_by('-created_at')
 
     created_at = format_datetime(chat_msg.created_at)
 
     if request.method == 'POST':
         chatInput = request.POST.get('chat-send-msg')
         sender = request.user
-        chat_msg = chat_messages(chat_room=room, sender=sender, message=chatInput, read_or_not=False)
+        chat_msg = ChatMessages(chat_room=room, sender=sender, message=chatInput, read_or_not=False)
         chat_msg.save()
 
         response_data = {

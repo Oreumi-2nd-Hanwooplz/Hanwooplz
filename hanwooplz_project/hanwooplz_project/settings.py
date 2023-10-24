@@ -93,7 +93,7 @@ DATABASES = {
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 
-AUTH_USER_MODEL = 'hanwooplz_app.user_profile'
+AUTH_USER_MODEL = 'hanwooplz_app.UserProfile'
 
 AUTH_PASSWORD_VALIDATORS = [
     {
