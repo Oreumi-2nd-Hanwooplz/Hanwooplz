@@ -1,8 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404, reverse
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import login_required
 from django.views import View
-from django.views.generic import FormView
 from django.http import HttpResponse
 from django.http import JsonResponse
 from ..forms import *
@@ -74,15 +72,6 @@ class LoginView(View):
 def log_out(request):
     logout(request)
     return redirect(reverse("hanwooplz_app:login"))
-
-def question_list(request):
-    return render(request, "question_list.html")
-
-def question_detail(request):
-    return render(request, "question.html")
-
-def create_question(request):
-    return render(request, "question_form.html")
 
 def myinfo(request):
     return render(request, "myinfo.html")
