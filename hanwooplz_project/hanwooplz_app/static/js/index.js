@@ -1,17 +1,7 @@
-$(document).ready(function () {
-    $('#list').click(function (event) { event.preventDefault(); $('#products .item').addClass('list-group-item'); });
-    $('#grid').click(function (event) { event.preventDefault(); $('#products .item').removeClass('list-group-item'); $('#products .item').addClass('grid-group-item'); });
+// Prallax script
+$(window).scroll(function () {
+    var scrollTop = $(this).scrollTop();
+    $('.parallax-bg').css('top', -(scrollTop / 3) + 'px');
 });
-async function generateResponse(input) {
-    const response = await fetch('/execute_chatbot/', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRFToken': '{{ csrf_token }}',
-        },
-        body: JSON.stringify({ question: input }),
-    });
-
-    const data = await response.json();
-    return data;
-}
+// Prallax script END
+var scroll = new SmoothScroll('a[href*="#"]');

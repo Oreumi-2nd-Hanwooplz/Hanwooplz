@@ -3,128 +3,435 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="{% static 'css/chatbot.css' %}" />
-    <link rel="stylesheet" type="text/css" href="{% static 'css/index.css' %}" />
-    <link rel="stylesheet" type="text/css" href="{% static 'css/nav.css' %}" />
-    <link rel="stylesheet" type="text/css" href="{% static 'css/footer.css' %}" />
-    <title>저기압일땐 고기앞으로</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="{% static 'css/chatbot.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'css/index.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'css/nav.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'css/footer.css' %}" />
+        <style>
+                *,
+                html {
+                        scroll-behavior: smooth;
+                        box-sizing: border-box;
+                }
+
+                body {
+                        margin: 0;
+                        padding: 0;
+                        background: linear-gradient(62deg, #3a3d40 0%, #181719 100%);
+                        font-family: Helvetica, Arial, sans-serif;
+                        color: white;
+                }
+
+                nav {
+
+                        animation: line 0.5s ease-in forwards;
+                }
+
+                nav ul li a {
+
+                        animation: show-text 0.5s ease-in 0.5s forwards;
+                }
+
+                nav ul li a::after {
+                        content: '';
+                        display: block;
+                        width: 0%;
+                        height: 1px;
+                        position: absolute;
+                        bottom: -5px;
+                        left: 0;
+                        background-color: white;
+                        transition: width 0.2s ease-out;
+                }
+
+                nav ul li:hover a::after {
+                        width: 100%;
+                }
+
+                @keyframes line {
+                        0% {
+                                width: 0;
+                        }
+
+                        100% {
+                                border-bottom: 1px solid white;
+                                background: inherit;
+                        }
+                }
+
+
+                #welcome-section {
+                        height: 80vh;
+                }
+
+                #text-welcome {
+                        position: relative;
+                        top: calc(50vh/2);
+                        font-size: 50px;
+                }
+
+                header {
+                        text-align: center;
+                }
+
+                h1 {
+                        font-size: 3.9em;
+                        margin: 0;
+                        text-shadow: 0 1px 5px black;
+                }
+
+                h1+p {
+                        font-size: 1.5em;
+                        font-style: italic;
+                        letter-spacing: 0.1rem;
+                        font-weight: 300;
+                        color: #fffafa;
+                }
+
+                h1,
+                h1+p {
+                        opacity: 0;
+                        animation: show-text 0.5s ease-in 1s forwards;
+                }
+
+                @keyframes show-text {
+                        0% {
+                                opacity: 0;
+                        }
+
+                        100% {
+                                opacity: 1;
+                        }
+                }
+
+                #projects {
+                        text-align: center;
+                        padding: 6rem 2rem 0 2rem;
+                        background: #f5f5f5;
+                }
+
+                #projects h2 {
+                        font-size: 2.8em;
+                        margin-bottom: 4rem;
+                        color: #181719;
+                        text-shadow: 0 1px 1px black;
+                }
+
+                #projects-grid {
+                        width: 100%;
+                        max-width: 1280px;
+                        margin: 0 auto;
+                        display: grid;
+                        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+                        gap: 2em;
+                }
+
+                .project-tile {
+                        text-decoration: none;
+                        color: inherit;
+                        border: 1px solid #3a3d40;
+                }
+
+                .project-tile img {
+                        display: block;
+                        width: 100%;
+                        height: calc(100% - 3.2rem);
+                        object-fit: cover;
+                }
+
+                .project-tile p {
+                        margin: 0;
+                        padding: 1rem 2rem;
+                        font-size: 1.2rem;
+                        background: linear-gradient(62deg, #3a3d40 0%, #181719 100%);
+                }
+
+                .project-tile p::before {
+                        content: '< ';
+                        margin-right: 5px;
+                        font-size: 0.9rem;
+                        visibility: hidden;
+                }
+
+                .project-tile p::after {
+                        content: ' / >';
+                        margin-left: 5px;
+                        font-size: 0.9rem;
+                        visibility: hidden;
+                }
+
+                .project-tile:hover p::before,
+                .project-tile:hover p::after {
+                        visibility: visible;
+                        color: #cd7f32;
+                }
+
+                .btn {
+                        display: inline-block;
+                        max-width: 200px;
+                        padding: 1rem 2rem;
+                        margin: 5em auto;
+                        text-decoration: none;
+                        color: white;
+                        background: #181719;
+                        font-size: 1.2rem;
+                        transition: background 0.3s ease-in-out;
+                        box-shadow: 0 0 2px black;
+                }
+
+                .btn i {
+                        transition: transform 0.3s ease-out 0.1s;
+                }
+
+                .btn:hover {
+                        background: #cd7f32;
+                }
+
+                .btn:hover i {
+                        transform: translateX(5px);
+                }
+
+                #contact {
+                        text-align: center;
+                        padding: 10rem;
+                        width: 100%;
+                        max-width: 1280px;
+                        margin: 0 auto;
+                        display: grid;
+                        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+                        grid-template-rows: auto auto;
+                        gap: 2em;
+                }
+
+                #contact h2 {
+                        font-size: 3.5rem;
+                        margin: 0;
+                        text-shadow: 0 1px 5px black;
+                }
+
+                #contact p {
+                        font-size: 1.3rem;
+                        font-style: italic;
+                        text-shadow: 0 1px 5px black;
+                }
+
+                #contact-links {
+                        margin-top: 4em;
+                }
+
+                #contact-links a {
+                        text-decoration: none;
+                        color: white;
+                        font-size: 1.8rem;
+                        margin: 10px;
+                }
+
+                #contact-links a i {
+                        transition: transform 0.2s ease-out;
+                }
+
+                #contact-links a i:hover {
+                        transform: scale(1.2);
+                }
+
+                @media (max-width: 820px) {
+
+                        #contact {
+                                padding: 10rem 2rem;
+                        }
+
+                }
+        </style>
+        <title>저기압일땐 고기앞으로</title>
 </head>
+
 <body>
-    {% include 'nav.html' %}
-    <div class="wrapper">
-        <section class="main-container">
-            <div class="location" id="home">
-                <div class="box">
-                    <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/p1.PNG?raw=true"
-                            alt=""></a>
-                    <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/p2.PNG?raw=true"
-                            alt=""></a>
-                    <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/p3.PNG?raw=true"
-                            alt=""></a>
-                    <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/p4.PNG?raw=true"
-                            alt=""></a>
-                    <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/p5.PNG?raw=true"
-                            alt=""></a>
-                    <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/p6.PNG?raw=true"
-                            alt=""></a>
+        {% include 'nav.html' %}
+        <main>
+                <section id="welcome-section">
+                        <header>
+                                <div id="text-welcome">
+                                        <h1>Final Project</h1>
+                                        <p>Hanwooplz</p>
+                                </div>
+                        </header>
+                </section>
+                <section id="projects">
+                        <h2>About Hanwooplz team members</h2>
+                        <div id="projects-grid">
+                                <a href="" class="project-tile" target="_blank">
+                                        <img src='https://www.sanoee.co.kr/shopimages/isanoee/0460010000993.jpg?1626754270'
+                                                alt="">
+                                        <p>이지환</p>
+                                </a>
+                                <a href="" class="project-tile" target="_blank">
+                                        <img src="https://thehelpfultipper.com/wp-content/uploads/2022/05/loading-dot-animation-css.png"
+                                                alt="">
+                                        <p>양승조</p>
+                                </a>
+                                <a href="" class="project-tile" target="_blank">
+                                        <img src='https://www.sanoee.co.kr/shopimages/isanoee/0460010000993.jpg?1626754270'
+                                                alt="">
+                                        <p>최성진</p>
+                                </a>
+                                <a href="" class="project-tile" target="_blank">
+                                        <img src='https://www.sanoee.co.kr/shopimages/isanoee/0460010000993.jpg?1626754270'
+                                                alt="">
+                                        <p>최기용</p>
+                                </a>
+                                <a href="" class="project-tile" target="_blank">
+                                        <img src="https://thehelpfultipper.com/wp-content/uploads/2022/03/beating-heart-css-html-project.jpg"
+                                                alt="">
+                                        <p>이민호</p>
+                                </a>
+                                <a href="https://github.com/byunduhyeon/" class="project-tile" target="_blank">
+                                        <img src='https://www.sanoee.co.kr/shopimages/isanoee/0460010000993.jpg?1626754270'
+                                                alt="">
+                                        <p>변두현</p>
+                                </a>
+                        </div>
+                        <a href="https://github.com/hwan3526/hanwooplz" target="_blank" class="btn">
+                                <span>Hanwooplz github</span>
+                                <i class="fab fa-github"></i>
+                        </a>
+                </section>
+                <section id="contact">
+                        <h2>Project</h2>
+                        <p>참 힘들구나!</p>
+                        <div id="contact-links">
+                                <a href="" id="profile-link" target="_blank">
+                                        <img src='https://user-images.githubusercontent.com/81272766/254787638-392b9f6c-fe6e-4946-ae91-4e524951566f.jpg'
+                                                alt="">
+                                        <p>Youtube clone</p>
+                                </a>
+                                <a href="" id="profile-link" target="_blank">
+                                        <img src=https://user-images.githubusercontent.com/81272766/267502479-40de055a-83be-4822-85f8-dc2454756d61.png
+                                                alt="">
+                                        <p>Myblog clone</p>
+                                </a>
+                                <a href="" id="profile-link" target="_blank">
+                                        <img src=https://user-images.githubusercontent.com/81272766/269529874-7949794b-58f3-491c-99e7-9fa242580970.png
+                                                alt="">
+                                        <p>Dangun clone</p>
+                                </a>
+                        </div>
+                </section>
+        </main>
+        <div class="wrapper">
+                <section class="main-container">
+                        <h1>Portfolio</h1>
+                        <div class="location" id="home">
+                                <div class="box">
+                                        <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/p1.PNG?raw=true"
+                                                        alt=""></a>
+                                        <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/p2.PNG?raw=true"
+                                                        alt=""></a>
+                                        <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/p3.PNG?raw=true"
+                                                        alt=""></a>
+                                        <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/p4.PNG?raw=true"
+                                                        alt=""></a>
+                                        <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/p5.PNG?raw=true"
+                                                        alt=""></a>
+                                        <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/p6.PNG?raw=true"
+                                                        alt=""></a>
 
-                    <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/p7.PNG?raw=true"
-                            alt=""></a>
-                    <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/p8.PNG?raw=true"
-                            alt=""></a>
-                    <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/p9.PNG?raw=true"
-                            alt=""></a>
-                    <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/p10.PNG?raw=true"
-                            alt=""></a>
-                    <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/p11.PNG?raw=true"
-                            alt=""></a>
-                    <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/p12.PNG?raw=true"
-                            alt=""></a>
-                </div>
-            </div>
+                                        <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/p7.PNG?raw=true"
+                                                        alt=""></a>
+                                        <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/p8.PNG?raw=true"
+                                                        alt=""></a>
+                                        <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/p9.PNG?raw=true"
+                                                        alt=""></a>
+                                        <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/p10.PNG?raw=true"
+                                                        alt=""></a>
+                                        <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/p11.PNG?raw=true"
+                                                        alt=""></a>
+                                        <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/p12.PNG?raw=true"
+                                                        alt=""></a>
+                                </div>
+                        </div>
 
-            <h1 id="myList">Trending Now</h1>
-            <div class="box">
-                <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/t1.PNG?raw=true"
-                        alt=""></a>
-                <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/t2.PNG?raw=true"
-                        alt=""></a>
-                <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/t3.PNG?raw=true"
-                        alt=""></a>
-                <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/t4.PNG?raw=true"
-                        alt=""></a>
-                <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/t5.PNG?raw=true"
-                        alt=""></a>
-                <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/t6.PNG?raw=true"
-                        alt=""></a>
-            </div>
+                        <h1 id="myList">Trending Now</h1>
+                        <div class="box">
+                                <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/t1.PNG?raw=true"
+                                                alt=""></a>
+                                <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/t2.PNG?raw=true"
+                                                alt=""></a>
+                                <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/t3.PNG?raw=true"
+                                                alt=""></a>
+                                <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/t4.PNG?raw=true"
+                                                alt=""></a>
+                                <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/t5.PNG?raw=true"
+                                                alt=""></a>
+                                <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/t6.PNG?raw=true"
+                                                alt=""></a>
+                        </div>
 
-            <h1 id="tvShows">TV Shows</h1>
-            <div class="box">
-                <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/tv1.PNG?raw=true"
-                        alt=""></a>
-                <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/tv2.PNG?raw=true"
-                        alt=""></a>
-                <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/tv3.PNG?raw=true"
-                        alt=""></a>
-                <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/tv4.PNG?raw=true"
-                        alt=""></a>
-                <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/tv5.PNG?raw=true"
-                        alt=""></a>
-                <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/tv6.PNG?raw=true"
-                        alt=""></a>
+                        <h1 id="tvShows">TV Shows</h1>
+                        <div class="box">
+                                <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/tv1.PNG?raw=true"
+                                                alt=""></a>
+                                <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/tv2.PNG?raw=true"
+                                                alt=""></a>
+                                <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/tv3.PNG?raw=true"
+                                                alt=""></a>
+                                <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/tv4.PNG?raw=true"
+                                                alt=""></a>
+                                <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/tv5.PNG?raw=true"
+                                                alt=""></a>
+                                <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/tv6.PNG?raw=true"
+                                                alt=""></a>
 
-                <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/tv7.PNG?raw=true"
-                        alt=""></a>
-                <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/tv8.PNG?raw=true"
-                        alt=""></a>
-                <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/tv9.PNG?raw=true"
-                        alt=""></a>
-                <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/tv10.PNG?raw=true"
-                        alt=""></a>
-                <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/tv11.PNG?raw=true"
-                        alt=""></a>
-                <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/tv12.PNG?raw=true"
-                        alt=""></a>
-            </div>
+                                <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/tv7.PNG?raw=true"
+                                                alt=""></a>
+                                <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/tv8.PNG?raw=true"
+                                                alt=""></a>
+                                <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/tv9.PNG?raw=true"
+                                                alt=""></a>
+                                <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/tv10.PNG?raw=true"
+                                                alt=""></a>
+                                <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/tv11.PNG?raw=true"
+                                                alt=""></a>
+                                <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/tv12.PNG?raw=true"
+                                                alt=""></a>
+                        </div>
 
-            <h1 id="movies">Blockbuster Action & Adventure</h1>
-            <div class="box">
-                <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/m1.PNG?raw=true"
-                        alt=""></a>
-                <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/m2.PNG?raw=true"
-                        alt=""></a>
-                <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/m3.PNG?raw=true"
-                        alt=""></a>
-                <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/m4.PNG?raw=true"
-                        alt=""></a>
-                <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/m5.PNG?raw=true"
-                        alt=""></a>
-                <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/m6.PNG?raw=true"
-                        alt=""></a>
-            </div>
+                        <h1 id="movies">Blockbuster Action & Adventure</h1>
+                        <div class="box">
+                                <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/m1.PNG?raw=true"
+                                                alt=""></a>
+                                <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/m2.PNG?raw=true"
+                                                alt=""></a>
+                                <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/m3.PNG?raw=true"
+                                                alt=""></a>
+                                <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/m4.PNG?raw=true"
+                                                alt=""></a>
+                                <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/m5.PNG?raw=true"
+                                                alt=""></a>
+                                <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/m6.PNG?raw=true"
+                                                alt=""></a>
+                        </div>
 
-            <h1 id="originals">Netflix Originals</h1>
-            <div class="box">
-                <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/o1.PNG?raw=true"
-                        alt=""></a>
-                <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/o2.PNG?raw=true"
-                        alt=""></a>
-                <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/o3.PNG?raw=true"
-                        alt=""></a>
-                <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/o4.PNG?raw=true"
-                        alt=""></a>
-                <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/o5.PNG?raw=true"
-                        alt=""></a>
-                <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/o6.PNG?raw=true"
-                        alt=""></a>
-            </div>
-
-            {% include 'footer.html' %}
-            {% include 'chatbot.html' %}
+                        <h1 id="originals">Netflix Originals</h1>
+                        <div class="box">
+                                <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/o1.PNG?raw=true"
+                                                alt=""></a>
+                                <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/o2.PNG?raw=true"
+                                                alt=""></a>
+                                <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/o3.PNG?raw=true"
+                                                alt=""></a>
+                                <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/o4.PNG?raw=true"
+                                                alt=""></a>
+                                <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/o5.PNG?raw=true"
+                                                alt=""></a>
+                                <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/o6.PNG?raw=true"
+                                                alt=""></a>
+                        </div>
+                        {% include 'footer.html' %}
+                        {% include 'chatbot.html' %}
 </body>
 <script src="{% static 'js/chatbot.js' %}"></script>
 <script src="{% static 'js/index.js' %}"></script>
+
 </html>

@@ -79,6 +79,9 @@ def myinfo(request):
 def post(request):
     return render(request, "post.html")
 
+def post_list(request):
+    return render(request, "post_list.html")
+
 class ChatBot():
     def __init__(self, model='gpt-3.5-turbo'):
         self.model = model

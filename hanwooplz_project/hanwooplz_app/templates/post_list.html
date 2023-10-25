@@ -1,0 +1,54 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Portfolio</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/post_list.css' %}" />
+</head>
+
+<body>
+    <div class="wrap col-9">
+        <div class="menu col-9">
+            <header>
+                <h1>Portfolio</h1>
+            </header>
+            <div class="wrap">
+                <div class="tile">
+                    <!-- 예제 -->
+                    <img src='https://www.sanoee.co.kr/shopimages/isanoee/0460010000993.jpg?1626754270' />
+                    <div class="text">
+                        <h1>한우</h1>
+                        <h2 class="animate-text">++등급</h2>
+                        <p class="animate-text">살치살 부채살 안심 꽃등심 안창살 갈비살 채끝살</p>
+                        <div class="dots">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                    </div>
+                </div>
+                <!-- 예제 -->
+                {% for post in posts %}
+                <div class="tile">
+                    <img src="{{ post.image.url }}" alt="{{ post.title }}" />
+                    <div class="text">
+                        <h1>{{ post.title }}</h1>
+                        <p>작성자: {{ post.author }}</p>
+                        <p>날짜: {{ post.created_at|date:"Y년 m월 d일" }}</p>
+                        <p>기술 스택: {{ post.tech_stack }}</p>
+                        <p>외부 링크: <a href="{{ post.ext_link }}" target="_blank">{{ post.ext_link }}</a></p>
+                        <p class="animate-text">{{ post.content }}</p>
+                        <div class="dots">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</body>

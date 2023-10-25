@@ -1,7 +1,4 @@
-main.html
-
 {% load static %}
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -10,14 +7,79 @@ main.html
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}" />
     <style>
-        .wavy {
-            cursor: pointer;
+        body,
+        html {
+            margin: 0;
+            font: bold 14px/1.4 'Open Sans', arial, sans-serif;
+            background: #000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        ul {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 600px;
+        }
+
+        li {
+            display: table-cell;
+            position: relative;
+            padding: 15px 0;
+        }
+
+        a {
+            color: #fff;
+            text-transform: uppercase;
+            text-decoration: none;
+            letter-spacing: 0.15em;
+
+            display: inline-block;
+            padding: 15px 20px;
+            position: relative;
+        }
+
+        a:after {
+            background: none repeat scroll 0 0 transparent;
+            bottom: 0;
+            content: "";
+            display: block;
+            height: 2px;
+            left: 50%;
+            position: absolute;
+            background: #fff;
+            transition: width 0.3s ease 0s, left 0.3s ease 0s;
+            width: 0;
+        }
+
+        a:hover:after {
+            width: 100%;
+            left: 0;
+        }
+
+        @media screen and (max-height: 300px) {
+            ul {
+                margin-top: 40px;
+            }
         }
     </style>
     <title>저기압일땐 고기앞으로</title>
 </head>
 
 <body>
+    <div class="navbar">
+        <ul>
+            <li><a href="{% url 'hanwooplz_app:login' %}">로그인</a></li>
+            <li><a href="{% url 'hanwooplz_app:register' %}">회원가입</a></li>
+        </ul>
+    </div>
     <div class="wavy" onclick="window.location.href = 'index';">
         <span style="--i:1">저</span>
         <span style="--i:2">기</span>

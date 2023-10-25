@@ -19,7 +19,8 @@ urlpatterns = [
     path("write-question/<int:post_id>", question_views.write_question, name="write_question"),
     path("myinfo/", views.myinfo, name="myinfo"),
     path("post/", views.post, name="post"),
-    path('execute-chatbot/', views.execute_chatbot, name='execute_chatbot'),
+    path("post-list/", views.post_list, name="post-list"),
+    path('execute-chatbot/', views.execute_chatbot, name='execute-chatbot'),
 
     # comment_views.py
     path("api/comments/", comment_views.CommentList.as_view(), name="comment_list"),
