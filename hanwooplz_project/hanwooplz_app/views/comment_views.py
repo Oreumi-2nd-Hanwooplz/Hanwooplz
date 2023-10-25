@@ -22,15 +22,12 @@ class CommentList(APIView):
         return Response(serializer.data)
     
     def post (self, request):
-        author = request.user.id if request.user.is_authenticated else None
-
         comment_data = {
             "content": request.data.get("content"),
-            "author": author,
         }
         serializer = CommentSerializer(data=comment_data)
         if serializer.is_valid():
-            serializer.save()
+            serializer.save(author=self.request.user)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
@@ -68,3 +65,10 @@ class CommentLikeView(generics.UpdateAPIView):
 
         comment.save()
         return Response(self.get_serializer(comment).data)
+    
+# 댓글 테스트 용
+def question_test(request):
+    return render(request, "question.html")
+
+def post_test(request):
+    return render(request, "post.html")
