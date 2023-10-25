@@ -17,6 +17,7 @@
     <div class="main-container">
         <div class="question-list">
             <table>
+                {% for post,post_question,user in question_list %}
                 <thead>
                     <tr>
                         <th>번호</th>
@@ -26,11 +27,12 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <td>1</td>
-                    <td>한우 먹고 싶어요</td>
-                    <td>한우</td>
-                    <td>2023. 10. 18.</td>
+                    <td>{{ post_question.id }}</td>
+                    <td>{{ post.title }}</td>
+                    <td>{{ user.username }}</td>
+                    <td>{{ post.created_at }}</td>
                 </tbody>
+                {% endfor %}
             </table>
         </div>
     </div>
