@@ -48,74 +48,92 @@ def get_rooms(request):
                 # 'unread_message_count': unread_message_count,
             })
         except ChatMessages.DoesNotExist:
-            sender = None
+            # sender = None
 
-            if room.receiver.id == request.user.id:
-                sender = UserProfile.objects.get(pk=request.user.id)
-            else:
-                sender = room.receiver
+            # if room.receiver.id == request.user.id:
+            #     sender = UserProfile.objects.get(pk=request.user.id)
+            # else:
+            #     sender = room.receiver
             
-            latest_messages.append({
-                'chat_room_id': room.id,
-                'sender_id': sender.id,
-                'sender': sender,
-                'message': '메세지를 입력해주세요',
-                'created_at': '',
-                # 'unread_message_count': 0,
-            })
+            # latest_messages.append({
+            #     'chat_room_id': room.id,
+            #     'sender_id': sender.id,
+            #     'sender': sender,
+            #     'message': '',
+            #     'created_at': '',
+            #     # 'unread_message_count': 0,
+            # })
             pass
 
     latest_messages.sort(key=lambda x: x['created_at'], reverse=True)
 
     return latest_messages
 
-
 def current_chat(request, room_number, receiver_id):
-    # 이미 생성된 채팅방 찾기
-    already_room = ChatRoom.objects.filter(Q(Q(sender=request.user.id, receiver=receiver_id) | Q(sender=receiver_id, receiver=request.user.id))).first()
+    current_chat = None
+    formatted_chat_msgs = []
+    first_unread_index = -1
+    already_room = ChatRoom.objects.filter(Q(Q(sender=request.user.id) & Q(receiver=receiver_id)) | Q(Q(sender=receiver_id) & Q(receiver=request.user.id)))
+    
 
     if room_number == 0:
         if receiver_id == request.user.id:
-            # 자기 자신에게 메시지를 보낼 수 없음
-            return JsonResponse({"error": "You can't send messages to yourself."})
-        if already_room:
-            # 이미 생성된 채팅방이 있을 경우 해당 채팅방으로 이동
-            room_number = already_room.id
+            pass
+        elif already_room.exists():
+            current_room = already_room.first()
+            room_number = current_room.id
+            current_chat = ChatMessages.objects.filter(chat_room=current_room).order_by('created_at')     
+            
+
+            for i, chat in enumerate(current_chat):
+                if chat.read_or_not == False:
+                    if chat.sender.id != request.user.id:
+                        chat.read_or_not = True
+                        chat.save()
+                        if first_unread_index == -1:
+                            first_unread_index = chat.id
+
+            for chat in current_chat:
+                formatted_chat_msgs.append({
+                    'created_at': format_datetime(chat.created_at),
+                    'message': chat.message,
+                    'username': chat.sender.username,
+                    'is_read': chat.read_or_not, 
+                    'id': chat.id,
+                })
         else:
-            # 새 채팅방 생성
             receiver = UserProfile.objects.get(id=receiver_id)
             sender = UserProfile.objects.get(id=request.user.id)
             new_chat_room = ChatRoom.objects.create(sender=sender, receiver=receiver)
             room_number = new_chat_room.id
+    else:
+        current_room = ChatRoom.objects.get(pk=room_number)
+        current_chat = ChatMessages.objects.filter(chat_room=current_room).order_by('created_at')     
+        
 
-    current_room = ChatRoom.objects.get(pk=room_number)
-    current_chat = ChatMessages.objects.filter(chat_room=current_room).order_by('created_at')
+        for i, chat in enumerate(current_chat):
+            if chat.read_or_not == False:
+                if chat.sender.id != request.user.id:
+                    chat.read_or_not = True
+                    chat.save()
+                    if first_unread_index == -1:
+                        first_unread_index = chat.id
 
-    first_unread_index = -1
-
-    for chat in current_chat:
-        if chat.read_or_not == False and chat.sender.id != request.user.id:
-            chat.read_or_not = True
-            chat.save()
-            if first_unread_index == -1:
-                first_unread_index = chat.id
-
-    formatted_chat_msgs = [
-        {
-            'created_at': format_datetime(chat.created_at),
-            'message': chat.message,
-            'username': chat.sender.username,
-            'is_read': chat.read_or_not,
-            'id': chat.id,
-        }
-        for chat in current_chat
-    ]
-
+        for chat in current_chat:
+            formatted_chat_msgs.append({
+                'created_at': format_datetime(chat.created_at),
+                'message': chat.message,
+                'username': chat.sender.username,
+                'is_read': chat.read_or_not, 
+                'id': chat.id,
+            })
+    userinfo = UserProfile.objects.get(id=receiver_id)
     context = {
-        "room_number": room_number,
-        "chat_msgs": formatted_chat_msgs,
-        "latest_messages": get_rooms(request),
+        "room_number" : room_number,
+        "chat_msgs" : formatted_chat_msgs,
+        "latest_messages" : get_rooms(request),
         'first_unread_index': first_unread_index,
+        'username' : userinfo.username
     }
 
     return render(request, 'chat.html', context)
