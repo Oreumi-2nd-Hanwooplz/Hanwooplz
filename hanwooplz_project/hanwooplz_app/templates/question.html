@@ -13,18 +13,22 @@
     <div class="main-container">
         <main>
             <div class="question-container">
-                <h3 class="subject">한우 먹고 싶어요</h3>
-                <div class="content">한우를 먹고 싶은 욕망은 무엇보다도 특별한 맛과 품질에 대한 열망에서 비롯됩니다. 그 부드럽고 풍미 넘치는 고기는 한 마리의 소에서 나오는 특별한 부위에서 비롯되어, 다른 어떤 고기보다도 특별한 맛을 선사합니다. 한우는 그만의 고유한 맛과 품질로 국내외 많은 식객들에게 사랑받고 있습니다. 특히, 한우의 고급스러운 육질과 지방의 분포로 유명하며, 정통 한우의 특별한 조리법은 그 맛을 한층 높여줍니다. 양념 없이 숯불로 구워내는 간단한 방법에서부터, 다양한 양념과 조리법을 활용해 즐기는 방법까지 다양한 스타일로 한우를 즐길 수 있습니다. 한우의 특유의 진한 육즙과 고소한 향기는 식탁을 특별하게 만들어줍니다. 한우를 먹고 싶다면, 가족, 친구, 연인과 함께 특별한 순간을 만들어보세요. 한우의 맛을 경험하면서 즐거운 대화와 웃음 속에서 더욱 특별한 추억을 쌓을 수 있을 것입니다. 한우의 향기와 맛, 특별함을 느끼며, 그 독특한 매력에 빠져보세요.
+                <h3 class="title">{{ title }}</h3>
+                <div class="keyword-conatiner">
+                    {% for keyword in keywords %}
+                        <div class="keyword">#{{ keyword }} </div>
+                    {% endfor %}
                 </div>
+                <div class="content">{{ content }}</div>
                 <div class="subsidiary">
                     <div class="card">
-                        <p><strong>작성자</strong> 님</p>
-                        <p>2023년 10월 18일</p>
+                        <p><strong>{{ author }}</strong> 님</p>
+                        <p>{{ created_at }}</p>
                     </div>
                 </div>
                 <div class="action-buttons">
                     <a href="">댓글</a>
-                    <a href="">추천</a>
+                    <a href="">추천</a><p>{{ like }} 회</p>
                 </div>
                 <a href="{% url 'hanwooplz_app:question_list' %}">목록으로</a>
             </div>
