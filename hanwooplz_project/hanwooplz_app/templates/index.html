@@ -436,14 +436,15 @@
                                                 </thead>
 
                                                 <tbody>
+                                                        {% for post,post_question,user in question_list %}
                                                         <tr style="color: black;">
-                                                                <td>1</td>
-                                                                <td>너무 어려워요</td>
-                                                                <td>오르미</td>
-                                                                <td>2023-10-26</td>
-                                                                <td>1</td>
+                                                                <td>{{ post_question.id }}</td>
+                                                                <td>{{ post.title }}</td>
+                                                                <td>{{ user.username }}</td>
+                                                                <td>{{ post.created_at }}</td>
                                                         </tr>
                                                 </tbody>
+                                                {% endfor %}
                                         </table>
 
                                         <div class="page" style="text-align: center; padding: 20px;">
