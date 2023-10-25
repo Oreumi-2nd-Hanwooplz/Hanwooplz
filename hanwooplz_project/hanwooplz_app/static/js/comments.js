@@ -10,25 +10,10 @@ document.addEventListener('DOMContentLoaded', function () {
                 return response.json();
             })
             .then(function (comments) {
-                var commentList = document.querySelector('.comment-container');
+                
                 //commentList.innerHTML = '';
                 comments.forEach(function (comment) {
-                    var commentBox = document.createElement('div');
-                    commentBox.classList.add('comment-box');
-
-                    // 댓글 작성자
-                    var commentAuthor = document.createElement('div');
-                    commentAuthor.classList.add('comment-author');
-                    commentAuthor.textContent = comment.author;
-
-                    // 댓글 내용
-                    var commentContent = document.createElement('div');
-                    commentContent.classList.add('comment-content');
-                    commentContent.textContent = comment.content;
-
-                    commentBox.appendChild(commentAuthor);
-                    commentBox.appendChild(commentContent);
-                    commentList.appendChild(commentBox);
+                    displayComments(comment);
                 });
             })
             .catch(function (error) {
@@ -52,12 +37,50 @@ document.addEventListener('DOMContentLoaded', function () {
             .then(function (response) {
                 if (response.status === 201) {
                     commentText.value = '';
-                    fetchComments();
+                    commentData.author = author_name;
+                    displayComments(commentData);
                 } else {
                     alert('댓글 작성에 실패했습니다.');
                 }
             });
     });
+
+    function displayComments(comment) {
+        var commentList = document.querySelector('.comment-container');
+
+        var commentBox = document.createElement('div');
+        commentBox.classList.add('comment-box');
+
+        // 댓글 작성자
+        var commentAuthor = document.createElement('div');
+        commentAuthor.classList.add('comment-author');
+        commentAuthor.textContent = comment.author;
+
+        // 댓글 내용
+        var commentContent = document.createElement('div');
+        commentContent.classList.add('comment-content');
+        commentContent.textContent = comment.content;
+
+        // 댓글 작성 시각
+        var commentTimestamp = document.createElement('div');
+        commentTimestamp.classList.add('comment-timestamp');
+
+        var date = new Date(comment.created_at);
+        var formattedDate = date.toLocaleString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' });
+        commentTimestamp.textContent = '작성 시각: ' + formattedDate;
+
+        // 댓글 좋아요
+        var commentLike = document.createElement('a');
+        commentLike.classList.add('comment-like');
+        commentLike.textContent = comment.like.length;
+
+
+        commentBox.appendChild(commentAuthor);
+        commentBox.appendChild(commentContent);
+        commentBox.appendChild(commentTimestamp);
+        commentBox.appendChild(commentLike);
+        commentList.appendChild(commentBox);
+    }
 
     fetchComments();
 });

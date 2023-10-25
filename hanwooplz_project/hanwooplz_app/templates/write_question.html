@@ -14,11 +14,12 @@
     {% include 'nav.html' %}
 
     <section class="main">
-        <form id="post" method="POST" action="{% if edit_mode %}{% url 'create_question' post.id %}{% else %}{% url 'create_question' %}{% endif %}" enctype="multipart/form-data">
+        <form id="post" method="POST" action="{% if post_id %}{% url 'hanwooplz_app:write_question' post_id %}{% else %}{% url 'hanwooplz_app:write_question' %}{% endif %}" enctype="multipart/form-data">
+            {% csrf_token %}
             <div class="write-box">
-                <input id="title" type="text" name="title" placeholder="제목">
-                <input id="topic" type="text" name="topic" placeholder="주제">
-                <textarea id="content" name="content"></textarea>
+                <input id="title" type="text" name="title" placeholder="제목" value="{{ title }}">
+                <input id="keyword" type="text" name="keyword" placeholder="#주제" value="{{ keyword }}">
+                <textarea id="content" name="content">{{ content }}</textarea>
             </div>
 
             <aside>
@@ -28,12 +29,11 @@
                     </div>
                     <div class="save-box">
                         <div class="save-button-wrapper">
-                        {% if edit_mode %}
-                            <input type="submit" class="temp-save-button" value="삭제"/>
+                        {% if post_id %}
+                            <input type="submit" class="temp-save-button" name="delete-button" value="삭제"/>
                             <input type="submit" class="save-button" value="수정"/>
                         {% else %}
-                            <input type="submit" class="temp-save-button" value="임시저장"/>
-                            <input id="temporary-btn" class="temporary-btn" type="button" value="{{ temporary|length }}">
+                            <input type="submit" class="temp-save-button" name="temp-save-button" value="임시저장"/>
                             <input type="submit" class="save-button" value="글 작성"/>
                         {% endif %}
                         </div>
