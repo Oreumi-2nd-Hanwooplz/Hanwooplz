@@ -17,24 +17,20 @@
   
   {% include 'nav.html' %}
 
-    <section class="container">
-      <div class="post-box">
+    <section class="container column">
+      <div class="post-box flex-box">
 
-        <!-- 채팅선택창 -->
+
         <div class="chat-select-container">
-          <!-- 채팅 리스트 -->
           <div class="chat-list-box flex-box column">
-            <p clss="bold">채팅방 리스트</p>
-            <!-- 채팅방리스트 -->
+            <p class="chat-list-title">채팅방 리스트</p>
+
             {% for msg in latest_messages %}
-
-            <div class="flex-box chat-box between" onclick="redirectToChat({{ msg.chat_room_id }}, {{ msg.sender_id }})"
-              data-chat-room-id="{{ msg.chat_room_id }}">
-
-              <div>
+            <div class="flex-box chat-box between" onclick="redirectToChat({{ msg.chat_room_id }}, {{ msg.sender_id }})" 
+            data-chat-room-id="{{ msg.chat_room_id }}">
                 <div class="flex-box">
-                  <p class="bold">{{ msg.sender }}</p>
-                  <p class="s-text">{{ msg.created_at }}</p>
+                  <span class="bold">{{ msg.sender }}</span>
+                  <span class="s-text">{{ msg.created_at }}</span>
                 </div>
                 <div class="message-content">
                   <p class="chat-thumb-text">{{ msg.message }}</p>
@@ -42,27 +38,22 @@
                   <p class="unread_message_count">{{ msg.unread_message_count }}</p>
                   {% endif %}
                 </div>
-              </div>
-
             </div>
             {% endfor %}
+
           </div>
         </div>
-
         <!-- 채팅창-->
         <div class="chat-main-container">
-
           {% if room_number > 0 or room_number == -1 %}
           <div style="height:500px">
             <div class="contact-info flex-box">
-              {% if sender %}
-              {{ sender.username }}
-              {% else %}
-              상대아이디
+              {% if username %}
+              대화상대: {{username}}
               {% endif %}
             </div>
             <!--채팅창 메인-->
-            <div class="chat-container" id="chat-log" style="{% if not goods %}height: 350px;{% endif %}">
+            <div class="chat-container" id="chat-log">
               {% if room_number == -1 %}
               <div class="message-box from-you">
                 <p class="s-text">방금 전</p>
@@ -92,13 +83,13 @@
             </div>
           </div>
 
-          <div class='toast'>
+          {% comment %} <div class='toast'>
             <div id="toast-popup" class="toast-popup">
               <div class="toast-content">
                 <p class="toast-message">새 메시지가 도착했습니다!</p>
               </div>
             </div>
-          </div>
+          </div> {% endcomment %}
 
           <form class="chat-input" id="chat-form">
             {%csrf_token%}
@@ -109,7 +100,7 @@
 
           {% elif room_number == 0 %}
           {% comment %} <div class="awesome_logo">
-            <img src="{% static 'img/awesome_logo.png' %}">
+            <img src="{% static 'hanwooplz_logo' %}">
           </div> {% endcomment %}
           {% endif %}
         </div>
@@ -166,7 +157,7 @@
       setTimeout(function () {
         toastPopup.style.display = 'none';
       }, 2500);
-    }
+    } 
 
     ws.onmessage = function (e) {
       const data = JSON.parse(e.data);
@@ -268,7 +259,6 @@
     }
   });
 
-  '''채팅 창을 선택했을 때 해당 채팅으로 이동하기 위한 함수입니다. 선택된 채팅을 표시하는 시각적 효과를 주고 해당 채팅 방 페이지로 이동합니다.'''
   function redirectToChat(chatRoomId, senderId) {
     const chatBoxes = document.querySelectorAll('.chat-box');
     chatBoxes.forEach(chatBox => {
@@ -351,16 +341,20 @@
 
   });
 
-  
-
   document.addEventListener("DOMContentLoaded", function () {
-    const toggleBtn = document.querySelector('#toggle-goods-button');
-    const goodsCount = "{{ goods | length }}";
-    if (goodsCount == 1) {
-      toggleBtn.style.display = 'none';
-    }
-  });  
+    const messageInput = document.querySelector('#chat-message-input');
+    const chatMessageSubmitBtn = document.querySelector('#chat-message-submit');
 
+    messageInput.addEventListener('input', function () {
+      if (messageInput.value.trim() !== '') {
+        chatMessageSubmitBtn.style.backgroundColor = '#B22222';
+        chatMessageSubmitBtn.style.color = '#fff';
+      } else {
+        chatMessageSubmitBtn.style.backgroundColor = '#E1E1E1';
+        chatMessageSubmitBtn.style.color = '#000';
+      }
+    });
+  });
 </script>
 
 </html>
