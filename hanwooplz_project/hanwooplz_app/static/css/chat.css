@@ -15,33 +15,9 @@ body{
     gap: 8px;
 }
 
-.button-box .grey  {
-    background-color: #dedede;
-    color: #000;
-    font-weight: 700;
-    padding: 12px 32px;
-    border: none;
-    border-radius: 8px;
-}
-
-.button-box .orange {
-    background-color: #B22222;
-    color: #fff;
-    font-weight: 700;
-    padding: 12px 32px;
-    border: none;
-    border-radius: 8px;
-}
-
 button:hover{
     opacity: 0.8;
 }
-
-
-button:hover{
-    opacity: 0.8;
-}
-
 
 /* 채팅선택창 */
 
@@ -99,22 +75,9 @@ button:hover{
     font-size: medium;
 }
 
-.goods-box{
-    padding: 14px 20px;
-    border-bottom: 1px solid #e2e2e2;
-
-}
-
 .selected-thumbnail-box{
     width: 48px;
     height: 48px;
-}
-
-.goods-box button{
-    padding: 6px 12px;
-    background-color: #fff;
-    border-radius: 4px;
-    border: 1px solid #818181;
 }
 
 /* 채팅창 메인 */
@@ -140,6 +103,11 @@ button:hover{
 .from-me{
     justify-content: flex-end;
     
+}
+
+.from-me div {
+    background-color: #eaeaea;
+    margin : 5px
 }
 
 .from-you div {
@@ -201,6 +169,5 @@ a{
 }
 
 .selected-chat {
-    background-color: #B22222;
-    color: #fff;
+    background-color: #eaeaea;
 }

@@ -26,19 +26,20 @@
             <p class="chat-list-title">채팅방 리스트</p>
 
             {% for msg in latest_messages %}
-            <div class="flex-box chat-box between" onclick="redirectToChat({{ msg.chat_room_id }}, {{ msg.sender_id }})" 
+            <div class="flex-box chat-box between" onclick="redirectToChat({{ msg.chat_room_id }}, {{ msg.receiver_id }})" 
             data-chat-room-id="{{ msg.chat_room_id }}">
                 <div class="flex-box">
-                  <span class="bold">{{ msg.sender }}</span>
+                  <span class="bold">{{ msg.receiver }}</span>
                   <span class="s-text">{{ msg.created_at }}</span>
                 </div>
                 <div class="message-content">
                   <p class="chat-thumb-text">{{ msg.message }}</p>
-                  {% if msg.unread_message_count > 0 %}
-                  <p class="unread_message_count">{{ msg.unread_message_count }}</p>
-                  {% endif %}
                 </div>
+                {% if msg.unread_message_count > 0 %}
+                <span class="unread_message_count">{{ msg.unread_message_count }}</span>
+                {% endif %}
             </div>
+            
             {% endfor %}
 
           </div>
@@ -73,11 +74,15 @@
                 {% endif %}
               </div>
               {% else %}
-              <div class="message-text">{{ chat.message }}</div>
-              {% endif %}
-              <p class="s-text">{{ chat.created_at }}</p>
-              {% if chat.is_read == False %}
-              <p class="s-text unread">읽지 않음</p>
+              <div class="message-box from-me">
+                {% if chat.is_read %}
+                <p class="s-text">읽음</p>
+                {% else %}
+                <p class="s-text unread-message">읽지 않음</p>
+                {% endif %}
+                <p class="s-text">{{ chat.created_at }}</p>
+                <div class="message-text">{{ chat.message }}</div>
+              </div>
               {% endif %}
               {% endfor %}
             </div>
@@ -99,7 +104,7 @@
           </form>
 
           {% elif room_number == 0 %}
-          {% comment %} <div class="awesome_logo">
+          {% comment %} <div class="hanwooplz_logo">
             <img src="{% static 'hanwooplz_logo' %}">
           </div> {% endcomment %}
           {% endif %}
@@ -122,7 +127,6 @@
 
   const ws = new WebSocket('ws://127.0.0.1:8000/ws/chat/' + change_room_number + '/');
 
-  '''각 채팅 메세지에 고유한 id를 부여하기 위함'''
   function generateMessageId() {
     return uuid.v4();
   }
@@ -259,27 +263,26 @@
     }
   });
 
-  function redirectToChat(chatRoomId, senderId) {
+  function redirectToChat(chatRoomId, receiverId) {
     const chatBoxes = document.querySelectorAll('.chat-box');
     chatBoxes.forEach(chatBox => {
-      chatBox.classList.remove('selected-chat');
+        chatBox.classList.remove('selected-chat');
     });
 
     const selectedChat = document.querySelector(`[data-chat-room-id="${chatRoomId}"]`);
     if (selectedChat) {
-      selectedChat.classList.add('selected-chat');
+        selectedChat.classList.add('selected-chat');
     }
 
-    window.location.href = `/chat/${chatRoomId}/${senderId}`;
-  }
+    window.location.href = `/chat/${chatRoomId}/${receiverId}`;
+}
 
-  '''채팅 로그가 맨 아래로 스크롤되었는지 확인하기 위한 함수입니다.'''
+
   function isScrolledToBottom() {
     const scrollThreshold = 54;
     return chatLog.scrollHeight - chatLog.scrollTop <= chatLog.clientHeight + scrollThreshold;
   }
 
-  '''사용자가 페이지에 포커스를 주었을 때, 읽지 않은 메시지를 읽음으로 표시하기 위한 로직을 포함합니다.'''
   window.addEventListener('focus', function () {
     if (isScrolledToBottom(chatLog)) {
       const room_number = parseInt("{{ room_number }}");
@@ -347,7 +350,7 @@
 
     messageInput.addEventListener('input', function () {
       if (messageInput.value.trim() !== '') {
-        chatMessageSubmitBtn.style.backgroundColor = '#B22222';
+        chatMessageSubmitBtn.style.backgroundColor = '#000';
         chatMessageSubmitBtn.style.color = '#fff';
       } else {
         chatMessageSubmitBtn.style.backgroundColor = '#E1E1E1';

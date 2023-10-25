@@ -23,29 +23,29 @@ def get_rooms(request):
     latest_messages = []
     for room in chat_rooms:
         try:
-            # unread_message_count = ChatMessages.objects.filter(
-            #     Q(chat_room=room),
-            #     ~Q(sender=request.user),
-            #     Q(read_or_not=False)
-            # ).count()
+            unread_message_count = ChatMessages.objects.filter(
+                Q(chat_room=room),
+                ~Q(sender=request.user),
+                Q(read_or_not=False)
+            ).count()
 
             latest_message = ChatMessages.objects.filter(chat_room=room.id).latest('created_at')
 
-            sender = None
+            receiver = None
 
-            if latest_message.chat_room.receiver == request.user:
-                sender = latest_message.chat_room.sender
+            if latest_message.chat_room.sender == request.user:
+                receiver = latest_message.chat_room.receiver
             else:
-                sender = latest_message.chat_room.receiver
+                receiver = latest_message.chat_room.sender
 
 
             latest_messages.append({
                 'chat_room_id': room.id,
-                'sender_id': sender.id,
-                'sender': sender,
+                'receiver_id': receiver.id,
+                'receiver': receiver,
                 'message': latest_message.message,
                 'created_at': format_datetime(latest_message.created_at),
-                # 'unread_message_count': unread_message_count,
+                'unread_message_count': unread_message_count,
             })
         except ChatMessages.DoesNotExist:
             # sender = None
