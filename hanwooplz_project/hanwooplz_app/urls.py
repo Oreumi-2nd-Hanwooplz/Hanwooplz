@@ -20,6 +20,7 @@ urlpatterns = [
     path("create_question/", question_views.create_question, name="create_question"),
     path("myinfo/", views.myinfo, name="myinfo"),
     path("post/", views.post, name="post"),
+    path("post_list/", views.post_list, name="post_list"),
     path('execute_chatbot/', views.execute_chatbot, name='execute_chatbot'),
 
     # comment_views.py
