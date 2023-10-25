@@ -54,9 +54,10 @@
                 <p><strong>홍길동:</strong> 댓글 예제</p>
             </div>
         </div>
+        {% include "comment.html" %}
 
         {% include 'footer.html' %}
         {% include 'chatbot.html' %}
 </body>
-
+<script type="text/javascript" src="{% static 'js/comments.js' %}"></script>
 </html>

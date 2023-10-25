@@ -28,18 +28,19 @@
                 </div>
                 <a href="{% url 'hanwooplz_app:question_list' %}">목록으로</a>
             </div>
-            <div class="comment-container">
+            {% comment %} <div class="comment-container">
                 <div class="comment-box">
                     <div class="comment-author">댓쓴이</div>
                     <div class="comment-content">한우존맛</div>
                 </div>
             </div>
-            {% comment %} {% if user.is_authenticated %} {% endcomment %}
+            {% if user.is_authenticated %}
             <form action="" method="post">
                 {% csrf_token %}
                 <textarea name="comment" id="comment-input" cols="30" rows="5"></textarea>
                 <button type="button" id="submit-button">댓글 등록</button>
-            </form>
+            </form> {% endcomment %}
+            {% include "comment.html" %}
         </main>
 
     </div>
