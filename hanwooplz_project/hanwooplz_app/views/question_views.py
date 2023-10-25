@@ -14,7 +14,7 @@ def question_list(request):
     context = {}
     return render(request, 'question_list.html', context)
 
-def question_detail(request, post_id=None):
+def question(request, post_id=None):
     if post_id:
         post = get_object_or_404(Post, id=post_id)
         post_question = get_object_or_404(PostQuestion, post_id=post_id)
@@ -25,10 +25,11 @@ def question_detail(request, post_id=None):
             'author': author.username,
             'created_at': post.created_at,
             'like': post_question.like,
-            'keyword': post_question.keyword,
+            'keywords': post_question.keyword,
         }
         return render(request, 'question.html', context)
     else:
+        messages.info('올바르지 않은 접근입니다.')
         return redirect('question_list')
 
 @login_required(login_url='login')
@@ -68,7 +69,7 @@ def write_question(request, post_id=None):
                 post.save()
                 post_question.save()
 
-            return redirect('hanwooplz_app:question_detail', post_id=post_id)
+            return redirect('hanwooplz_app:question', post_id=post_id)
         else:
             messages.info(request, '질문을 등록하는데 실패했습니다. 다시 시도해주세요.')
             context={
@@ -89,6 +90,6 @@ def write_question(request, post_id=None):
                 return render(request, 'write_question.html', context)
             else:
                 messages.info('올바르지 않은 접근입니다.')
-                return redirect('hanwooplz_app:question_detail', post_id=post_id)
+                return redirect('hanwooplz_app:question', post_id=post_id)
         else:
             return render(request, 'write_question.html')
