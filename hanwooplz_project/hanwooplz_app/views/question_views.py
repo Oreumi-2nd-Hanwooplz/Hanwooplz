@@ -5,13 +5,21 @@ from ..forms import *
 from ..models import *
 from ..serializers import *
 
-def question_list(request):
-    post_question = PostQuestion.objects.all().order_by('-id')[:10]
-    post_id = post_question.values('post')
-    # get title, author, created_at in Post
-    # get like and keyword in PostQuestion
-    # make them into a context dictionary
-    context = {}
+def question_list(request, page_num=1):
+    total = PostQuestion.objects.all().count()
+    if total > (page_num-1)*10:
+        post_question = PostQuestion.objects.all().order_by('-id')[(page_num-1)*10:total]
+    else:
+        post_question = PostQuestion.objects.all().order_by('-id')[(page_num-1)*10:page_num*10]
+    
+    question_id_list = post_question.values_list('post_id', flat=True)
+    post = Post.objects.filter(id__in=question_id_list)
+    post_author_id = post.values_list('author_id', flat=True)
+    user = [UserProfile.objects.filter(id=pa_id) for pa_id in post_author_id]
+
+    context = {
+        'question_list': zip(post, post_question, user),
+    }
     return render(request, 'question_list.html', context)
 
 def question(request, post_id=None):

@@ -6,10 +6,10 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="{% static 'css/question_list.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'css/nav.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'css/footer.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'css/chatbot.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/question_list.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/nav.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/footer.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/chatbot.css' %}" />
     <style>
         h2 {
             padding-bottom: 10px;
@@ -138,25 +138,26 @@
             </div>
 
             <table class="board-table">
+
                 <thead>
                     <tr>
                         <th>번호</th>
                         <th>제목</th>
                         <th>글쓴이</th>
                         <th>일시</th>
-                        <th>조회수</th>
                     </tr>
                 </thead>
 
                 <tbody>
+                    {% for post,post_question,user in question_list %}
                     <tr>
-                        <td>1</td>
-                        <td>너무 어려워요</td>
-                        <td>오르미</td>
-                        <td>2023-10-26</td>
-                        <td>1</td>
+                        <td>{{ post_question.id }}</td>
+                        <td>{{ post.title }}</td>
+                        <td>{{ user.username }}</td>
+                        <td>{{ post.created_at }}</td>
                     </tr>
                 </tbody>
+                {% endfor %}
             </table>
 
             <div class="page">
