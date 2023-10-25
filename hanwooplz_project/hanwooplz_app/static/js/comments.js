@@ -63,7 +63,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // 댓글 작성 시각
         var commentTimestamp = document.createElement('div');
-        commentTimestamp.classList.add('comment-timestamp');
+        commentTimestamp.classList.add('comment-createdat');
 
         var date = new Date(comment.created_at);
         var formattedDate = date.toLocaleString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' });
@@ -72,6 +72,7 @@ document.addEventListener('DOMContentLoaded', function () {
         // 댓글 좋아요
         var commentLike = document.createElement('a');
         commentLike.classList.add('comment-like');
+        commentLike.setAttribute('id', comment.id);
         commentLike.textContent = comment.like.length;
 
 
@@ -80,6 +81,50 @@ document.addEventListener('DOMContentLoaded', function () {
         commentBox.appendChild(commentTimestamp);
         commentBox.appendChild(commentLike);
         commentList.appendChild(commentBox);
+    }
+
+    function showMessage(message) {
+        var messageElement = document.createElement('div');
+        messageElement.textContent = message;
+        messageElement.classList.add('message');
+
+        // 메시지를 표시할 DOM 엘리먼트에 추가
+        var messagesContainer = document.querySelector('.messages-container');
+        messagesContainer.appendChild(messageElement);
+    }
+
+    function likeComments() {
+        var commentElements = document.querySelectorAll('.comment-box');
+
+        commentElements.forEach(function (commentElement) {
+            var likeButton = commentElement.querySelector('.comment-like');
+            var commentId = likeButton.getAttribute('id');
+
+            likeButton.addEventListener('click', function () {
+                fetch(`/api/comment/${commentId}/like/`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                })
+                .then(function (response) {
+                    if (response.status === 201) {
+                        return response.json();
+                    } else {
+                        console.error('댓글 추천 또는 취소 실패');
+                        return null;
+                    }
+                })
+                .then(function (data) {
+                    var message = data.message;
+
+                    showMessage(message);
+                })
+                .catch(function (error) {
+                    console.error(error);
+                })
+            })
+        })
     }
 
     fetchComments();
