@@ -8,6 +8,7 @@
         <link rel="stylesheet" type="text/css" href="{% static 'css/chatbot.css' %}" />
         <link rel="stylesheet" type="text/css" href="{% static 'css/index.css' %}" />
         <link rel="stylesheet" type="text/css" href="{% static 'css/nav.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'css/post_list.css' %}" />
         <link rel="stylesheet" type="text/css" href="{% static 'css/footer.css' %}" />
         <style>
                 *,
@@ -246,7 +247,7 @@
 
 <body>
         {% include 'nav.html' %}
-        <main>
+        <main style="padding-bottom: 165px;">
                 <section id="welcome-section">
                         <header>
                                 <div id="text-welcome">
@@ -256,7 +257,7 @@
                         </header>
                 </section>
                 <section id="projects">
-                        <h2>About Hanwooplz team members</h2>
+                        <h1>About Hanwooplz team members</h1>
                         <div id="projects-grid">
                                 <a href="" class="project-tile" target="_blank">
                                         <img src='https://www.sanoee.co.kr/shopimages/isanoee/0460010000993.jpg?1626754270'
@@ -295,138 +296,175 @@
                         </a>
                 </section>
                 <section id="contact">
-                        <h2>Project</h2>
-                        <p>참 힘들구나! 풀리퀘 왜안떠</p>
+                        <h1>프로젝트</h1>
                         <div id="contact-links" class="projects-grid">
-                                <a href="" class="project-link" target="_blank">
-                                        <img src='https://user-images.githubusercontent.com/81272766/254787638-392b9f6c-fe6e-4946-ae91-4e524951566f.jpg'
-                                                alt="">
+                                <a class="project-link" target="_blank">
+                                        <img
+                                                src='https://user-images.githubusercontent.com/81272766/254787638-392b9f6c-fe6e-4946-ae91-4e524951566f.jpg'>
                                         <p>Youtube clone</p>
                                 </a>
-                                <a href="" class="project-link" target="_blank">
-                                        <img src='https://user-images.githubusercontent.com/81272766/267502479-40de055a-83be-4822-85f8-dc2454756d61.png'
-                                                alt="">
+                                <a class="project-link" target="_blank">
+                                        <img
+                                                src='https://user-images.githubusercontent.com/81272766/267502479-40de055a-83be-4822-85f8-dc2454756d61.png'>
                                         <p>Myblog clone</p>
                                 </a>
-                                <a href="" class="project-link" target="_blank">
-                                        <img src='https://user-images.githubusercontent.com/81272766/269529874-7949794b-58f3-491c-99e7-9fa242580970.png'
-                                                alt="">
+                                <a class="project-link" target="_blank">
+                                        <img
+                                                src='https://user-images.githubusercontent.com/81272766/269529874-7949794b-58f3-491c-99e7-9fa242580970.png'>
                                         <p>Dangun clone</p>
                                 </a>
                         </div>
                 </section>
-        </main>
-        <div class="wrapper">
-                <section class="main-container">
-                        <h1>Portfolio</h1>
-                        <div class="location" id="home">
+                <section id="contact" class="main-container">
+                        <div id="contact-links" class="projects-grid">
+                                <h1>포트폴리오</h1>
+                                <div class="wrap">
+                                        <div class="tile">
+                                                <!-- 예제 -->
+                                                <img
+                                                        src='https://www.sanoee.co.kr/shopimages/isanoee/0460010000993.jpg?1626754270' />
+                                                <div class="text">
+                                                        <h1>한우</h1>
+                                                        <h2 class="animate-text">++등급</h2>
+                                                        <p class="animate-text">살치살 부채살 안심 꽃등심
+                                                                안창살 갈비살 채끝살</p>
+                                                </div>
+                                        </div>
+                                        <!-- 예제 -->
+                                        {% for post in posts %}
+                                        <div class="tile">
+                                                <img src="{{ post.image.url }}" alt="{{ post.title }}" />
+                                                <div class="text">
+                                                        <h1>{{ post.title }}</h1>
+                                                        <p>작성자: {{ post.author }}</p>
+                                                        <p>날짜: {{ post.created_at|date:"Y년 m월
+                                                                d일" }}</p>
+                                                        <p>기술 스택: {{ post.tech_stack }}</p>
+                                                        <p>외부 링크: <a href="{{ post.ext_link }}" target="_blank">{{
+                                                                        post.ext_link }}</a></p>
+                                                        <p class="animate-text">{{ post.content
+                                                                }}</p>
+                                                </div>
+                                        </div>
+                                        {% endfor %}
+                                </div>
+                        </div>
+                </section>
+                <section id="contact" class="main-container">
+                        <div id="contact-links" class="projects-grid">
+                                <h1 id="myList">팀원모집</h1>
                                 <div class="box">
-                                        <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/p1.PNG?raw=true"
+                                        <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/t1.PNG?raw=true"
                                                         alt=""></a>
-                                        <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/p2.PNG?raw=true"
+                                        <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/t2.PNG?raw=true"
                                                         alt=""></a>
-                                        <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/p3.PNG?raw=true"
+                                        <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/t3.PNG?raw=true"
                                                         alt=""></a>
-                                        <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/p4.PNG?raw=true"
+                                        <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/t4.PNG?raw=true"
                                                         alt=""></a>
-                                        <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/p5.PNG?raw=true"
+                                        <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/t5.PNG?raw=true"
                                                         alt=""></a>
-                                        <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/p6.PNG?raw=true"
+                                        <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/t6.PNG?raw=true"
                                                         alt=""></a>
-
-                                        <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/p7.PNG?raw=true"
+                                        <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/tv1.PNG?raw=true"
                                                         alt=""></a>
-                                        <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/p8.PNG?raw=true"
+                                        <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/tv2.PNG?raw=true"
                                                         alt=""></a>
-                                        <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/p9.PNG?raw=true"
+                                        <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/tv3.PNG?raw=true"
                                                         alt=""></a>
-                                        <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/p10.PNG?raw=true"
+                                        <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/tv4.PNG?raw=true"
                                                         alt=""></a>
-                                        <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/p11.PNG?raw=true"
+                                        <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/tv5.PNG?raw=true"
                                                         alt=""></a>
-                                        <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/p12.PNG?raw=true"
+                                        <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/tv6.PNG?raw=true"
+                                                        alt=""></a>
+                                        <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/tv7.PNG?raw=true"
+                                                        alt=""></a>
+                                        <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/tv8.PNG?raw=true"
+                                                        alt=""></a>
+                                        <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/tv9.PNG?raw=true"
+                                                        alt=""></a>
+                                        <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/tv10.PNG?raw=true"
+                                                        alt=""></a>
+                                        <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/tv11.PNG?raw=true"
+                                                        alt=""></a>
+                                        <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/tv12.PNG?raw=true"
                                                         alt=""></a>
                                 </div>
                         </div>
+                </section>
+                <section id="contact" class="main-container">
+                        <div id="contact-links" class="projects-grid">
+                                <div class="question-list" style="width: 1200px; margin: 0 auto;">
+                                        <h2 style="padding-bottom: 10px; border-bottom: 1px solid gray;">질의응답</h2>
 
-                        <h1 id="myList">Trending Now</h1>
-                        <div class="box">
-                                <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/t1.PNG?raw=true"
-                                                alt=""></a>
-                                <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/t2.PNG?raw=true"
-                                                alt=""></a>
-                                <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/t3.PNG?raw=true"
-                                                alt=""></a>
-                                <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/t4.PNG?raw=true"
-                                                alt=""></a>
-                                <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/t5.PNG?raw=true"
-                                                alt=""></a>
-                                <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/t6.PNG?raw=true"
-                                                alt=""></a>
+                                        <div class="aside"
+                                                style="width: 300px; float: left; padding-bottom: 20px; color: black;">
+                                                총 3개의 게시물이 있습니다.
+                                        </div>
+
+                                        <div class="select-grup" style="width: auto; float: right; text-align: right;">
+                                                <form action="">
+                                                        <span class="select-text"
+                                                                style="color: gray; font-size: 120%; font-weight: bolder; padding: 10px;">SELECT</span>
+                                                        <span>
+                                                                <select class="select-dropbox"
+                                                                        style="height: 25px; font-size: 16px; color: black">
+                                                                        <option value="s-title">제목</option>
+                                                                        <option value="s-writer">글쓴이</option>
+                                                                        <option value="s-">일시</option>
+                                                                </select>
+                                                        </span>
+                                                        <span>
+                                                                <input type="text" name="search" class="select-textbox"
+                                                                        style="height: 20px;">
+                                                                <input type="submit" class="button-black" value="검색"
+                                                                        style="border: 0px; border-radius: 5px; background-color: rgb(46, 46, 46); color: rgb(255, 255, 255); font: 12px 굴림; font-weight: bold; width: 70px; height: 30px;">
+                                                        </span>
+                                                </form>
+                                        </div>
+
+                                        <table class="board-table" style="width: 100%; border-spacing: 0;">
+                                                <thead>
+                                                        <tr style="color: black;">
+                                                                <th>번호</th>
+                                                                <th>제목</th>
+                                                                <th>글쓴이</th>
+                                                                <th>일시</th>
+                                                                <th>조회수</th>
+                                                        </tr>
+                                                </thead>
+
+                                                <tbody>
+                                                        <tr style="color: black;">
+                                                                <td>1</td>
+                                                                <td>너무 어려워요</td>
+                                                                <td>오르미</td>
+                                                                <td>2023-10-26</td>
+                                                                <td>1</td>
+                                                        </tr>
+                                                </tbody>
+                                        </table>
+
+                                        <div class="page" style="text-align: center; padding: 20px;">
+                                                <span><a href="#!">◀ 이전</a></span>
+                                                <span><a href="#!">1</a></span>
+                                                <span><a href="#!">다음 ▶</a></span>
+                                        </div>
+
+                                        <div class="button" style="float: right; text-align: center;">
+                                                <span><input type="button" class="button-gray" value="목록"
+                                                                style="border: 0px; border-radius: 5px; background-color: gray; color: white; font: 12px 굴림; font-weight: bold; width: 60px; height: 30px;"></span>
+                                                <span><input type="button" class="button-black" value="글쓰기"
+                                                                style="border: 0px; border-radius: 5px; background-color: rgb(46, 46, 46); color: white; font: 12px 굴림; font-weight: bold; width: 70px; height: 30px;"></span>
+                                        </div>
+                                </div>
                         </div>
 
-                        <h1 id="tvShows">TV Shows</h1>
-                        <div class="box">
-                                <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/tv1.PNG?raw=true"
-                                                alt=""></a>
-                                <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/tv2.PNG?raw=true"
-                                                alt=""></a>
-                                <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/tv3.PNG?raw=true"
-                                                alt=""></a>
-                                <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/tv4.PNG?raw=true"
-                                                alt=""></a>
-                                <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/tv5.PNG?raw=true"
-                                                alt=""></a>
-                                <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/tv6.PNG?raw=true"
-                                                alt=""></a>
-
-                                <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/tv7.PNG?raw=true"
-                                                alt=""></a>
-                                <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/tv8.PNG?raw=true"
-                                                alt=""></a>
-                                <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/tv9.PNG?raw=true"
-                                                alt=""></a>
-                                <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/tv10.PNG?raw=true"
-                                                alt=""></a>
-                                <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/tv11.PNG?raw=true"
-                                                alt=""></a>
-                                <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/tv12.PNG?raw=true"
-                                                alt=""></a>
-                        </div>
-
-                        <h1 id="movies">Blockbuster Action & Adventure</h1>
-                        <div class="box">
-                                <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/m1.PNG?raw=true"
-                                                alt=""></a>
-                                <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/m2.PNG?raw=true"
-                                                alt=""></a>
-                                <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/m3.PNG?raw=true"
-                                                alt=""></a>
-                                <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/m4.PNG?raw=true"
-                                                alt=""></a>
-                                <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/m5.PNG?raw=true"
-                                                alt=""></a>
-                                <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/m6.PNG?raw=true"
-                                                alt=""></a>
-                        </div>
-
-                        <h1 id="originals">Netflix Originals</h1>
-                        <div class="box">
-                                <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/o1.PNG?raw=true"
-                                                alt=""></a>
-                                <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/o2.PNG?raw=true"
-                                                alt=""></a>
-                                <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/o3.PNG?raw=true"
-                                                alt=""></a>
-                                <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/o4.PNG?raw=true"
-                                                alt=""></a>
-                                <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/o5.PNG?raw=true"
-                                                alt=""></a>
-                                <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/o6.PNG?raw=true"
-                                                alt=""></a>
-                        </div>
-                        {% include 'footer.html' %}
-                        {% include 'chatbot.html' %}
+                </section>
+        </main>
+        {% include 'footer.html' %}
+        {% include 'chatbot.html' %}
 </body>
 <script src="{% static 'js/chatbot.js' %}"></script>
 <script src="{% static 'js/index.js' %}"></script>
