@@ -110,8 +110,12 @@ class LoginForm(forms.Form):
 #             raise forms.ValidationError("비밀번호가 일치하지 않습니다.")
 #         return password2
 
+class PostForm(forms.ModelForm):
+    class Meta:
+        model = Post
+        fields = ['title','content']
 
-
-
-
-
+class PostQuestionForm(forms.ModelForm):
+    class Meta:
+        model = PostQuestion
+        fields = ['keyword']

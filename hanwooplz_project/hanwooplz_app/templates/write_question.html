@@ -14,10 +14,11 @@
     {% include 'nav.html' %}
 
     <section class="main">
-        <form id="post" method="POST" action="{% if edit_mode %}{% url 'create_question' post.id %}{% else %}{% url 'create_question' %}{% endif %}" enctype="multipart/form-data">
+        <form id="post" method="POST" action="{% if context %}{% url 'hanwooplz_app:write_question' post_id %}{% else %}{% url 'hanwooplz_app:write_question' %}{% endif %}" enctype="multipart/form-data">
+            {% csrf_token %}
             <div class="write-box">
                 <input id="title" type="text" name="title" placeholder="제목">
-                <input id="topic" type="text" name="topic" placeholder="주제">
+                <input id="keyword" type="text" name="keyword" placeholder="주제">
                 <textarea id="content" name="content"></textarea>
             </div>
 
