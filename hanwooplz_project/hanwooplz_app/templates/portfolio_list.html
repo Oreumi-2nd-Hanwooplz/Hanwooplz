@@ -49,7 +49,7 @@
             border-spacing: 0;
         }
 
-        .question-list {
+        .portfolio-list {
             width: 1200px;
             margin: 0 auto;
 
@@ -151,8 +151,16 @@
                     {% for post,post_portfolio,user in portfolio_list %}
                     <tr>
                         <td>{{ post_portfolio.id }}</td>
-                        <td>{{ post.title }}</td>
-                        <td>{{ user.username }}</td>
+                        <td>
+                            <a href="{% url 'hanwooplz_app:portfolio' post_portfolio.id %}">
+                                {{ post.title }}
+                            </a>
+                        </td>
+                        <td>
+                            <a href="">
+                                {{ user.username }}
+                            </a>
+                        </td>
                         <td>{{ post.created_at }}</td>
                     </tr>
                 </tbody>

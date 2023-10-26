@@ -20,9 +20,9 @@ urlpatterns = [
     
     # portfolio_views.py
     path("portfolio-list/", portfolio_views.portfolio_list, name="portfolio_list"),
-    path("portfolio/<int:post_id>", portfolio_views.portfolio, name="portfolio"),
+    path("portfolio/<int:post_portfolio_id>", portfolio_views.portfolio, name="portfolio"),
     path("write-portfolio/", portfolio_views.write_portfolio, name="write_portfolio"),
-    path("write-portfolio/<int:post_id>", portfolio_views.write_portfolio, name="write_portfolio"),
+    path("write-portfolio/<int:post_portfolio_id>", portfolio_views.write_portfolio, name="write_portfolio"),
 
     # question_views.py
     path("question-list/", question_views.question_list, name="question_list"),
