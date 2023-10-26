@@ -15,7 +15,7 @@ def question_list(request, page_num=1):
     question_id_list = post_question.values_list('post_id', flat=True)
     post = Post.objects.filter(id__in=question_id_list)
     post_author_id = post.values_list('author_id', flat=True)
-    user = [UserProfile.objects.filter(id=pa_id) for pa_id in post_author_id]
+    user = [UserProfile.objects.filter(id=pa_id).values()[0] for pa_id in post_author_id]
 
     context = {
         'question_list': zip(post, post_question, user),
