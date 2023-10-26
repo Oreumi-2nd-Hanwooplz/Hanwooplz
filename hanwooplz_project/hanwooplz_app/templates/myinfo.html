@@ -30,16 +30,34 @@
 
             <div class="profile-right flexbox-start-col">
                 <div class="profile-right-top">
-                    <h3 class="profile-name">{{ user_profile.full_name }}오르미</h3>
+                    <h3 class="profile-name">{{ username }}</h3>
+                    <h1 class="profile-name">{{ full_name }}</h1>
                 </div>
                 <div class="profile-right-bottom">
                     <div class="profile-bio-wrapper">
+                        <div>
+                            <span>{{ job }}</span>
+                            <span>{{ tech_stack}}</span>
+                        </div>
+                        <div>
+                            <span>
+                                {% if career == 0 %}
+                                신입
+                                {% else%}
+                                {{ career }}
+                                {% endif %}
+                            </span>
+                            <span>{{ career_detail }}</span>
+                        </div>
                         <p class="profile-bio" style="margin-top: 20px;">
-                            {{ user_profile.introduction }}안녕하세요
+                            {{ introduction }}
                         </p>
                     </div>
                 </div>
             </div>
+            {% if user_id != request.user.id %}
+                <button onclick="window.location.href = '{% url "hanwooplz_app:chat" 0 user_id %}'">채팅하기</button>
+            {% endif %}
         </div>
 
         <div class="profile-page flexbox-col">
@@ -49,19 +67,22 @@
                 </div>
             </div>
             <div class="profile-page-inner">
-                {% for post in user_profile.post_set.all %}
+                {% for post in posts %}
                 <div class="image-wrapper flexbox">
-                    <a href="{% url 'post_detail' post.id %}">
+                    {{ post.title }}
+                    {{ post.content }}
+                    {{ post.created_at }}
+                    {% comment %} <a href="{% url 'post' post.id %}">
                         <div class="img-overlay-wrapper">
                             <div class="img-btns">
-                                <p>{{ post.likes }} <i class="uil uil-heart-alt"></i> &nbsp&nbsp {{ post.comments }}
+                                <p>{{ post.title }} <i class="uil uil-heart-alt"></i> &nbsp&nbsp {{ post.content }}
                                     <i class="uil uil-comment"></i>
                                 </p>
                             </div>
                             <div class="img-overlay"></div>
                         </div>
                         <img src="{{ post.image.url }}" alt="">
-                    </a>
+                    </a> {% endcomment %}
                 </div>
                 {% endfor %}
             </div>

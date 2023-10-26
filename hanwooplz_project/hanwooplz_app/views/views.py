@@ -73,8 +73,27 @@ def log_out(request):
     logout(request)
     return redirect(reverse("hanwooplz_app:login"))
 
-def myinfo(request):
-    return render(request, "myinfo.html")
+def myinfo(request, user_id):
+    userinfo = UserProfile.objects.get(id=user_id)
+    posts = []
+    user_posts = Post.objects.filter(author=user_id)
+    for post in user_posts:
+        posts.append({
+            'title' : post.title,
+            'content' : post.content,
+            'created_at' : post.created_at,
+        })
+    context = {
+        "user_id" : userinfo.id,
+        "username" : userinfo.username,
+        "full_name" : userinfo.full_name,
+        "job" : userinfo.job,
+        "tech_stack" : userinfo.tech_stack,
+        "career" : userinfo.career,
+        "career_detail" : userinfo.career_detail,
+        "posts" : posts,
+    }
+    return render(request, "myinfo.html", context)
 
 def post(request):
     return render(request, "post.html")

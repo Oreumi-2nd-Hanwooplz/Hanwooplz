@@ -120,12 +120,8 @@
 <script>
   const chatLog = document.querySelector('#chat-log');
   let room_number = parseInt("{{ room_number }}");
-  let change_room_number = parseInt("{{ room_number }}");
-  if (change_room_number == -1) {
-    change_room_number = 0;
-  }
 
-  const ws = new WebSocket('ws://127.0.0.1:8000/ws/chat/' + change_room_number + '/');
+  const ws = new WebSocket('ws://127.0.0.1:8000/ws/chat/' + room_number + '/');
 
   function generateMessageId() {
     return uuid.v4();
