@@ -133,7 +133,7 @@ def current_chat(request, room_number, receiver_id):
         "chat_msgs" : formatted_chat_msgs,
         "latest_messages" : get_rooms(request),
         'first_unread_index': first_unread_index,
-        'username' : userinfo.username
+        'username' : userinfo.username,
     }
 
     return render(request, 'chat.html', context)

@@ -51,7 +51,7 @@
 </style>
 <nav class="navbar">
     <div class="navbar-container container">
-        <input type="checkbox" name="" id="">
+        <input type="checkbox" name="yourCheckboxName" id="yourCheckboxId">
         <h2 class="logo" id="logo">Hanwooplz</h2>
         <div class="hamburger-lines">
             <span class="line line1"></span>
@@ -61,7 +61,7 @@
         <ul class="menu-items">
             <li class="icon-item">
                 <div class="search-bar">
-                    <input type="text" placeholder="Search">
+                    <input type="text" name="searchField" id="searchField" placeholder="Search">
                     <button><i class="fas fa-search"></i></button>
                 </div>
             </li>
@@ -71,12 +71,12 @@
                 </a>
             </li>
             <li><a href="{% url 'hanwooplz_app:index' %}">홈</a></li>
-            <li><a href="{% url 'hanwooplz_app:myinfo' %}">회원정보</a></li>
+            <li><a href="{% url 'hanwooplz_app:myinfo' user.id %}">회원정보</a></li>
             <li><a href="{% url 'hanwooplz_app:post_list' %}">포트폴리오</a></li>
             <li><a href="#">팀원모집</a></li>
             <li><a href="{% url 'hanwooplz_app:question_list' %}">질의응답</a></li>
             <li class="icon-item"><a href="#"><i class="fas fa-bell"></i></a></li>
-            <li class="icon-item"><a href="{% url 'hanwooplz_app:myinfo' %}"><i class="fas fa-user"></i></a></li>
+            <li class="icon-item"><a href="{% url 'hanwooplz_app:myinfo' user.id %}"><i class="fas fa-user"></i></a></li>
             <li class="icon-item"><a href="#"><i class="fas fa-cog"></i></a></li>
 
             {% if user.is_authenticated %}

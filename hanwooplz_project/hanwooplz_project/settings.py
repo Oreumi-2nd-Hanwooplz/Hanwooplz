@@ -34,6 +34,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'daphne',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -42,7 +43,13 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'hanwooplz_app',
     'rest_framework',
+    'tinymce',
+    'channels',
+    'channels_redis',
 ]
+
+ASGI_APPLICATION = "hanwooplz_project.asgi.application"
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
