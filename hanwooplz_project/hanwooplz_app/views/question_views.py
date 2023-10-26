@@ -53,6 +53,7 @@ def question(request, post_question_id=None):
             'title': post.title,
             'content': post.content,
             'author': author.username,
+            'author_id': author.id,
             'created_at': post.created_at,
             'like': post_question.like,
             'keywords': post_question.keyword,

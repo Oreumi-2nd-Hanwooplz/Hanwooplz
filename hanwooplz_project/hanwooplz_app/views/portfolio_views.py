@@ -54,6 +54,7 @@ def portfolio(request, post_portfolio_id=None):
         context = {
             'title': post.title,
             'author': author.username,
+            'author_id': author.id,
             'created_at': post.created_at,
             'start_date': post_portfolio.start_date,
             'end_date': post_portfolio.end_date,
