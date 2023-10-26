@@ -35,7 +35,7 @@
                     </div>
                     <div class="save-box">
                         <div class="save-button-wrapper">
-                        {% if post_id %}
+                        {% if post_author_id == request.user.id %}
                             <input type="submit" class="temp-save-button" name="delete-button" value="삭제"/>
                             <input type="submit" class="save-button" value="수정"/>
                         {% else %}

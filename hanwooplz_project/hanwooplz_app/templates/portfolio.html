@@ -34,6 +34,9 @@
                 </div>
                 <a href="{% url 'hanwooplz_app:portfolio_list' %}">목록으로</a>
             </div>
+            {% if user_id != request.user.id %}
+            <button class="button-black" onclick="window.location.href = '{% url "hanwooplz_app:write_portfolio" post_portfolio_id %}'">수정하기</button>
+            {% endif %}
             {% comment %} <div class="comment-container">
                 <div class="comment-box">
                     <div class="comment-author">댓쓴이</div>

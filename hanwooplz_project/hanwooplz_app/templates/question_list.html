@@ -148,16 +148,17 @@
                 </thead>
 
                 <tbody>
-                    {% for post,post_question,user in question_list %}
+                    {% for post in question_lists %}
                     <tr>
-                        <td>{{ post_question.id }}</td>
+                        <td>{{ post.post_question }}</td>
                         <td>
-                            <a href="{% url 'hanwooplz_app:question' post_question.id %}">
+                            <a href="{% url 'hanwooplz_app:question' post.post_question %}">
                                 {{ post.title }}
                             </a>
+                        </td>
                         <td>
-                            <a href="">
-                                {{ user.username }}
+                            <a href="{% url 'hanwooplz_app:myinfo' post.author_id %}">
+                                {{ post.author}}
                             </a>
                         </td>
                         <td>{{ post.created_at }}</td>
@@ -174,7 +175,7 @@
 
             <div class="button">
                 <span><input type="button" class="button-gray" value="목록"></span>
-                <span><input type="button" class="button-black" value="글쓰기"></span>
+                <button class="button-black" onclick="window.location.href = '{% url "hanwooplz_app:write_question" %}'">글쓰기</button>
             </div>
         </div>
     </article>

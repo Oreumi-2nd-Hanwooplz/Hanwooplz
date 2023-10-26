@@ -148,17 +148,17 @@
                 </thead>
 
                 <tbody>
-                    {% for post,post_portfolio,user in portfolio_list %}
+                    {% for post in portfolio_lists %}
                     <tr>
-                        <td>{{ post_portfolio.id }}</td>
+                        <td>{{ post.post_portfolio }}</td>
                         <td>
-                            <a href="{% url 'hanwooplz_app:portfolio' post_portfolio.id %}">
+                            <a href="{% url 'hanwooplz_app:portfolio' post.post_portfolio %}">
                                 {{ post.title }}
                             </a>
                         </td>
                         <td>
-                            <a href="">
-                                {{ user.username }}
+                            <a href="{% url 'hanwooplz_app:myinfo' post.author_id %}">
+                                {{ post.author}}
                             </a>
                         </td>
                         <td>{{ post.created_at }}</td>
@@ -175,7 +175,7 @@
 
             <div class="button">
                 <span><input type="button" class="button-gray" value="목록"></span>
-                <span><input type="button" class="button-black" value="글쓰기"></span>
+                <button class="button-black" onclick="window.location.href = '{% url "hanwooplz_app:write_portfolio" %}'">글쓰기</button>
             </div>
         </div>
     </article>
