@@ -12,10 +12,10 @@ def question_list(request, page_num=1):
     else:
         post_question = PostQuestion.objects.all().order_by('-id')[(page_num-1)*10:page_num*10]
     
-    question_id_list = post_question.values_list('post_id', flat=True)
-    post = Post.objects.filter(id__in=question_id_list)
-    post_author_id = post.values_list('author_id', flat=True)
-    user = [UserProfile.objects.filter(id=pa_id).values()[0] for pa_id in post_author_id]
+    post_id_list = post_question.values_list('post_id', flat=True)
+    post = Post.objects.filter(id__in=post_id_list)
+    author_id_list = post.values_list('author_id', flat=True)
+    user = [UserProfile.objects.filter(id=author_id).values()[0] for author_id in author_id_list]
 
     context = {
         'question_list': zip(post, post_question, user),

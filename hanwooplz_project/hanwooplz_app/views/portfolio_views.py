@@ -12,10 +12,10 @@ def portfolio_list(request, page_num=1):
     else:
         post_portfolio = PostPortfolio.objects.all().order_by('-id')[(page_num-1)*10:page_num*10]
     
-    portfolio_id_list = post_portfolio.values_list('post_id', flat=True)
-    post = Post.objects.filter(id__in=portfolio_id_list)
-    post_author_id = post.values_list('author_id', flat=True)
-    user = [UserProfile.objects.filter(id=pa_id).values()[0] for pa_id in post_author_id]
+    post_id_list = post_portfolio.values_list('post_id', flat=True)
+    post = Post.objects.filter(id__in=post_id_list)
+    author_id_list = post.values_list('author_id', flat=True)
+    user = [UserProfile.objects.filter(id=author_id).values()[0] for author_id in author_id_list]
 
     context = {
         'portfolio_list': zip(post, post_portfolio, user),
@@ -49,8 +49,8 @@ def write_portfolio(request, post_portfolio_id=None):
         post_portfolio = get_object_or_404(PostPortfolio, id=post_portfolio_id)
         post = get_object_or_404(Post, id=post_portfolio.post_id)
     else:
-        post = Post()
         post_portfolio = PostPortfolio()
+        post = Post()
     
     if request.method == 'POST':
         if 'delete-button' in request.POST:
