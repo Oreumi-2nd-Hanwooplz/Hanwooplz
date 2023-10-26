@@ -61,8 +61,11 @@
         <ul class="menu-items">
             <li class="icon-item">
                 <div class="search-bar">
-                    <input type="text" name="searchField" id="searchField" placeholder="Search">
-                    <button><i class="fas fa-search"></i></button>
+                    <form method="GET" action="{% url 'hanwooplz_app:search' %}">
+                        <input type="text" name="search" id="searchField" placeholder="Search">
+                        <i class="fas fa-search"></i>
+                    </form>
+                    {% comment %} <button><i class="fas fa-search"></i></button> {% endcomment %}
                 </div>
             </li>
             <li>

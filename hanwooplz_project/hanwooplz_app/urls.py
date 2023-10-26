@@ -21,6 +21,7 @@ urlpatterns = [
     path("post/", views.post, name="post"),
     path("post-list/", views.post_list, name="post_list"),
     path('execute-chatbot/', views.execute_chatbot, name='execute_chatbot'),
+    path('search/', views.search, name='search'),
     
     # portfolio_views.py
     path("portfolio-list/", portfolio_views.portfolio_list, name="portfolio_list"),
