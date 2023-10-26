@@ -1,0 +1,56 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/nav.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/question.css' %}">
+    <title>Portfolio</title>
+</head>
+<body>
+    {% include "nav.html" %}
+    <div class="main-container">
+        <main>
+            <div class="portfolio-container">
+                <h3 class="title">{{ title }}</h3>
+                <div class="period">프로젝트 기간: {{ start_date }}~{{ end_date }}</div>
+                <div class="members">총 참여인원: {{ members }} 명</div>
+                <div class="tech-stack-conatiner">
+                    {% for tech_stack in tech_stacks %}
+                        <div class="tech-stack">#{{ tech_stack }} </div>
+                    {% endfor %}
+                </div>
+                <div class="ext_link">외부 링크: {{ ext_link }}</div>
+                <div class="content">{{ content }}</div>
+                <div class="subsidiary">
+                    <div class="card">
+                        <p><strong>{{ author }}</strong> 님</p>
+                        <p>{{ created_at }}</p>
+                    </div>
+                </div>
+                <div class="action-buttons">
+                    <a href="">댓글</a>
+                </div>
+                <a href="{% url 'hanwooplz_app:portfolio_list' %}">목록으로</a>
+            </div>
+            {% comment %} <div class="comment-container">
+                <div class="comment-box">
+                    <div class="comment-author">댓쓴이</div>
+                    <div class="comment-content">한우존맛</div>
+                </div>
+            </div>
+            {% if user.is_authenticated %}
+            <form action="" method="post">
+                {% csrf_token %}
+                <textarea name="comment" id="comment-input" cols="30" rows="5"></textarea>
+                <button type="button" id="submit-button">댓글 등록</button>
+            </form> {% endcomment %}
+            {% include "comment.html" %}
+        </main>
+
+    </div>
+    
+</body>
+<script src="{% static 'js/comments.js' %}"></script>
+</html>

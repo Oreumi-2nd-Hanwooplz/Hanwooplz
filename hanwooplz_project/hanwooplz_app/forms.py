@@ -119,3 +119,8 @@ class PostQuestionForm(forms.ModelForm):
     class Meta:
         model = PostQuestion
         fields = ['keyword']
+
+class PostPortfolioForm(forms.ModelForm):
+    class Meta:
+        model = PostPortfolio
+        fields = ['start_date','end_date','tech_stack','ext_link','members']
