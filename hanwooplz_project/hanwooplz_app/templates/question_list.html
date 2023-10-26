@@ -151,8 +151,15 @@
                     {% for post,post_question,user in question_list %}
                     <tr>
                         <td>{{ post_question.id }}</td>
-                        <td>{{ post.title }}</td>
-                        <td>{{ user.username }}</td>
+                        <td>
+                            <a href="{% url 'hanwooplz_app:question' post_question.id %}">
+                                {{ post.title }}
+                            </a>
+                        <td>
+                            <a href="">
+                                {{ user.username }}
+                            </a>
+                        </td>
                         <td>{{ post.created_at }}</td>
                     </tr>
                 </tbody>
