@@ -22,10 +22,10 @@ def question_list(request, page_num=1):
     }
     return render(request, 'question_list.html', context)
 
-def question(request, post_id=None):
-    if post_id:
-        post = get_object_or_404(Post, id=post_id)
-        post_question = get_object_or_404(PostQuestion, post_id=post_id)
+def question(request, post_question_id=None):
+    if post_question_id:
+        post_question = get_object_or_404(PostQuestion, id=post_question_id)
+        post = get_object_or_404(Post, id=post_question.post_id)
         author = get_object_or_404(UserProfile, id=post.author_id)
         context = {
             'title': post.title,
@@ -38,16 +38,16 @@ def question(request, post_id=None):
         return render(request, 'question.html', context)
     else:
         messages.info('올바르지 않은 접근입니다.')
-        return redirect('question_list')
+        return redirect('hanwooplz_app:question_list')
 
 @login_required(login_url='login')
-def write_question(request, post_id=None):
-    if post_id:
-        post = get_object_or_404(Post, id=post_id)
-        post_question = get_object_or_404(PostQuestion, post_id=post_id)
+def write_question(request, post_question_id=None):
+    if post_question_id:
+        post_question = get_object_or_404(PostQuestion, id=post_question_id)
+        post = get_object_or_404(Post, id=post_question.post_id)
     else:
-        post = Post()
         post_question = PostQuestion()
+        post = Post()
     
     if request.method == 'POST':
         if 'delete-button' in request.POST:
@@ -68,16 +68,17 @@ def write_question(request, post_id=None):
         if post_form.is_valid() and post_question_form.is_valid():
             post = post_form.save(commit=False)
             post_question = post_question_form.save(commit=False)
-            if not post_id:
+            if not post_question_id:
                 post.author_id = request.user.id
                 post.save()
-                post_question.post_id = post_id = post.id
+                post_question.post_id = post.id
                 post_question.save()
+                post_question_id = post_question.id
             else:
                 post.save()
                 post_question.save()
 
-            return redirect('hanwooplz_app:question', post_id=post_id)
+            return redirect('hanwooplz_app:question', post_question_id)
         else:
             messages.info(request, '질문을 등록하는데 실패했습니다. 다시 시도해주세요.')
             context={
@@ -87,10 +88,10 @@ def write_question(request, post_id=None):
             }
             return render(request, 'write_question.html', context)
     else:
-        if post_id:
+        if post_question_id:
             if request.user.id == post.author_id:
                 context = {
-                    'post_id': post.id,
+                    'post_question_id': post_question_id,
                     'title': post.title,
                     'content': post.content,
                     'keyword': ' '.join(post_question.keyword),
@@ -98,6 +99,6 @@ def write_question(request, post_id=None):
                 return render(request, 'write_question.html', context)
             else:
                 messages.info('올바르지 않은 접근입니다.')
-                return redirect('hanwooplz_app:question', post_id=post_id)
+                return redirect('hanwooplz_app:question', post_question_id)
         else:
             return render(request, 'write_question.html')

@@ -14,7 +14,7 @@
     {% include 'nav.html' %}
 
     <section class="main">
-        <form id="post" method="POST" action="{% if post_id %}{% url 'hanwooplz_app:write_question' post_id %}{% else %}{% url 'hanwooplz_app:write_question' %}{% endif %}" enctype="multipart/form-data">
+        <form id="post" method="POST" action="{% if post_question_id %}{% url 'hanwooplz_app:write_question' post_question_id %}{% else %}{% url 'hanwooplz_app:write_question' %}{% endif %}" enctype="multipart/form-data">
             {% csrf_token %}
             <div class="write-box">
                 <input id="title" type="text" name="title" placeholder="제목" value="{{ title }}">
