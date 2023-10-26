@@ -6,20 +6,42 @@ from ..models import *
 from ..serializers import *
 
 def question_list(request, page_num=1):
-    total = PostQuestion.objects.all().count()
-    if total > (page_num-1)*10:
-        post_question = PostQuestion.objects.all().order_by('-id')[(page_num-1)*10:total]
-    else:
-        post_question = PostQuestion.objects.all().order_by('-id')[(page_num-1)*10:page_num*10]
+    items_per_page = 10  # 페이지 당 항목 수
+
+    # 페이지 번호를 이용해 해당 페이지의 포트폴리오 검색
+    start_index = (page_num - 1) * items_per_page
+    end_index = page_num * items_per_page
+
+    post_question = PostQuestion.objects.order_by('-id')[start_index:end_index]
+
+    question_lists = []
+
+    for question in post_question:
+        post = Post.objects.get(id=question.post_id)
+        author = UserProfile.objects.get(id=post.author_id)
+
+        question_lists.append({
+            'title': post.title,
+            'created_at': post.created_at,
+            'author_id': post.author_id,
+            'post_question': question.id,
+            'author': author.username,
+        })
+#     total = PostQuestion.objects.all().count()
+#     if total > (page_num-1)*10:
+#         post_question = PostQuestion.objects.all().order_by('-id')[(page_num-1)*10:total]
+#     else:
+#         post_question = PostQuestion.objects.all().order_by('-id')[(page_num-1)*10:page_num*10]
     
-    post_id_list = post_question.values_list('post_id', flat=True)
-    post = Post.objects.filter(id__in=post_id_list)
-    author_id_list = post.values_list('author_id', flat=True)
-    user = [UserProfile.objects.filter(id=author_id).values()[0] for author_id in author_id_list]
+#     post_id_list = post_question.values_list('post_id', flat=True)
+#     post = Post.objects.filter(id__in=post_id_list)
+#     author_id_list = post.values_list('author_id', flat=True)
+#     user = [UserProfile.objects.filter(id=author_id).values()[0] for author_id in author_id_list]
 
     context = {
-        'question_list': zip(post, post_question, user),
+        "question_lists": question_lists,
     }
+
     return render(request, 'question_list.html', context)
 
 def question(request, post_question_id=None):
@@ -34,6 +56,7 @@ def question(request, post_question_id=None):
             'created_at': post.created_at,
             'like': post_question.like,
             'keywords': post_question.keyword,
+            'post_question_id' : post_question_id
         }
         return render(request, 'question.html', context)
     else:
@@ -95,6 +118,7 @@ def write_question(request, post_question_id=None):
                     'title': post.title,
                     'content': post.content,
                     'keyword': ' '.join(post_question.keyword),
+                    'post_author_id': post.author_id,
                 }
                 return render(request, 'write_question.html', context)
             else:

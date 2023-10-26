@@ -6,21 +6,45 @@ from ..models import *
 from ..serializers import *
 
 def portfolio_list(request, page_num=1):
-    total = PostPortfolio.objects.all().count()
-    if total > (page_num-1)*10:
-        post_portfolio = PostPortfolio.objects.all().order_by('-id')[(page_num-1)*10:total]
-    else:
-        post_portfolio = PostPortfolio.objects.all().order_by('-id')[(page_num-1)*10:page_num*10]
+
+    items_per_page = 10  # 페이지 당 항목 수
+
+    # 페이지 번호를 이용해 해당 페이지의 포트폴리오 검색
+    start_index = (page_num - 1) * items_per_page
+    end_index = page_num * items_per_page
+
+    post_portfolio = PostPortfolio.objects.order_by('-id')[start_index:end_index]
+
+    portfolio_lists = []
+
+    for portfolio in post_portfolio:
+        post = Post.objects.get(id=portfolio.post_id)
+        author = UserProfile.objects.get(id=post.author_id)
+
+        portfolio_lists.append({
+            'title': post.title,
+            'created_at': post.created_at,
+            'author_id': post.author_id,
+            'post_portfolio': portfolio.id,
+            'author': author.username,
+        })
+#     total = PostPortfolio.objects.all().count()
+#     if total > (page_num-1)*10:
+#         post_portfolio = PostPortfolio.objects.all().order_by('-id')[(page_num-1)*10:total]
+#     else:
+#         post_portfolio = PostPortfolio.objects.all().order_by('-id')[(page_num-1)*10:page_num*10]
     
-    post_id_list = post_portfolio.values_list('post_id', flat=True)
-    post = Post.objects.filter(id__in=post_id_list)
-    author_id_list = post.values_list('author_id', flat=True)
-    user = [UserProfile.objects.filter(id=author_id).values()[0] for author_id in author_id_list]
+#     post_id_list = post_portfolio.values_list('post_id', flat=True)
+#     post = Post.objects.filter(id__in=post_id_list)
+#     author_id_list = post.values_list('author_id', flat=True)
+#     user = [UserProfile.objects.filter(id=author_id).values()[0] for author_id in author_id_list]
 
     context = {
-        'portfolio_list': zip(post, post_portfolio, user),
+        "portfolio_lists": portfolio_lists,
     }
+
     return render(request, 'portfolio_list.html', context)
+
 
 def portfolio(request, post_portfolio_id=None):
     if post_portfolio_id:
@@ -37,6 +61,7 @@ def portfolio(request, post_portfolio_id=None):
             'tech_stacks': post_portfolio.tech_stack,
             'ext_link': post_portfolio.ext_link,
             'content': post.content,
+            'post_portfolio_id' : post_portfolio_id,
         }
         return render(request, 'portfolio.html', context)
     else:
@@ -112,6 +137,7 @@ def write_portfolio(request, post_portfolio_id=None):
                     'tech_stack': ' '.join(post_portfolio.tech_stack),
                     'ext_link': post_portfolio.ext_link,
                     'content': post.content,
+                    'post_author_id': post.author_id,
                 }
                 return render(request, 'write_portfolio.html', context)
             else:
