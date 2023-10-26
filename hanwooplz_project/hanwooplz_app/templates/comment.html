@@ -1,16 +1,13 @@
 <div class="comment-container">
-    <div class="comment-box">
-        <div class="comment-author">댓쓴이</div>
-        <div class="comment-content">한우존맛</div>
-    </div>
+    {% csrf_token %}
+  <div class="comment-box">
+    <div class="comment-author">댓쓴이</div>
+    <div class="comment-content">한우존맛</div>
+  </div>
 </div>
 {% comment %} {% if user.is_authenticated %} {% endcomment %}
 <form action="" method="post">
-    {% csrf_token %}
-    <textarea name="comment" id="comment-input" cols="30" rows="5"></textarea>
-    <button type="button" id="submit-button">댓글 등록</button>
+  {% csrf_token %}
+  <textarea name="comment" id="comment-input" cols="30" rows="5"></textarea>
+  <button type="button" id="submit-button">댓글 등록</button>
 </form>
-<script>
-    const author_id = {{ request.user.id }}
-    const author_name = "{{ request.user }}"
-</script>
