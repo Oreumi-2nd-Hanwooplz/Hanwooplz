@@ -8,8 +8,6 @@ from ..serializers import *
 def question_list(request, page_num=1):
     items_per_page = 10  # 페이지 당 항목 수
 
-    # 전체 포트폴리오 수 계산
-
     # 페이지 번호를 이용해 해당 페이지의 포트폴리오 검색
     start_index = (page_num - 1) * items_per_page
     end_index = page_num * items_per_page
@@ -29,6 +27,16 @@ def question_list(request, page_num=1):
             'post_question': question.id,
             'author': author.username,
         })
+#     total = PostQuestion.objects.all().count()
+#     if total > (page_num-1)*10:
+#         post_question = PostQuestion.objects.all().order_by('-id')[(page_num-1)*10:total]
+#     else:
+#         post_question = PostQuestion.objects.all().order_by('-id')[(page_num-1)*10:page_num*10]
+    
+#     post_id_list = post_question.values_list('post_id', flat=True)
+#     post = Post.objects.filter(id__in=post_id_list)
+#     author_id_list = post.values_list('author_id', flat=True)
+#     user = [UserProfile.objects.filter(id=author_id).values()[0] for author_id in author_id_list]
 
     context = {
         "question_lists": question_lists,
