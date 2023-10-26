@@ -22,10 +22,10 @@ def portfolio_list(request, page_num=1):
     }
     return render(request, 'portfolio_list.html', context)
 
-def portfolio(request, post_id=None):
-    if post_id:
-        post = get_object_or_404(Post, id=post_id)
-        post_portfolio = get_object_or_404(PostPortfolio, post_id=post_id)
+def portfolio(request, post_portfolio_id=None):
+    if post_portfolio_id:
+        post_portfolio = get_object_or_404(PostPortfolio, id=post_portfolio_id)
+        post = get_object_or_404(Post, id=post_portfolio.post_id)
         author = get_object_or_404(UserProfile, id=post.author_id)
         context = {
             'title': post.title,
@@ -41,13 +41,13 @@ def portfolio(request, post_id=None):
         return render(request, 'portfolio.html', context)
     else:
         messages.info('올바르지 않은 접근입니다.')
-        return redirect('portfolio_list')
+        return redirect('hanwooplz_app:portfolio_list')
 
 @login_required(login_url='login')
-def write_portfolio(request, post_id=None):
-    if post_id:
-        post = get_object_or_404(Post, id=post_id)
-        post_portfolio = get_object_or_404(PostPortfolio, post_id=post_id)
+def write_portfolio(request, post_portfolio_id=None):
+    if post_portfolio_id:
+        post_portfolio = get_object_or_404(PostPortfolio, id=post_portfolio_id)
+        post = get_object_or_404(Post, id=post_portfolio.post_id)
     else:
         post = Post()
         post_portfolio = PostPortfolio()
@@ -75,17 +75,17 @@ def write_portfolio(request, post_id=None):
         if post_form.is_valid() and post_portfolio_form.is_valid():
             post = post_form.save(commit=False)
             post_portfolio = post_portfolio_form.save(commit=False)
-            if not post_id:
+            if not post_portfolio_id:
                 post.author_id = request.user.id
                 post.save()
-                post_portfolio.post_id = post_id = post.id
-                # post_portfolio.members = request.POST.get('members')
+                post_portfolio.post_id = post.id
                 post_portfolio.save()
+                post_portfolio_id = post_portfolio.id
             else:
                 post.save()
                 post_portfolio.save()
 
-            return redirect('hanwooplz_app:portfolio', post_id=post_id)
+            return redirect('hanwooplz_app:portfolio', post_portfolio_id)
         else:
             messages.info(request, '질문을 등록하는데 실패했습니다. 다시 시도해주세요.')
             context={
@@ -99,12 +99,12 @@ def write_portfolio(request, post_id=None):
             }
             return render(request, 'write_portfolio.html', context)
     else:
-        if post_id:
+        if post_portfolio_id:
             if request.user.id == post.author_id:
                 start_date = str(post_portfolio.start_date).replace('년 ','-').replace('월 ','-').replace('일','')
                 end_date = str(post_portfolio.end_date).replace('년 ','-').replace('월 ','-').replace('일','')
                 context = {
-                    'post_id': post.id,
+                    'post_portfolio_id': post_portfolio_id,
                     'title': post.title,
                     'start_date': start_date,
                     'end_date': end_date,
@@ -116,6 +116,6 @@ def write_portfolio(request, post_id=None):
                 return render(request, 'write_portfolio.html', context)
             else:
                 messages.info('올바르지 않은 접근입니다.')
-                return redirect('hanwooplz_app:portfolio', post_id=post_id)
+                return redirect('hanwooplz_app:portfolio', post_portfolio_id)
         else:
             return render(request, 'write_portfolio.html')
