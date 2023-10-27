@@ -1,0 +1,54 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/nav.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/question.css' %}">
+    <title>Portfolio</title>
+</head>
+<body>
+    {% include "nav.html" %}
+    <div class="main-container">
+        <main>
+            <div class="project-container">
+                <picture style="width: 100%; height: 300px;">
+                    <img src="{% static 'img/'|add:tech_stacks.0|add:'.svg' %}" alt="썸네일" style="height: 100%; width: 100%; object-fit: cover;">
+                </picture>
+                <h3 class="title">{{ title }}</h3>
+                <div class="period">프로젝트 기간: {{ start_date }}~{{ end_date }}</div>
+                <div class="members">현재 참여인원: {{ members }} 명 / {{ target_members }} 명</div>
+                <div class="tech-stack-conatiner">
+                    {% for tech_stack in tech_stacks %}
+                        <div class="tech-stack">#{{ tech_stack }} </div>
+                    {% endfor %}
+                </div>
+                <a class="ext_link" target="blank" href="{{ ext_link }}">외부 링크: {{ ext_link }}</a>
+                <div class="content">{{ content }}</div>
+                <div class="subsidiary">
+                    <div class="card">
+                        <p><strong>{{ author }}</strong> 님</p>
+                        <p>{{ created_at }}</p>
+                    </div>
+                </div>
+                <div class="action-buttons">
+                    <a href="">댓글</a>
+                </div>
+                <a href="{% url 'hanwooplz_app:project_list' %}">목록으로</a>
+            </div>
+            {% if author_id == request.user.id %}
+            <button class="button-black" onclick="window.location.href = '{% url "hanwooplz_app:write_project" post_project_id %}'">수정하기</button>
+            {% endif %}
+            {% include "comment.html" %}
+        </main>
+
+    </div>
+    
+</body>
+<script>
+    var postId = "{{ post_id }}"
+    var currentUser = "{{ request.user }}"
+</script>
+<script src="{% static 'js/comments.js' %}"></script>
+</html>

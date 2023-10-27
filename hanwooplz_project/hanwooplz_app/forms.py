@@ -125,7 +125,7 @@ class PostPortfolioForm(forms.ModelForm):
 class PostProjectForm(forms.ModelForm):
     class Meta:
         model = PostProject
-        fields = ['start_date','end_date','tech_stack','ext_link']
+        fields = ['start_date','end_date', 'target_members', 'tech_stack','ext_link']
 
 class PostQuestionForm(forms.ModelForm):
     class Meta:

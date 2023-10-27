@@ -76,7 +76,7 @@
             {% comment %} 임시로 주석 처리 {% endcomment %}
             {% comment %} <li><a href="{% url 'hanwooplz_app:myinfo' user.id %}">회원정보</a></li> {% endcomment %}
             <li><a href="{% url 'hanwooplz_app:portfolio_list' %}">포트폴리오</a></li>
-            <li><a href="{% url 'hanwooplz_app:post_list' %}">팀원모집</a></li>
+            <li><a href="{% url "hanwooplz_app:project_list" %}">팀원모집</a></li>
             <li><a href="{% url 'hanwooplz_app:question_list' %}">질의응답</a></li>
             <li class="icon-item"><a href="#"><i class="fas fa-bell"></i></a></li>
             <li class="icon-item"><a href="#"><i class="fas fa-cog"></i></a></li>
