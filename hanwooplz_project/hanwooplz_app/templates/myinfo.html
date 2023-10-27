@@ -124,28 +124,26 @@
                     {% if user_id != request.user.id %}
                     <button onclick="window.location.href = '{% url "hanwooplz_app:chat" 0 user_id %}'" style="display: block; margin: 0 auto; background-color: #0077b5; color: #fff; border: none; padding: 6px 12px; border-radius: 4px; font-size: 14px; cursor: pointer; transition: background-color 0.3s;">
                         채팅하기
-                      </button>
-            {% endif %}
+                    </button>
+                    {% endif %}
                 </div>
                 <div style="display: flex; align-items: center;">
                     {% if github_link %}
-                        <div style="margin: 0 15px; margin-top: 40px;">
-                            <a href="{{ github_link }}" target="_blank" style="position: relative; display: block; width: 60px; height: 60px; border-radius: 50%; background-color: #fff; text-align: center; transition: 0.6s; box-shadow: 0 5px 4px rgba(0, 0, 0, 0.5);" onmouseover="this.style.transform='translate(0, -10%)'; this.style.backgroundColor='rgba(0, 0, 0, 0.829)';" onmouseout="this.style.transform='translate(0)'; this.style.backgroundColor='#fff';">
-                                <i class="fab fa-github" style="font-size: 30px; line-height: 60px; transition: 0.3s; color: #000;" onmouseover="this.style.color='#fff';" onmouseout="this.style.color='#000';"></i>
-                            </a>
-                        </div>
+                    <div style="margin: 0 15px; margin-top: 40px;">
+                        <a href="{{ github_link }}" target="_blank" style="position: relative; display: block; width: 60px; height: 60px; border-radius: 50%; background-color: #fff; text-align: center; transition: 0.6s; box-shadow: 0 5px 4px rgba(0, 0, 0, 0.5);" onmouseover="this.style.transform='translate(0, -10%)'; this.style.backgroundColor='rgba(0, 0, 0, 0.829)';" onmouseout="this.style.transform='translate(0)'; this.style.backgroundColor='#fff';">
+                            <i class="fab fa-github" style="font-size: 30px; line-height: 60px; transition: 0.3s; color: #000;" onmouseover="this.style.color='#fff';" onmouseout="this.style.color='#000';"></i>
+                        </a>
+                    </div>
                     {% endif %}
                     {% if linkedin_link %}
-                        <div style="margin: 0 15px; margin-top: 40px;">
-                            <a href="{{ linkedin_link }}" target="_blank" style="position: relative; display: block; width: 60px; height: 60px; border-radius: 50%; background-color: #fff; text-align: center; transition: 0.6s; box-shadow: 0 5px 4px rgba(0, 0, 0, 0.5);" onmouseover="this.style.transform='translate(0, -10%)'; this.style.backgroundColor='#E4405F';" onmouseout="this.style.transform='translate(0)'; this.style.backgroundColor='#fff';">
-                                <i class="fab fa-linkedin-in" style="font-size: 30px; line-height: 60px; transition: 0.3s; color: #000;" onmouseover="this.style.color='#fff';" onmouseout="this.style.color='#000';"></i>
-                            </a>
-                        </div>
+                    <div style="margin: 0 15px; margin-top: 40px;">
+                        <a href="{{ linkedin_link }}" target="_blank" style="position: relative; display: block; width: 60px; height: 60px; border-radius: 50%; background-color: #fff; text-align: center; transition: 0.6s; box-shadow: 0 5px 4px rgba(0, 0, 0, 0.5);" onmouseover="this.style.transform='translate(0, -10%)'; this.style.backgroundColor='#E4405F';" onmouseout="this.style.transform='translate(0)'; this.style.backgroundColor='#fff';">
+                            <i class="fab fa-linkedin-in" style="font-size: 30px; line-height: 60px; transition: 0.3s; color: #000;" onmouseover="this.style.color='#fff';" onmouseout="this.style.color='#000';"></i>
+                        </a>
+                    </div>
                     {% endif %}
                 </div>
-
             </div>
-
             <div class="profile-right" style="background-color: #fff; border-radius: 5px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); padding: 20px; margin: 20px 0; height: 250px; overflow: auto;">
                 <div class="profile-right-top" style="text-align: center;">
                     <h3 class="profile-name" style="font-size: 24px; color: #333;">{{ username }}</h3>
@@ -161,9 +159,9 @@
                         <div style="margin-bottom: 10px;">
                             <span class="profile-info" style="display: inline-block; margin-right: 10px; font-size: 16px; color: #333;">
                                 {% if career == 0 %}
-                                    신입
+                                신입
                                 {% else %}
-                                    경력: {{ career }}
+                                경력: {{ career }}
                                 {% endif %}
                             </span>
                             <span class="profile-info" style="display: inline-block; margin-right: 10px; font-size: 16px; color: #333;">{{ career_detail }}</span>
@@ -173,7 +171,6 @@
                 </div>
             </div>
         </div>
-
         <div class="profile-page flexbox-col">
             <div class="profile-page-nav flexbox">
                 <div class="profile-page-block">
@@ -186,10 +183,8 @@
                     <a class="category-button" data-category="postquestion" href="#">Questions</a>
                 </div>
             </div>
-            
             <div class="profile-page-inner" id="category-posts">
                 <table class="board-table">
-
                     <thead>
                         <tr>
                             <th>번호</th>
@@ -198,14 +193,12 @@
                             <th>일시</th>
                         </tr>
                     </thead>
-    
                     <tbody>
                         {% for post in posts %}
-                        
                         <tr>
                             <td>{{ post.post_id }}</td>
                             <td>
-                                <a href="{% url 'hanwooplz_app:portfolio'  post.post_id %}">
+                                <a href="{% if post.category == 'portfolio' %}{% url 'hanwooplz_app:portfolio' post.post_id %}{% elif post.category == 'project' %}{% url 'hanwooplz_app:project' post.post_id %}{% elif post.category == 'question' %}{% url 'hanwooplz_app:question' post.post_id %}{% endif %}">
                                     {{ post.title }}
                                 </a>
                             </td>
