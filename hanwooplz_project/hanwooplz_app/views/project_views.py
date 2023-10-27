@@ -54,6 +54,7 @@ def project(request, post_project_id=None):
         post_project = get_object_or_404(PostProject, id=post_project_id)
         post = get_object_or_404(Post, id=post_project.post_id)
         author = get_object_or_404(UserProfile, id=post.author_id)
+        members = ProjectMembers.objects.filter(project=post_project_id).count()
         context = {
             'title': post.title,
             'author': author.username,
@@ -61,7 +62,8 @@ def project(request, post_project_id=None):
             'created_at': post.created_at,
             'start_date': post_project.start_date,
             'end_date': post_project.end_date,
-            'members': post_project.members,
+            'members': members,
+            'target_members': post_project.target_members,
             'tech_stacks': post_project.tech_stack,
             'ext_link': post_project.ext_link,
             'content': post.content,
@@ -92,7 +94,7 @@ def write_project(request, post_project_id=None):
                 'title': request.POST.get('title'),
                 'start_date': request.POST.get('start_date'),
                 'end_date': request.POST.get('end_date'),
-                'members': request.POST.get('members'),
+                'target_members': request.POST.get('target_members'),
                 'tech_stack': request.POST.get('tech_stack'),
                 'ext_link': request.POST.get('ext_link'),
                 'content': request.POST.get('content'),
@@ -138,7 +140,7 @@ def write_project(request, post_project_id=None):
                     'title': post.title,
                     'start_date': start_date,
                     'end_date': end_date,
-                    'members': post_project.members,
+                    'target_members': post_project.target_members,
                     'tech_stack': ' '.join(post_project.tech_stack),
                     'ext_link': post_project.ext_link,
                     'content': post.content,

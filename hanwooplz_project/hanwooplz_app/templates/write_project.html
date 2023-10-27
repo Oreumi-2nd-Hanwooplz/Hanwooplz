@@ -1,0 +1,75 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/write.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/nav.css' %}"/>
+    <title>게시글 작성</title>
+  </head>
+
+  <body>
+
+    {% include 'nav.html' %}
+
+    <section class="main">
+      <form id="post" method="POST" action="{% if post_project_id %}{% url 'hanwooplz_app:write_project' post_project_id %}{% else %}{% url 'hanwooplz_app:write_project' %}{% endif %}" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="write-box">
+          <input id="title" type="text" name="title" placeholder="제목" value="{{ title }}">
+          <p>프로젝트 기간:
+          </p>
+          <input id="start_date" type="date" name="start_date" placeholder="시작일" value="{{ start_date }}">
+          <p>~</p>
+          <input id="end_date" type="date" name="end_date" placeholder="종료일" value="{{ end_date }}">
+          <input id="target_members" type="text" name="target_members" placeholder="참여인원수" value="{{ target_members }}">
+          <input id="tech_stack" type="text" name="tech_stack" placeholder="사용 기술 스택" value="{{ tech_stack }}">
+          <input id="ext_link" type="text" name="ext_link" placeholder="외부 링크" value="{{ ext_link }}">
+          <textarea id="content" name="content">{{ content }}</textarea>
+        </div>
+
+        <aside>
+          <div class="box">
+            <div class="info-box">
+              <h2>UPLOAD INFO</h2>
+            </div>
+            <div class="save-box">
+              <div class="save-button-wrapper">
+                {% if post_author_id == request.user.id %}
+                  <input type="submit" class="temp-save-button" name="delete-button" value="삭제"/>
+                  <input type="submit" class="save-button" value="수정"/>
+                {% else %}
+                  <input type="submit" class="temp-save-button" name="temp-save-button" value="임시저장"/>
+                  <input type="submit" class="save-button" value="글 작성"/>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+
+          <div class="temp-post-box" style="display: none;">
+            <h5>임시저장된 글</h5>
+
+            {% for temp in temporary %}
+              <div class="popup-title">
+                <input type="hidden" id="{{temp.id}}" value="{{temp.id}}">
+                <p class="top-title">제목:
+                  <span>{{ temp.title }}</span></p>
+                <input type="hidden" class="top-content" style="display:none;" value="{{ temp.content }}">
+                <p class="top-created">작성 날짜:
+                  {{temp.upload_date | date:'Y-m-d H:i:s'}}</p>
+              </div>
+            {% endfor %}
+          </div>
+        </aside>
+      </form>
+    </section>
+
+    {% include 'footer.html' %}
+
+  </body>
+  <script src="{% static 'js/tinymce/tinymce.min.js' %}"></script>
+  <script src="{% static 'js/tinymce.js' %}"></script>
+
+</html>
