@@ -1,0 +1,186 @@
+{% load static%}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/question_list.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/nav.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/footer.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/chatbot.css' %}" />
+    <style>
+        h2 {
+            padding-bottom: 10px;
+            border-bottom: 1px solid gray;
+        }
+
+        .aside {
+            width: 300px;
+            float: left;
+            padding-bottom: 20px;
+        }
+
+        .select-grup {
+            width: auto;
+            float: right;
+            text-align: right;
+        }
+
+        .select-text {
+            color: gray;
+            font-size: 120%;
+            font-weight: bolder;
+            padding: 10px;
+        }
+
+        .select-dropbox {
+            height: 25px;
+            font-size: 16px;
+        }
+
+        .select-textbox {
+            height: 20px;
+        }
+
+        table.board-table {
+            width: 100%;
+            border-spacing: 0;
+        }
+
+        .project-list {
+            width: 1200px;
+            margin: 0 auto;
+
+        }
+
+        .board-table th {
+            background: #eee;
+            border-top: 2px solid gray;
+            padding: 5px;
+        }
+
+        .board-table td {
+            border-bottom: 1px solid #ccc;
+            padding: 5px;
+        }
+
+        .board-table td {
+            text-align: center;
+        }
+
+        .board-table td:nth-child(2) {
+            text-align: left;
+        }
+
+        .page {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .button {
+            float: right;
+            text-align: center;
+        }
+
+        .button-gray {
+            border: 0px;
+            border-radius: 5px;
+            background-color: gray;
+            color: white;
+            font: 12px 굴림;
+            font-weight: bold;
+            width: 60px;
+            height: 30px;
+        }
+
+        .button-black {
+            border: 0px;
+            border-radius: 5px;
+            background-color: rgb(46, 46, 46);
+            color: white;
+            font: 12px 굴림;
+            font-weight: bold;
+            width: 70px;
+            height: 30px;
+        }
+    </style>
+    <title>project_list</title>
+</head>
+
+<body>
+    {% include 'nav.html' %}
+
+    <article style="padding: 100px;">
+        <div class="project-list">
+            <h2>프로젝트 모집</h2>
+
+            <div class="aside">
+            </div>
+
+            <div class="select-grup">
+                <form action="">
+                    <span class="select-text">SELECT</span>
+                    <span>
+                        <select class="select-dropbox">
+                            <option value="s-title">제목</option>
+                            <option value="s-writer">글쓴이</option>
+                            <option value="s-">일시</option>
+                        </select>
+                    </span>
+                    <span>
+                        <input type="text" name="search" class="select-textbox">
+                        <input type="submit" class="button-black" value="검색" />
+                    </span>
+                </form>
+            </div>
+
+            <table class="board-table">
+
+                <thead>
+                    <tr>
+                        <th>번호</th>
+                        <th>제목</th>
+                        <th>글쓴이</th>
+                        <th>일시</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for post in project_lists %}
+                    <tr>
+                        <td>{{ post.post_project }}</td>
+                        <td>
+                            <a href="{% url 'hanwooplz_app:project' post.post_project %}">
+                                {{ post.title }}
+                            </a>
+                        </td>
+                        <td>
+                            <a href="{% url 'hanwooplz_app:myinfo' post.author_id %}">
+                                {{ post.author}}
+                            </a>
+                        </td>
+                        <td>{{ post.created_at }}</td>
+                    </tr>
+                </tbody>
+                {% endfor %}
+            </table>
+
+            <div class="page">
+                <span><a href="#!">◀ 이전</a></span>
+                <span><a href="#!">1</a></span>
+                <span><a href="#!">다음 ▶</a></span>
+            </div>
+
+            <div class="button">
+                <span><input type="button" class="button-gray" value="목록"></span>
+                <button class="button-black" onclick="window.location.href = '{% url "hanwooplz_app:write_portfolio" %}'">글쓰기</button>
+            </div>
+        </div>
+    </article>
+    {% include 'footer.html' %}
+    {% include 'chatbot.html' %}
+</body>
+
+</html>

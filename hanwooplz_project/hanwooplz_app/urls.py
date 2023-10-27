@@ -1,5 +1,5 @@
 from django.urls import path, include
-from .views import views, chat_views, comment_views, question_views, portfolio_views
+from .views import views, chat_views, comment_views, question_views, project_views, portfolio_views
 
 
 app_name = 'hanwooplz_app'
@@ -27,6 +27,12 @@ urlpatterns = [
     path("portfolio/<int:post_portfolio_id>", portfolio_views.portfolio, name="portfolio"),
     path("write-portfolio/", portfolio_views.write_portfolio, name="write_portfolio"),
     path("write-portfolio/<int:post_portfolio_id>", portfolio_views.write_portfolio, name="write_portfolio"),
+
+    # project_views.py
+    path("project-list/", project_views.project_list, name="project_list"),
+    path("project/<int:post_project_id>", project_views.project, name="project"),
+    path("write-project/", project_views.write_project, name="write_project"),
+    path("write-project/<int:post_project_id>", project_views.write_project, name="write_project"),
 
     # question_views.py
     path("question-list/", question_views.question_list, name="question_list"),
