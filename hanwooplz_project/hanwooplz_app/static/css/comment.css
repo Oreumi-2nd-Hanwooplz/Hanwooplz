@@ -1,0 +1,43 @@
+.comment-container {
+    margin-top: 20px;
+}
+
+.comment-box {
+    background: #f7f7f7;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.comment-author {
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #3498db;
+}
+
+.comment-content {
+    color: #333;
+}
+
+#submit-button {
+    background-color: #3498db;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#submit-button:hover {
+    background-color: #217dbb;
+}
+
+#comment-input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin: 10px 0;
+}

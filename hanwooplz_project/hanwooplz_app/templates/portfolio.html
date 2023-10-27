@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="{% static 'css/nav.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'css/question.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/portfolio.css' %}">
     <title>Portfolio</title>
 </head>
 <body>
@@ -32,6 +32,7 @@
                 <div class="action-buttons">
                     <a href="">댓글</a>
                 </div>
+                <br>
                 <a href="{% url 'hanwooplz_app:portfolio_list' %}">목록으로</a>
             </div>
             {% if author_id == request.user.id %}

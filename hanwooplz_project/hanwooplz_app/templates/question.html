@@ -1,13 +1,114 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="{% static 'css/nav.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/question.css' %}">
+    <style>
+        .main-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .question-container {
+            background: #f7f7f7;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            max-width: 400px;
+            text-align: center;
+            transition: transform 0.3s;
+            margin: 0 auto;
+        }
+
+        .question-container:hover {
+            transform: scale(1.05);
+        }
+
+        .title {
+            font-size: 24px;
+            color: #3498db;
+        }
+
+        .keyword-conatiner {
+            margin: 10px 0;
+        }
+
+        .keyword {
+            background: #3498db;
+            color: #fff;
+            border-radius: 5px;
+            padding: 5px 10px;
+            margin-right: 5px;
+            font-size: 14px;
+            display: inline-block;
+        }
+
+        .content {
+            font-size: 16px;
+            margin-top: 20px;
+            color: #333;
+        }
+
+        .subsidiary {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: #555;
+            margin-top: 20px;
+        }
+
+        .card {
+            background: #fff;
+            border-radius: 5px;
+            padding: 10px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .action-buttons {
+            margin-top: 20px;
+        }
+
+        .action-buttons a {
+            text-decoration: none;
+            background: #3498db;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 14px;
+            margin-right: 10px;
+            transition: background 0.3s;
+        }
+
+        .action-buttons a:hover {
+            background: #555;
+        }
+
+        .button-black {
+            background: #333;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background 0.3s;
+            display: block;
+            margin: 0 auto;
+        }
+
+        .button-black:hover {
+            background: #555;
+        }
+    </style>
     <title>Question</title>
 </head>
+
 <body>
     {% include "nav.html" %}
     <div class="main-container">
@@ -16,7 +117,7 @@
                 <h3 class="title">{{ title }}</h3>
                 <div class="keyword-conatiner">
                     {% for keyword in keywords %}
-                        <div class="keyword">#{{ keyword }} </div>
+                    <div class="keyword">#{{ keyword }} </div>
                     {% endfor %}
                 </div>
                 <div class="content">{{ content }}</div>
@@ -28,12 +129,16 @@
                 </div>
                 <div class="action-buttons">
                     <a href="">댓글</a>
-                    <a href="">추천</a><p>{{ like }} 회</p>
+                    <a href="">추천</a>
+                    <br>
+                    <br>
+                    <p>{{ like }} 회</p>
                 </div>
                 <a href="{% url 'hanwooplz_app:question_list' %}">목록으로</a>
             </div>
             {% if author_id == request.user.id %}
-            <button class="button-black" onclick="window.location.href = '{% url "hanwooplz_app:write_question" post_question_id %}'">수정하기</button>
+            <button class="button-black" onclick="window.location.href = '{% url " hanwooplz_app:write_question"
+                post_question_id %}'">수정하기</button>
             {% endif %}
             {% comment %} <div class="comment-container">
                 <div class="comment-box">
@@ -51,11 +156,12 @@
         </main>
 
     </div>
-    
+
 </body>
 <script>
     var postId = "{{ post_id }}"
     var currentUser = "{{ request.user }}"
 </script>
 <script src="{% static 'js/comments.js' %}"></script>
+
 </html>
