@@ -28,7 +28,7 @@
                 <div class="content">{{ content }}</div>
                 <div class="subsidiary">
                     <div class="card">
-                        <p><strong>{{ author }}</strong> 님</p>
+                        <a href="{% url 'hanwooplz_app:myinfo' author_id %}"><strong>{{ author }}</strong> 님</a>
                         <p>{{ created_at }}</p>
                     </div>
                 </div>
