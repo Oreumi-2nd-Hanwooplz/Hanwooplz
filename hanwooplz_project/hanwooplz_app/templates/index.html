@@ -9,6 +9,7 @@
         <link rel="stylesheet" type="text/css" href="{% static 'css/index.css' %}" />
         <link rel="stylesheet" type="text/css" href="{% static 'css/nav.css' %}" />
         <link rel="stylesheet" type="text/css" href="{% static 'css/post_list.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'css/portfolio.css' %}" />
         <link rel="stylesheet" type="text/css" href="{% static 'css/footer.css' %}" />
         <style>
                 *,
@@ -331,24 +332,30 @@
                                                 </div>
                                         </div>
                                         <!-- 예제 -->
-                                        {% for post in posts %}
-                                        <div class="tile">
-                                                <img src="{{ post.image.url }}" alt="{{ post.title }}" />
-                                                <div class="text">
-                                                        <h1>{{ post.title }}</h1>
-                                                        <p>작성자: {{ post.author }}</p>
-                                                        <p>날짜: {{ post.created_at|date:"Y년 m월
-                                                                d일" }}</p>
-                                                        <p>기술 스택: {{ post.tech_stack }}</p>
-                                                        <p>외부 링크: <a href="{{ post.ext_link }}" target="_blank">{{
-                                                                        post.ext_link }}</a></p>
-                                                        <p class="animate-text">{{ post.content
-                                                                }}</p>
+                                        <div class="portfolio-container">
+                                                <h3 class="title">{{ title }}</h3>
+                                                <div class="period">프로젝트 기간: {{ start_date }}~{{ end_date }}</div>
+                                                <div class="members">총 참여인원: {{ members }} 명</div>
+                                                <div class="tech-stack-conatiner">
+                                                        {% for tech_stack in tech_stacks %}
+                                                        <div class="tech-stack">#{{ tech_stack }} </div>
+                                                        {% endfor %}
                                                 </div>
+                                                <div class="ext_link">외부 링크: {{ ext_link }}</div>
+                                                <div class="content">{{ content }}</div>
+                                                <div class="subsidiary">
+                                                        <div class="card">
+                                                                <p><strong>{{ author }}</strong> 님</p>
+                                                                <p>{{ created_at }}</p>
+                                                        </div>
+                                                </div>
+                                                <div class="action-buttons">
+                                                        <a href="">댓글</a>
+                                                </div>
+                                                <br>
+                                                <a href="{% url 'hanwooplz_app:portfolio_list' %}">목록으로</a>
                                         </div>
-                                        {% endfor %}
                                 </div>
-                        </div>
                 </section>
                 <section id="contact" class="main-container">
                         <div id="contact-links" class="projects-grid">

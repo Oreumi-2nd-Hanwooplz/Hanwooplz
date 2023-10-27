@@ -5,7 +5,7 @@
     height: 100vh;
 }
 
-.question-container {
+.portfolio-container {
     background: #f7f7f7;
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -16,20 +16,28 @@
     margin: 0 auto;
 }
 
-.question-container:hover {
+.portfolio-container:hover {
     transform: scale(1.05);
 }
+
 
 .title {
     font-size: 24px;
     color: #3498db;
 }
 
-.keyword-conatiner {
+.period,
+.members {
+    font-size: 14px;
+    color: #555;
+    margin-top: 10px;
+}
+
+.tech-stack-conatiner {
     margin: 10px 0;
 }
 
-.keyword {
+.tech-stack {
     background: #3498db;
     color: #fff;
     border-radius: 5px;
@@ -37,6 +45,12 @@
     margin-right: 5px;
     font-size: 14px;
     display: inline-block;
+}
+
+.ext_link {
+    font-size: 14px;
+    margin-top: 10px;
+    color: #555;
 }
 
 .content {
