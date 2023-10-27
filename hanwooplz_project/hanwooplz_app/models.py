@@ -53,6 +53,7 @@ class PostProject(PostPnP):
     - 모집완료: 2
     '''
     members = models.ManyToManyField(UserProfile, through='ProjectMembers')
+    target_members = models.IntegerField(default=1)
 
 class ProjectMembers(models.Model):
     project = models.ForeignKey(PostProject, on_delete=models.CASCADE)
