@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Portfolio</title>
+    <title>팀원모집</title>
     <link rel="stylesheet" type="text/css" href="{% static 'css/post_list.css' %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'css/nav.css' %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'css/footer.css' %}" />
@@ -16,7 +16,7 @@
     <div class="wrap col-9">
         <div class="menu col-9">
             <header>
-                <h1>포트폴리오</h1>
+                <h1>팀원모집</h1>
             </header>
             <div class="wrap">
                 <div class="tile">
@@ -28,24 +28,32 @@
                         <p class="animate-text">살치살 부채살 안심 꽃등심 안창살 갈비살 채끝살</p>
                     </div>
                 </div>
-            </div>
-            <!-- 예제 -->
-            {% for post in posts %}
-            <div class="tile">
-                <img src="{{ post.image.url }}" alt="{{ post.title }}" />
-                <div class="text">
-                    <h1>{{ post.title }}</h1>
-                    <p>작성자: {{ post.author }}</p>
-                    <p>날짜: {{ post.created_at|date:"Y년 m월 d일" }}</p>
-                    <p>기술 스택: {{ post.tech_stack }}</p>
-                    <p>외부 링크: <a href="{{ post.ext_link }}" target="_blank">{{ post.ext_link }}</a></p>
-                    <p class="animate-text">{{ post.content }}</p>
+                <!-- 예제 -->
+                {% for post in posts %}
+                <div class="tile">
+                    <img src="{{ post.image.url }}" alt="{{ post.title }}" />
+                    <div class="text">
+                        <h1>{{ post.title }}</h1>
+                        <p>모집 상태: [모집 중/모집 완료]</p>
+                        <p>진행 기간: {{ post.start_date|date:"Y년 m월 d일" }} ~ {{ post.end_date|date:"Y년 m월 d일" }}</p>
+                        <p>참여 팀원: {{ post.members }} 명</p>
+                        <p>사용한 기술 스택: {{ post.tech_stack }}</p>
+                        <p>외부 링크: <a href="{{ post.ext_link }}" target="_blank">{{ post.ext_link }}</a></p>
+                        <p class="animate-text">{{ post.content }}</p>
+                        <p>모집된 인원: [모집 인원] / [모집 인원]</p>
+                        <button class="recruitment-button">모집 지원 신청</button>
+                        <div class="author-info">
+                            <p>작성자: {{ post.author }}</p>
+                            <button class="chat-button">채팅 보내기</button>
+                        </div>
+                        <div class="comments">
+                            <h2>댓글</h2>
+                        </div>
+                    </div>
                 </div>
+                {% endfor %}
             </div>
         </div>
-        {% endfor %}
-    </div>
-    </div>
     </div>
     {% include 'footer.html' %}
     {% include 'chatbot.html' %}
