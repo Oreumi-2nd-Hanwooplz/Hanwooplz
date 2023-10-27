@@ -55,6 +55,9 @@
     </div>
     
 </body>
-<script>var postId = "{{ post_id }}"</script>
+<script>
+    var postId = "{{ post_id }}"
+    var currentUser = "{{ request.user }}"
+</script>
 <script src="{% static 'js/comments.js' %}"></script>
 </html>

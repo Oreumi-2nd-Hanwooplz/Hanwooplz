@@ -59,6 +59,9 @@
         {% include 'footer.html' %}
         {% include 'chatbot.html' %}
 </body>
-<script>var postId = "{{ post_id }}"</script>
+<script>
+    var postId = "{{ post_id }}"
+    var currentUser = "{{ request.user }}"
+</script>
 <script type="text/javascript" src="{% static 'js/comments.js' %}"></script>
 </html>

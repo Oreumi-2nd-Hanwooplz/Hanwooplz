@@ -1,9 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
-    var commentForm = document.querySelector("form");
     var commentText = document.getElementById("comment-input");
     var submitButton = document.getElementById("submit-button");
-    var currentURL = window.location.href;
-    var postId = currentURL.split("/").pop();
     var csrfToken = document.querySelector("input[name=csrfmiddlewaretoken]").value;
 
     // 댓글 불러오기
@@ -13,7 +10,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 return response.json();
             })
             .then(function (comments) {
-                var commentList = document.querySelector(".comment-container");
+                var commentList = document.querySelector(".comment-list");
                 commentList.innerHTML = "";
                 comments.forEach(function (comment) {
                     var commentBox = document.createElement("div");
@@ -35,7 +32,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     var date = new Date(comment.created_at);
                     var formattedDate = date.toLocaleString("ko-KR", { year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit" });
-                    commentTimestamp.textContent = "작성 시각: " + formattedDate;
+                    commentTimestamp.textContent = formattedDate;
 
                     // 댓글 좋아요
                     var commentLike = document.createElement("a");
@@ -45,21 +42,27 @@ document.addEventListener("DOMContentLoaded", function () {
                     commentLike.addEventListener("click", function () {
                         upvoteComment(comment.id);
                     })
-
-                    // 댓글 삭제
-                    var commentDelete = document.createElement("a");
-                    commentDelete.classList.add("comment-delete");
-                    commentDelete.textContent = "삭제";
-                    commentDelete.addEventListener("click", function () {
-                        deleteComment(comment.id);
-                    })
-
+                    
                     commentBox.appendChild(commentAuthor);
                     commentBox.appendChild(commentContent);
                     commentBox.appendChild(commentTimestamp);
                     commentBox.appendChild(commentLike);
-                    commentBox.appendChild(commentDelete);
                     commentList.appendChild(commentBox);
+
+                    // 댓글 삭제
+                    if (currentUser === comment.author) {
+                        var commentDelete = document.createElement("a");
+                        commentDelete.classList.add("comment-delete");
+                        commentDelete.textContent = "삭제";
+                        commentDelete.addEventListener("click", function () {
+                            var deleteConfirmed = confirm("댓글을 삭제하시겠습니까?");
+                            if (deleteConfirmed) {
+                                deleteComment(comment.id);
+                            }
+                        })
+                        commentBox.appendChild(commentDelete);
+                    }
+                    
                 });
             })
             .catch(function (error) {
