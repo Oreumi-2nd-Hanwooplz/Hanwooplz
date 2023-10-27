@@ -102,14 +102,6 @@ def post(request):
 def post_list(request):
     return render(request, "post_list.html")
 
-def search(request):
-    query = request.GET.get('search')
-    if query:
-        results = Post.objects.filter(Q(title__icontains=query) | Q(content__icontains=query))
-    else:
-        results = None
-    
-    return render(request, 'search.html', {'posts': results})
 
 class ChatBot():
     def __init__(self, model='gpt-3.5-turbo'):

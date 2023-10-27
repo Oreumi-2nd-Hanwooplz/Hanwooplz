@@ -13,36 +13,40 @@ def question_list(request, page_num=1):
     end_index = page_num * items_per_page
 
     post_question = PostQuestion.objects.order_by('-id')[start_index:end_index]
-
     question_lists = []
+
+    query = request.GET.get('search')
 
     for question in post_question:
         post = Post.objects.get(id=question.post_id)
         author = UserProfile.objects.get(id=post.author_id)
 
-        question_lists.append({
-            'title': post.title,
-            'created_at': post.created_at,
-            'author_id': post.author_id,
-            'post_question': question.id,
-            'author': author.username,
-        })
-#     total = PostQuestion.objects.all().count()
-#     if total > (page_num-1)*10:
-#         post_question = PostQuestion.objects.all().order_by('-id')[(page_num-1)*10:total]
-#     else:
-#         post_question = PostQuestion.objects.all().order_by('-id')[(page_num-1)*10:page_num*10]
-    
-#     post_id_list = post_question.values_list('post_id', flat=True)
-#     post = Post.objects.filter(id__in=post_id_list)
-#     author_id_list = post.values_list('author_id', flat=True)
-#     user = [UserProfile.objects.filter(id=author_id).values()[0] for author_id in author_id_list]
+        if query:
+            # 검색 쿼리가 있는 경우, 검색 결과 필터링
+            if (query in post.title) or (query in post.content):
+                question_lists.append({
+                    'title': post.title,
+                    'created_at': post.created_at,
+                    'author_id': post.author_id,
+                    'post_question': question.id,
+                    'author': author.username,
+                })
+        else:
+            # 검색 쿼리가 없는 경우, 모든 포트폴리오 추가
+            question_lists.append({
+                'title': post.title,
+                'created_at': post.created_at,
+                'author_id': post.author_id,
+                'post_question': question.id,
+                'author': author.username,
+            })
 
     context = {
         "question_lists": question_lists,
     }
 
     return render(request, 'question_list.html', context)
+
 
 def question(request, post_question_id=None):
     if post_question_id:
