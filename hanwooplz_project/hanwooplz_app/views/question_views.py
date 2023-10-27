@@ -57,7 +57,8 @@ def question(request, post_question_id=None):
             'created_at': post.created_at,
             'like': post_question.like,
             'keywords': post_question.keyword,
-            'post_question_id' : post_question_id
+            'post_question_id' : post_question_id,
+            'post_id': post.id,
         }
         return render(request, 'question.html', context)
     else:
