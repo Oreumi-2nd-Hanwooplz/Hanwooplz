@@ -63,6 +63,7 @@ def portfolio(request, post_portfolio_id=None):
             'ext_link': post_portfolio.ext_link,
             'content': post.content,
             'post_portfolio_id' : post_portfolio_id,
+            'post_id': post.id,
         }
         return render(request, 'portfolio.html', context)
     else:
