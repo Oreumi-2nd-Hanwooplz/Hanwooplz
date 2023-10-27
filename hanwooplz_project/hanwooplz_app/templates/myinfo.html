@@ -5,10 +5,106 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="{% static 'css/myinfo.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/myinfo.css' %}"/>
     <link rel="stylesheet" type="text/css" href="{% static 'css/nav.css' %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'css/footer.css' %}" />
-    <link rel="stylesheet" type="text/css" href="{% static 'css/chatbot.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/chatbot.css' %}"/>
+    <style>
+        h2 {
+            padding-bottom: 10px;
+            border-bottom: 1px solid gray;
+        }
+
+        .aside {
+            width: 300px;
+            float: left;
+            padding-bottom: 20px;
+        }
+
+        .select-grup {
+            width: auto;
+            float: right;
+            text-align: right;
+        }
+
+        .select-text {
+            color: gray;
+            font-size: 120%;
+            font-weight: bolder;
+            padding: 10px;
+        }
+
+        .select-dropbox {
+            height: 25px;
+            font-size: 16px;
+        }
+
+        .select-textbox {
+            height: 20px;
+        }
+
+        table.board-table {
+            width: 100%;
+            border-spacing: 0;
+        }
+
+        .portfolio-list {
+            width: 1200px;
+            margin: 0 auto;
+
+        }
+
+        .board-table th {
+            background: #eee;
+            border-top: 2px solid gray;
+            padding: 5px;
+        }
+
+        .board-table td {
+            border-bottom: 1px solid #ccc;
+            padding: 5px;
+        }
+
+        .board-table td {
+            text-align: center;
+        }
+
+        .board-table td:nth-child(2) {
+            text-align: left;
+        }
+
+        .page {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .button {
+            float: right;
+            text-align: center;
+        }
+
+        .button-gray {
+            border: 0px;
+            border-radius: 5px;
+            background-color: gray;
+            color: white;
+            font: 12px 굴림;
+            font-weight: bold;
+            width: 60px;
+            height: 30px;
+        }
+
+        .button-black {
+            border: 0px;
+            border-radius: 5px;
+            background-color: rgb(46, 46, 46);
+            color: white;
+            font: 12px 굴림;
+            font-weight: bold;
+            width: 70px;
+            height: 30px;
+        }
+    </style>
     <title>내 정보</title>
 </head>
 
@@ -69,28 +165,46 @@
         <div class="profile-page flexbox-col">
             <div class="profile-page-nav flexbox">
                 <div class="profile-page-block">
-                    <a><i class="uil uil-chat"></i>My Posts</a>
+                    <a class="category-button" data-category="postportfolio" href="#">Portfolio</a>
+                </div>
+                <div class="profile-page-block">
+                    <a class="category-button" data-category="postproject" href="#">Projects</a>
+                </div>
+                <div class="profile-page-block">
+                    <a class="category-button" data-category="postquestion" href="#">Questions</a>
                 </div>
             </div>
-            <div class="profile-page-inner">
-                {% for post in posts %}
-                <div class="image-wrapper flexbox">
-                    {{ post.title }}
-                    {{ post.content }}
-                    {{ post.created_at }}
-                    {% comment %} <a href="{% url 'post' post.id %}">
-                        <div class="img-overlay-wrapper">
-                            <div class="img-btns">
-                                <p>{{ post.title }} <i class="uil uil-heart-alt"></i> &nbsp&nbsp {{ post.content }}
-                                    <i class="uil uil-comment"></i>
-                                </p>
-                            </div>
-                            <div class="img-overlay"></div>
-                        </div>
-                        <img src="{{ post.image.url }}" alt="">
-                    </a> {% endcomment %}
-                </div>
-                {% endfor %}
+            
+            <div class="profile-page-inner" id="category-posts">
+                <table class="board-table">
+
+                    <thead>
+                        <tr>
+                            <th>번호</th>
+                            <th>제목</th>
+                            <th>글쓴이</th>
+                            <th>일시</th>
+                        </tr>
+                    </thead>
+    
+                    <tbody>
+                        {% for post in posts %}
+                        
+                        <tr>
+                            <td>{{ post.post_id }}</td>
+                            <td>
+                                <a href="{% url 'hanwooplz_app:portfolio'  post.post_id %}">
+                                    {{ post.title }}
+                                </a>
+                            </td>
+                            <td>
+                                <a>{{ username }}</a>
+                            </td>
+                            <td>{{ post.created_at }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
             </div>
         </div>
     </main>
@@ -148,6 +262,16 @@
             $(".switch").addClass("switched");
             $("#switch a").html('<i class="uil uil-moonset"></i> Dark Mode');
         }
+    });
+
+    $(document).ready(function() {
+        $(".category-button").click(function(event) {
+            event.preventDefault();
+            var category = $(this).data("category");
+            var form = $('<form action="" method="get"></form>');
+            form.append('<input type="hidden" name="category" value="' + category + '">');
+            form.appendTo('body').submit();
+        });
     });
 </script>
 
