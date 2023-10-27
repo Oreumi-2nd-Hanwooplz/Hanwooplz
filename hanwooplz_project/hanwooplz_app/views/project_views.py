@@ -5,87 +5,87 @@ from ..forms import *
 from ..models import *
 from ..serializers import *
 
-def portfolio_list(request, page_num=1):
+def project_list(request, page_num=1):
     items_per_page = 10  # 페이지 당 항목 수
 
     # 페이지 번호를 이용해 해당 페이지의 포트폴리오 검색
     start_index = (page_num - 1) * items_per_page
     end_index = page_num * items_per_page
 
-    post_portfolio = PostPortfolio.objects.order_by('-id')[start_index:end_index]
-    portfolio_lists = []
+    post_project = PostProject.objects.order_by('-id')[start_index:end_index]
+    project_lists = []
 
     query = request.GET.get('search')
 
-    for portfolio in post_portfolio:
-        post = Post.objects.get(id=portfolio.post_id)
+    for project in post_project:
+        post = Post.objects.get(id=project.post_id)
         author = UserProfile.objects.get(id=post.author_id)
 
         if query:
             # 검색 쿼리가 있는 경우, 검색 결과 필터링
             if (query in post.title) or (query in post.content):
-                portfolio_lists.append({
+                project_lists.append({
                     'title': post.title,
                     'created_at': post.created_at,
                     'author_id': post.author_id,
-                    'post_portfolio': portfolio.id,
+                    'post_project': project.id,
                     'author': author.username,
                 })
         else:
             # 검색 쿼리가 없는 경우, 모든 포트폴리오 추가
-            portfolio_lists.append({
+            project_lists.append({
                 'title': post.title,
                 'created_at': post.created_at,
                 'author_id': post.author_id,
-                'post_portfolio': portfolio.id,
+                'post_project': project.id,
                 'author': author.username,
             })
 
     context = {
-        "portfolio_lists": portfolio_lists,
+        "project_lists": project_lists,
     }
 
-    return render(request, 'portfolio_list.html', context)
+    return render(request, 'project_list.html', context)
 
 
 
-def portfolio(request, post_portfolio_id=None):
-    if post_portfolio_id:
-        post_portfolio = get_object_or_404(PostPortfolio, id=post_portfolio_id)
-        post = get_object_or_404(Post, id=post_portfolio.post_id)
+def project(request, post_project_id=None):
+    if post_project_id:
+        post_project = get_object_or_404(PostProject, id=post_project_id)
+        post = get_object_or_404(Post, id=post_project.post_id)
         author = get_object_or_404(UserProfile, id=post.author_id)
         context = {
             'title': post.title,
             'author': author.username,
             'author_id': author.id,
             'created_at': post.created_at,
-            'start_date': post_portfolio.start_date,
-            'end_date': post_portfolio.end_date,
-            'members': post_portfolio.members,
-            'tech_stacks': post_portfolio.tech_stack,
-            'ext_link': post_portfolio.ext_link,
+            'start_date': post_project.start_date,
+            'end_date': post_project.end_date,
+            'members': post_project.members,
+            'tech_stacks': post_project.tech_stack,
+            'ext_link': post_project.ext_link,
             'content': post.content,
-            'post_portfolio_id' : post_portfolio_id,
+            'post_project_id' : post_project_id,
             'post_id': post.id,
         }
-        return render(request, 'portfolio.html', context)
+        return render(request, 'project.html', context)
     else:
         messages.info('올바르지 않은 접근입니다.')
-        return redirect('hanwooplz_app:portfolio_list')
+        return redirect('hanwooplz_app:project_list')
 
 @login_required(login_url='login')
-def write_portfolio(request, post_portfolio_id=None):
-    if post_portfolio_id:
-        post_portfolio = get_object_or_404(PostPortfolio, id=post_portfolio_id)
-        post = get_object_or_404(Post, id=post_portfolio.post_id)
+def write_project(request, post_project_id=None):
+    if post_project_id:
+        post_project = get_object_or_404(PostProject, id=post_project_id)
+        post = get_object_or_404(Post, id=post_project.post_id)
     else:
-        post_portfolio = PostPortfolio()
+        post_project = PostProject()
         post = Post()
     
     if request.method == 'POST':
         if 'delete-button' in request.POST:
             post.delete()
-            return redirect('hanwooplz_app:portfolio_list')
+            return redirect('hanwooplz_app:project_list')
         if 'temp-save-button' in request.POST:
             messages.info(request, '임시저장은 현재 지원되지 않는 기능입니다.')
             context={
@@ -97,25 +97,25 @@ def write_portfolio(request, post_portfolio_id=None):
                 'ext_link': request.POST.get('ext_link'),
                 'content': request.POST.get('content'),
             }
-            return render(request, 'write_portfolio.html', context)
+            return render(request, 'write_project.html', context)
         
         post_form = PostForm(request.POST, request.FILES, instance=post)
-        post_portfolio_form = PostPortfolioForm(request.POST, request.FILES, instance=post_portfolio)
+        post_project_form = PostProjectForm(request.POST, request.FILES, instance=post_project)
 
-        if post_form.is_valid() and post_portfolio_form.is_valid():
+        if post_form.is_valid() and post_project_form.is_valid():
             post = post_form.save(commit=False)
-            post_portfolio = post_portfolio_form.save(commit=False)
-            if not post_portfolio_id:
+            post_project = post_project_form.save(commit=False)
+            if not post_project_id:
                 post.author_id = request.user.id
                 post.save()
-                post_portfolio.post_id = post.id
-                post_portfolio.save()
-                post_portfolio_id = post_portfolio.id
+                post_project.post_id = post.id
+                post_project.save()
+                post_project_id = post_project.id
             else:
                 post.save()
-                post_portfolio.save()
+                post_project.save()
 
-            return redirect('hanwooplz_app:portfolio', post_portfolio_id)
+            return redirect('hanwooplz_app:project', post_project_id)
         else:
             messages.info(request, '질문을 등록하는데 실패했습니다. 다시 시도해주세요.')
             context={
@@ -127,26 +127,26 @@ def write_portfolio(request, post_portfolio_id=None):
                 'ext_link': request.POST.get('ext_link'),
                 'content': request.POST.get('content'),
             }
-            return render(request, 'write_portfolio.html', context)
+            return render(request, 'write_project.html', context)
     else:
-        if post_portfolio_id:
+        if post_project_id:
             if request.user.id == post.author_id:
-                start_date = str(post_portfolio.start_date).replace('년 ','-').replace('월 ','-').replace('일','')
-                end_date = str(post_portfolio.end_date).replace('년 ','-').replace('월 ','-').replace('일','')
+                start_date = str(post_project.start_date).replace('년 ','-').replace('월 ','-').replace('일','')
+                end_date = str(post_project.end_date).replace('년 ','-').replace('월 ','-').replace('일','')
                 context = {
-                    'post_portfolio_id': post_portfolio_id,
+                    'post_project_id': post_project_id,
                     'title': post.title,
                     'start_date': start_date,
                     'end_date': end_date,
-                    'members': post_portfolio.members,
-                    'tech_stack': ' '.join(post_portfolio.tech_stack),
-                    'ext_link': post_portfolio.ext_link,
+                    'members': post_project.members,
+                    'tech_stack': ' '.join(post_project.tech_stack),
+                    'ext_link': post_project.ext_link,
                     'content': post.content,
                     'post_author_id': post.author_id,
                 }
-                return render(request, 'write_portfolio.html', context)
+                return render(request, 'write_project.html', context)
             else:
                 messages.info('올바르지 않은 접근입니다.')
-                return redirect('hanwooplz_app:portfolio', post_portfolio_id)
+                return redirect('hanwooplz_app:project', post_project_id)
         else:
-            return render(request, 'write_portfolio.html')
+            return render(request, 'write_project.html')
