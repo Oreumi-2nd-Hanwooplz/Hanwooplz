@@ -93,6 +93,8 @@ def myinfo(request, user_id):
         "career" : userinfo.career,
         "career_detail" : userinfo.career_detail,
         "posts" : posts,
+        "github_link" : userinfo.github_link,
+        "linkedin_link" : userinfo.linkedin_link,
     }
     return render(request, "myinfo.html", context)
 

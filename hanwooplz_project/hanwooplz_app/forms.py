@@ -15,7 +15,7 @@ class CustomUserCreationForm(UserCreationForm):
 
     class Meta:
         model = User
-        fields = ['username', 'email', 'password1', 'password2', 'full_name', 'job', 'tech_stack', 'career', 'career_detail', 'introduction']
+        fields = ['username', 'email', 'password1', 'password2', 'full_name', 'job', 'tech_stack', 'career', 'career_detail', 'introduction', 'github_link', 'linkedin_link']
         labels = {            
             'username': '유저 아이디',
             'full_name': '이름', 
@@ -23,7 +23,9 @@ class CustomUserCreationForm(UserCreationForm):
             'tech_stack': '주력 기술 스택',
             'career': '경력',
             'career_detail': '경력세부사항',
-            'introduction': '한줄 소개'
+            'introduction': '한줄 소개',
+            'github_link' : 'github 링크',
+            'linkedin_link' : 'linkedin 링크',
         }
 
     def clean_email(self):
