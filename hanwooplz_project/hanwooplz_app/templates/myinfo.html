@@ -58,6 +58,12 @@
             {% if user_id != request.user.id %}
                 <button onclick="window.location.href = '{% url "hanwooplz_app:chat" 0 user_id %}'">채팅하기</button>
             {% endif %}
+            {% if github_link %}
+            <li><a href= "{{ github_link }}" target="_blank"><i class="fab fa-github"></i></a></li>
+            {% endif %}
+            {% if linkedin_link %}
+            <li><a href= "{{ linkedin_link }}" target="_blank"><i class="fab fa-linkedin-in"></i></a></li>
+            {% endif %}
         </div>
 
         <div class="profile-page flexbox-col">
