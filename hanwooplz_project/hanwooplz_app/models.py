@@ -23,7 +23,8 @@ class UserProfile(AbstractUser):
     career = models.IntegerField(default=0)
     career_detail = models.TextField() # could be modified
     introduction = models.TextField()
-    ext_link = ArrayField(models.URLField(), null=True)
+    github_link = models.URLField(null=True)
+    linkedin_link = models.URLField(null=True)
 
 class Post(models.Model):
     author = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
