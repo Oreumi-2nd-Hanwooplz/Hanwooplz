@@ -25,7 +25,29 @@
                     <a class="profile-pic"><img src="{{ user_profile.profile_picture.url }}" alt="">
                         <input type="submit" value="프로필 업데이트">
                     </a>
+                    {% if user_id != request.user.id %}
+                    <button onclick="window.location.href = '{% url "hanwooplz_app:chat" 0 user_id %}'" style="display: block; margin: 0 auto; background-color: #0077b5; color: #fff; border: none; padding: 6px 12px; border-radius: 4px; font-size: 14px; cursor: pointer; transition: background-color 0.3s;">
+                        채팅하기
+                      </button>
+            {% endif %}
                 </div>
+                <div style="display: flex; align-items: center;">
+                    {% if github_link %}
+                        <div style="margin: 0 15px; margin-top: 40px;">
+                            <a href="{{ github_link }}" target="_blank" style="position: relative; display: block; width: 60px; height: 60px; border-radius: 50%; background-color: #fff; text-align: center; transition: 0.6s; box-shadow: 0 5px 4px rgba(0, 0, 0, 0.5);" onmouseover="this.style.transform='translate(0, -10%)'; this.style.backgroundColor='rgba(0, 0, 0, 0.829)';" onmouseout="this.style.transform='translate(0)'; this.style.backgroundColor='#fff';">
+                                <i class="fab fa-github" style="font-size: 30px; line-height: 60px; transition: 0.3s; color: #000;" onmouseover="this.style.color='#fff';" onmouseout="this.style.color='#000';"></i>
+                            </a>
+                        </div>
+                    {% endif %}
+                    {% if linkedin_link %}
+                        <div style="margin: 0 15px; margin-top: 40px;">
+                            <a href="{{ linkedin_link }}" target="_blank" style="position: relative; display: block; width: 60px; height: 60px; border-radius: 50%; background-color: #fff; text-align: center; transition: 0.6s; box-shadow: 0 5px 4px rgba(0, 0, 0, 0.5);" onmouseover="this.style.transform='translate(0, -10%)'; this.style.backgroundColor='#E4405F';" onmouseout="this.style.transform='translate(0)'; this.style.backgroundColor='#fff';">
+                                <i class="fab fa-linkedin-in" style="font-size: 30px; line-height: 60px; transition: 0.3s; color: #000;" onmouseover="this.style.color='#fff';" onmouseout="this.style.color='#000';"></i>
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
+
             </div>
 
             <div class="profile-right" style="background-color: #fff; border-radius: 5px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); padding: 20px; margin: 20px 0; height: 250px; overflow: auto;">
@@ -54,17 +76,6 @@
                     </div>
                 </div>
             </div>
-            
-            
-            {% if user_id != request.user.id %}
-                <button onclick="window.location.href = '{% url "hanwooplz_app:chat" 0 user_id %}'">채팅하기</button>
-            {% endif %}
-            {% if github_link %}
-            <li><a href= "{{ github_link }}" target="_blank"><i class="fab fa-github"></i></a></li>
-            {% endif %}
-            {% if linkedin_link %}
-            <li><a href= "{{ linkedin_link }}" target="_blank"><i class="fab fa-linkedin-in"></i></a></li>
-            {% endif %}
         </div>
 
         <div class="profile-page flexbox-col">

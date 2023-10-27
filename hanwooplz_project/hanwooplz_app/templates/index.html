@@ -442,11 +442,21 @@
                                                 </thead>
 
                                                 <tbody>
-                                                        {% for post,post_question,user in question_list %}
-                                                        <tr style="color: black;">
-                                                                <td>{{ post_question.id }}</td>
-                                                                <td>{{ post.title }}</td>
-                                                                <td>{{ user.username }}</td>
+                                                        {% for post in question_lists %}
+                                                        <tr>
+                                                                <td>{{ post.post_question }}</td>
+                                                                <td>
+                                                                        <a
+                                                                                href="{% url 'hanwooplz_app:question' post.post_question %}">
+                                                                                {{ post.title }}
+                                                                        </a>
+                                                                </td>
+                                                                <td>
+                                                                        <a
+                                                                                href="{% url 'hanwooplz_app:myinfo' post.author_id %}">
+                                                                                {{ post.author}}
+                                                                        </a>
+                                                                </td>
                                                                 <td>{{ post.created_at }}</td>
                                                         </tr>
                                                 </tbody>
