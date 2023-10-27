@@ -76,27 +76,63 @@ def log_out(request):
 
 def myinfo(request, user_id):
     userinfo = UserProfile.objects.get(id=user_id)
+    user_posts = Post.objects.filter(author=userinfo)
+
+    selected_category = request.GET.get('category', 'postportfolio')
+
     posts = []
-    user_posts = Post.objects.filter(author=user_id)
+
     for post in user_posts:
-        posts.append({
-            'title' : post.title,
-            'content' : post.content,
-            'created_at' : post.created_at,
-        })
+        if selected_category == 'postportfolio':
+            category = 'portfolio'
+            postcategory = PostPortfolio.objects.filter(post=post).first()
+        elif selected_category == 'postproject':
+            category = 'project'
+            postcategory = PostProject.objects.filter(post=post).first()
+        elif selected_category == 'postquestion':
+            category = 'question'
+            postcategory = PostQuestion.objects.filter(post=post).first()
+
+        if postcategory:
+            posts.append({
+                'title': post.title,
+                'content': post.content,
+                'created_at': post.created_at,
+                'post_id': postcategory.id,
+                "category": category,
+            })
+
     context = {
-        "user_id" : userinfo.id,
-        "username" : userinfo.username,
-        "full_name" : userinfo.full_name,
-        "job" : userinfo.job,
-        "tech_stack" : userinfo.tech_stack,
-        "career" : userinfo.career,
-        "career_detail" : userinfo.career_detail,
-        "posts" : posts,
-        "github_link" : userinfo.github_link,
-        "linkedin_link" : userinfo.linkedin_link,
+        "user_id": userinfo.id,
+        "username": userinfo.username,
+        "full_name": userinfo.full_name,
+        "job": userinfo.job,
+        "tech_stack": userinfo.tech_stack,
+        "career": userinfo.career,
+        "career_detail": userinfo.career_detail,
+        "posts": posts,
+        "github_link": userinfo.github_link,
+        "linkedin_link": userinfo.linkedin_link,
+        "selected_category": selected_category,
+        
     }
     return render(request, "myinfo.html", context)
+
+
+def get_posts_by_category(request):
+    category = request.GET.get('category')
+    if category == 'post':
+        posts = Post.objects.all()  # Post 모델의 게시물을 가져옵니다.
+    elif category == 'postportfolio':
+        posts = PostPortfolio.objects.all()  # PostPortfolio 모델의 게시물을 가져옵니다.
+    elif category == 'postproject':
+        posts = PostProject.objects.all()  # PostProject 모델의 게시물을 가져옵니다.
+    elif category == 'postquestion':
+        posts = PostQuestion.objects.all()  # PostQuestion 모델의 게시물을 가져옵니다.
+
+    # 가져온 게시물을 템플릿에 전달하여 HTML로 렌더링합니다.
+    context = {'posts': posts}
+    return render(request, 'posts_by_category.html', context)
 
 def post(request):
     return render(request, "post.html")
