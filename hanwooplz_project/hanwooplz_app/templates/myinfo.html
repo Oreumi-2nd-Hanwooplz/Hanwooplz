@@ -119,7 +119,9 @@
                 </form>
                 <div class="profile-pic-wrapper">
                     <a class="profile-pic"><img src="{{ user_profile.profile_picture.url }}" alt="">
-                        <input type="submit" value="프로필 업데이트">
+                        {% if user_id == request.user.id %}
+                        <input type="submit" value="프로필 업데이트" onclick="window.location.href = '{% url "hanwooplz_app:edit_profile" %}'">
+                        {% endif %}
                     </a>
                     {% if user_id != request.user.id %}
                     <button onclick="window.location.href = '{% url "hanwooplz_app:chat" 0 user_id %}'" style="display: block; margin: 0 auto; background-color: #0077b5; color: #fff; border: none; padding: 6px 12px; border-radius: 4px; font-size: 14px; cursor: pointer; transition: background-color 0.3s;">

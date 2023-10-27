@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserChangeForm
 from django.contrib.auth import get_user_model 
 from .models import *
 
@@ -50,6 +51,26 @@ class CustomUserCreationForm(UserCreationForm):
         if User.objects.filter(username=username).exists():
             raise forms.ValidationError('이미 사용중인 아이디 입니다')  
         return username
+
+class CustomUserChangeForm(UserChangeForm):
+    class Meta:
+        model = get_user_model()
+        fields = ['username', 'email', 'full_name', 'job', 'tech_stack', 'career', 'career_detail', 'introduction', 'github_link', 'linkedin_link']
+        labels = {            
+            'username': '유저 아이디',
+            'full_name': '이름', 
+            'job': '직무', 
+            'tech_stack': '주력 기술 스택',
+            'career': '경력',
+            'career_detail': '경력 세부사항',
+            'introduction': '한줄 소개',
+            'github_link' : 'GitHub 링크',
+            'linkedin_link' : 'LinkedIn 링크',
+        }
+
+    def __init__(self, *args, **kwargs):
+        super(CustomUserChangeForm, self).__init__(*args, **kwargs)
+        self.fields['username'].help_text = ''
 
 class LoginForm(forms.Form):
     username = forms.CharField(label="아이디")

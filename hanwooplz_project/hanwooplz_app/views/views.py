@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404, reverse
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.views import View
 from django.http import HttpResponse
@@ -34,8 +35,6 @@ def write(request):
 
 #     return render(request, 'write.html', {'post': post})
 
-def current_chat(request):
-    return render(request, "chat.html")
 
 def register(request):
     if request.method == 'POST':
@@ -47,6 +46,19 @@ def register(request):
         form = CustomUserCreationForm()
 
     return render(request, 'registration/register.html', {'form': form})
+
+@login_required
+def edit_profile(request):
+    if request.method == 'POST':
+        form = CustomUserChangeForm(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+            user_id = request.user.id
+            return redirect(reverse('hanwooplz_app:myinfo', args=[user_id]))  # Change 'profile' to your actual profile URL name
+    else:
+        form = CustomUserChangeForm(instance=request.user)
+    
+    return render(request, 'edit_profile.html', {'form': form})
 
 class LoginView(View):
     def get(self, request):
