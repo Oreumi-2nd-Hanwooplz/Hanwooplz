@@ -1,3 +1,4 @@
+/* style.css */
 h2 {
     padding-bottom: 10px;
     border-bottom: 1px solid gray;
@@ -9,7 +10,7 @@ h2 {
     padding-bottom: 20px;
 }
 
-.select-grup {
+.select-group {
     width: auto;
     float: right;
     text-align: right;
@@ -36,10 +37,9 @@ table.board-table {
     border-spacing: 0;
 }
 
-.question-list {
+.posts-list {
     width: 1200px;
     margin: 0 auto;
-
 }
 
 .board-table th {
@@ -51,9 +51,6 @@ table.board-table {
 .board-table td {
     border-bottom: 1px solid #ccc;
     padding: 5px;
-}
-
-.board-table td {
     text-align: center;
 }
 

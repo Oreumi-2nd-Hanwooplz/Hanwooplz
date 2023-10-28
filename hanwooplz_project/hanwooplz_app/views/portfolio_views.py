@@ -16,14 +16,23 @@ def portfolio_list(request, page_num=1):
     portfolio_lists = []
 
     query = request.GET.get('search')
+    search_type = request.GET.get('search_type')  # 검색 옵션을 가져옵니다
 
     for portfolio in post_portfolio:
         post = Post.objects.get(id=portfolio.post_id)
         author = UserProfile.objects.get(id=post.author_id)
 
         if query:
-            # 검색 쿼리가 있는 경우, 검색 결과 필터링
-            if (query in post.title) or (query in post.content):
+            # 검색 쿼리와 검색 옵션에 따라 검색 결과 필터링
+            if search_type == "title_content" and ((query in post.title) or (query in post.content)):
+                portfolio_lists.append({
+                    'title': post.title,
+                    'created_at': post.created_at,
+                    'author_id': post.author_id,
+                    'post_portfolio': portfolio.id,
+                    'author': author.username,
+                })
+            elif search_type == "writer" and (query in author.username):
                 portfolio_lists.append({
                     'title': post.title,
                     'created_at': post.created_at,
