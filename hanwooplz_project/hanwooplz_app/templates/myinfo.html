@@ -146,30 +146,37 @@
                     {% endif %}
                 </div>
             </div>
-            <div class="profile-right" style="background-color: #fff; border-radius: 5px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); padding: 20px; margin: 20px 0; height: 250px; overflow: auto;">
+            <div class="profile-right" style="background-color: #fff; border-radius: 5px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); padding: 20px; margin: 20px 0; height: 250px; overflow: hidden;">
                 <div class="profile-right-top" style="text-align: center;">
                     <h3 class="profile-name" style="font-size: 24px; color: #333;">{{ username }}</h3>
                     <br>
                     <h1 class="profile-name" style="font-size: 24px; margin-bottom: 10px; color: #333;">{{ full_name }}</h1>
                 </div>
                 <div class="profile-right-bottom" style="margin-top: 20px;">
-                    <div class="profile-bio-wrapper" style="margin-top: 10px;">
+                    <div class="profile-bio-wrapper" style="margin-top: 10px; overflow: hidden;">
                         <div style="margin-bottom: 10px;">
-                            <span class="profile-info" style="display: inline-block; margin-right: 10px; font-size: 16px; color: #333;">{{ job }}</span>
-                            <span class="profile-info" style="display: inline-block; margin-right: 10px; font-size: 16px; color: #333;">{{ tech_stack }}</span>
+                            <span class="profile-info" style="display: inline-block; margin-right: 10px; font-size: 16px; color: #333;">직무: {{ job }}</span>
+                            <span class="profile-info" style="display: inline-block; margin-right: 10px; font-size: 16px; color: #333;">
+                                주요 기술 스택:
+                                {% if tech_stack|length > 1 %}
+                                    {{ tech_stack|join:", " }}
+                                {% else %}
+                                    {{ tech_stack.0 }}
+                                {% endif %}
+                            </span>
                         </div>
                         <div style="margin-bottom: 10px;">
                             <span class="profile-info" style="display: inline-block; margin-right: 10px; font-size: 16px; color: #333;">
                                 {% if career == 0 %}
-                                신입
+                                경력: 신입
                                 {% else %}
-                                경력: {{ career }}
+                                경력: {{ career }}년
                                 {% endif %}
                             </span>
-                            <span class="profile-info" style="display: inline-block; margin-right: 10px; font-size: 16px; color: #333;">{{ career_detail }}</span>
+                            <span class="profile-info" style="display: inline-block; margin-right: 10px; font-size: 16px; color: #333;">상세 경력: {{ career_detail }}</span>
+                            <p class="profile-bio" style="font-size: 16px; margin-top: 20px; color: #555;">한 줄 소개: {{ introduction }}</p>
                         </div>
-                        <p class="profile-bio" style="font-size: 16px; margin-top: 20px; color: #555;">{{ introduction }}</p>
-                    </div>
+                    </div>                    
                 </div>
             </div>
         </div>
@@ -196,7 +203,8 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {% for post in posts %}
+                        
+                        {% if posts %}{% for post in posts %}
                         <tr>
                             <td>{{ post.post_id }}</td>
                             <td>
@@ -210,6 +218,12 @@
                             <td>{{ post.created_at }}</td>
                         </tr>
                         {% endfor %}
+                        {% else %}
+                            {% if selected_category == 'postportfolio' %}표시할 포트폴리오 게시물이 없습니다.
+                            {% elif selected_category == 'postproject' %}표시할 팀원모집 게시물이 없습니다.
+                            {% elif selected_category == 'postquestion' %}표시할 질의응답 게시물이 없습니다.
+                            {% endif %}
+                        {% endif %}
                     </tbody>
                 </table>
             </div>

@@ -123,8 +123,13 @@
                 <div class="content">{{ content }}</div>
                 <div class="subsidiary">
                     <div class="card">
-                        <a href="{% url 'hanwooplz_app:myinfo' author_id %}"><strong>{{ author }}</strong> 님</a>
-                        <p>{{ created_at }}</p>
+                        작성자: <a href="{% url 'hanwooplz_app:myinfo' author_id %}"><strong>{{ author }}</strong> 님</a>
+                        {% if author_id != request.user.id %}
+                        <button onclick="window.location.href = '{% url "hanwooplz_app:chat" 0 author_id %}'" style="display: block; margin: 0 auto; background-color: #0077b5; color: #fff; border: none; padding: 6px 12px; border-radius: 4px; font-size: 14px; cursor: pointer; transition: background-color 0.3s;">
+                            채팅하기
+                        </button>
+                        {% endif %}
+                        <p>작성 일시: {{ created_at }}</p>
                     </div>
                 </div>
                 <div class="action-buttons">
@@ -139,18 +144,6 @@
             {% if author_id == request.user.id %}
             <button class="button-black" onclick="window.location.href = '{% url "hanwooplz_app:write_question" post_question_id %}'">수정하기</button>
             {% endif %}
-            {% comment %} <div class="comment-container">
-                <div class="comment-box">
-                    <div class="comment-author">댓쓴이</div>
-                    <div class="comment-content">한우존맛</div>
-                </div>
-            </div>
-            {% if user.is_authenticated %}
-            <form action="" method="post">
-                {% csrf_token %}
-                <textarea name="comment" id="comment-input" cols="30" rows="5"></textarea>
-                <button type="button" id="submit-button">댓글 등록</button>
-            </form> {% endcomment %}
             {% include "comment.html" %}
         </main>
 
