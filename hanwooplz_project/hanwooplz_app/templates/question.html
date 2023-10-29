@@ -125,7 +125,7 @@
                     <div class="card">
                         작성자: <a href="{% url 'hanwooplz_app:myinfo' author_id %}"><strong>{{ author }}</strong> 님</a>
                         {% if user.is_authenticated and user_id != request.user.id %}
-                        <button onclick="window.location.href = '{% url "hanwooplz_app:chat" 0 user_id %}'" style="display: block; margin: 0 auto; background-color: #0077b5; color: #fff; border: none; padding: 6px 12px; border-radius: 4px; font-size: 14px; cursor: pointer; transition: background-color 0.3s;">
+                        <button onclick="window.location.href = '{% url "hanwooplz_app:chat" 0 author_id %}'" style="display: block; margin: 0 auto; background-color: #0077b5; color: #fff; border: none; padding: 6px 12px; border-radius: 4px; font-size: 14px; cursor: pointer; transition: background-color 0.3s;">
                             채팅하기
                         </button>
                         {% elif not user.is_authenticated %}
