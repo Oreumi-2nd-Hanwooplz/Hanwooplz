@@ -21,9 +21,11 @@
             <div class="big-box ">
                 <div class="post-info">
                     <h1 id='h1title'>제목</h1>
-                    <h4>게시자</h4>
-                    <h5>게시 시간</h5>
-                    <h5 class="topic-box">태그</h5>
+                    <div class="post-detail">
+                        <h4>게시자</h4>
+                        <h5>게시 시간</h5>
+                        <h5 class="topic-box">태그</h5>
+                    </div>
                 </div>
                 <div class="post-content">
                     게시글이 올라올 부분
@@ -47,7 +49,7 @@
                 <form>
                     <label for="comment-content"></label>
                     <textarea id="comment-content" name="comment-content" rows="4" required></textarea>
-                    <button type="submit">Submit</button>
+                    <button type="submit" class="submit-button">Submit</button>
                 </form>
             </div>
             <div class="comment">
@@ -64,4 +66,5 @@
     var currentUser = "{{ request.user }}"
 </script>
 <script type="text/javascript" src="{% static 'js/comments.js' %}"></script>
+
 </html>
