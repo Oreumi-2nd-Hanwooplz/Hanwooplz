@@ -138,7 +138,7 @@ def current_chat(request, room_number, receiver_id):
 
     return render(request, 'chat.html', context)
 
-
+@login_required
 def chat_msg(request, room_number):
     room = get_object_or_404(ChatRoom, pk=room_number)
 
