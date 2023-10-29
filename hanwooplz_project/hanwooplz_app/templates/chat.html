@@ -122,14 +122,16 @@
 
     function showNewMessagePopup(messageContent) {
       const toast = document.querySelector('.toast'); // .toast 요소를 찾습니다.
-      toast.style.display = 'flex';
       const message = toast.querySelector('.toast-message'); // .toast 내부에서 .toast-message를 찾습니다.
       message.textContent = messageContent;
+      toast.style.display = 'flex'; // 토스트를 표시합니다.
     
+      // 2.5초 후 토스트를 숨깁니다.
       setTimeout(function () {
         toast.style.display = 'none';
       }, 2500);
     }
+    
 
     ws.onmessage = function (e) {
       const data = JSON.parse(e.data);
@@ -234,12 +236,12 @@
   function redirectToChat(chatRoomId, receiverId) {
     const chatBoxes = document.querySelectorAll('.chat-box');
     chatBoxes.forEach(chatBox => {
-      chatBox.classList.remove('selected-chat');
+        chatBox.classList.remove('selected-chat');
     });
 
     const selectedChat = document.querySelector(`[data-chat-room-id="${chatRoomId}"]`);
     if (selectedChat) {
-      selectedChat.classList.add('selected-chat');
+        selectedChat.classList.add('selected-chat');
     }
 
     window.location.href = `/chat/${chatRoomId}/${receiverId}`;

@@ -1,54 +1,5 @@
 {% load static %}
-<style>
-    .search-bar {
-        display: flex;
-        align-items: center;
-        position: relative;
-    }
 
-    .search-bar input {
-        padding: 10px;
-        border: none;
-        border-radius: 25px;
-        font-size: 16px;
-        outline: none;
-        transition: width 0.4s;
-        width: 0;
-        opacity: 0;
-    }
-
-    .search-bar input::placeholder {
-        color: #ccc;
-    }
-
-    .search-bar button {
-        background: #262626;
-        color: #fff;
-        border: none;
-        border-radius: 50%;
-        cursor: pointer;
-        padding: 10px;
-    }
-
-    .search-bar:hover input {
-        width: 180px;
-        opacity: 1;
-    }
-
-    #logo {
-        cursor: pointer;
-    }
-
-    @media (max-width: 768px) {
-        .search-bar input {
-            width: 100%;
-        }
-
-        .search-bar:hover input {
-            width: 100%;
-        }
-    }
-</style>
 <nav class="navbar">
     <div class="navbar-container container">
         <input type="checkbox" name="yourCheckboxName" id="yourCheckboxId">
@@ -59,32 +10,17 @@
             <span class="line line3"></span>
         </div>
         <ul class="menu-items">
-            <li class="icon-item">
-                {% comment %} <div class="search-bar">
-                    <form method="GET" action="{% url 'hanwooplz_app:search' %}">
-                        <input type="text" name="search" id="searchField" placeholder="Search">
-                        <i class="fas fa-search"></i>
-                    </form>
-                </div> {% endcomment %}
-            </li>
-            <li>
-                {% comment %} <a href="#">
-                    <i id="microphone" class="fas fa-microphone"></i>
-                </a> {% endcomment %}
-            </li>
             <li><a href="{% url 'hanwooplz_app:index' %}">홈</a></li>
-            {% comment %} 임시로 주석 처리 {% endcomment %}
-            {% comment %} <li><a href="{% url 'hanwooplz_app:myinfo' user.id %}">회원정보</a></li> {% endcomment %}
             <li><a href="{% url 'hanwooplz_app:portfolio_list' %}">포트폴리오</a></li>
             <li><a href="{% url "hanwooplz_app:project_list" %}">팀원모집</a></li>
             <li><a href="{% url 'hanwooplz_app:question_list' %}">질의응답</a></li>
-            <li class="icon-item"><a href="#"><i class="fas fa-bell"></i></a></li>
-            <li class="icon-item"><a href="#"><i class="fas fa-cog"></i></a></li>
+            {% comment %} <li class="icon-item"><a href="#"><i class="fas fa-cog"></i></a></li> {% endcomment %}
 
             {% if user.is_authenticated %}
+            <li><a href="{% url 'hanwooplz_app:chat' 0 user.id %}">채팅</a></li>
             <li class="icon-item"><a href="{% url 'hanwooplz_app:myinfo' user.id %}"><i class="fas fa-user"></i></a>
             </li>
-            <li><a href="{% url 'hanwooplz_app:chat' 0 user.id %}">채팅</a></li>
+            <li class="icon-item"><a href="#"><i class="fas fa-bell"></i></a></li>
             <li class="icon-item"><a href="{% url 'hanwooplz_app:logout' %}"><i class="fas fa-sign-out-alt"></i></a>
             </li>
             {% else %}
