@@ -48,27 +48,13 @@ def get_rooms(request):
                 'unread_message_count': unread_message_count,
             })
         except ChatMessages.DoesNotExist:
-            # sender = None
-
-            # if room.receiver.id == request.user.id:
-            #     sender = UserProfile.objects.get(pk=request.user.id)
-            # else:
-            #     sender = room.receiver
-            
-            # latest_messages.append({
-            #     'chat_room_id': room.id,
-            #     'sender_id': sender.id,
-            #     'sender': sender,
-            #     'message': '',
-            #     'created_at': '',
-            #     # 'unread_message_count': 0,
-            # })
             pass
 
     latest_messages.sort(key=lambda x: x['created_at'], reverse=True)
 
     return latest_messages
 
+@login_required
 def current_chat(request, room_number, receiver_id):
     current_chat = None
     formatted_chat_msgs = []

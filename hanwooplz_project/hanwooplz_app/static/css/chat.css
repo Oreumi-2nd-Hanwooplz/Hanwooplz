@@ -171,3 +171,38 @@ a{
 .selected-chat {
     background-color: #eaeaea;
 }
+
+.toast {
+    display: none;
+    bottom: 150px;
+    justify-content: center;
+    width: 100%;
+    padding-bottom: 10px;
+    position: absolute;
+    z-index: 3;
+}
+
+.toast-popup {   
+    background-color: #333;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 40px;
+    width: 20%;
+    opacity: 0.8;
+    justify-content: center;
+    display: flex;
+}
+
+.toast-content {
+    text-align: center;
+}
+
+.overflow-scroll {
+    overflow-y: auto;
+    max-height: 380px; /* 굿즈 상자의 최대 높이를 설정할 수 있습니다. */
+}
+
+.loading-message {
+    display: flex;
+    flex-direction: column;
+}
