@@ -50,6 +50,25 @@ INSTALLED_APPS = [
 
 ASGI_APPLICATION = "hanwooplz_project.asgi.application"
 
+## 채널 - redis 연결 설정
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("127.0.0.1", 6379)],
+        },
+    },
+}
+
+# AUTHENTICATION_BACKENDS 설정 확인
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+]
+
+# AUTHENTICATION_CLASSES 설정 확인
+AUTHENTICATION_CLASSES = [
+    'django.contrib.auth.authentication.AuthenticationMiddleware',
+]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

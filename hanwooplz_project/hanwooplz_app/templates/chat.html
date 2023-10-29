@@ -14,118 +14,90 @@
 </head>
 
 <body>
-  
   {% include 'nav.html' %}
 
-    <section class="container column">
-      <div class="post-box flex-box">
-
-
-        <div class="chat-select-container">
-          <div class="chat-list-box flex-box column">
-            <p class="chat-list-title">채팅방 리스트</p>
-
-            {% for msg in latest_messages %}
-            <div class="flex-box chat-box between" onclick="redirectToChat({{ msg.chat_room_id }}, {{ msg.receiver_id }})" 
-            data-chat-room-id="{{ msg.chat_room_id }}">
-                <div class="flex-box">
-                  <span class="bold">{{ msg.receiver }}</span>
-                  <span class="s-text">{{ msg.created_at }}</span>
-                </div>
-                <div class="message-content">
-                  <p class="chat-thumb-text">{{ msg.message }}</p>
-                </div>
-                {% if msg.unread_message_count > 0 %}
-                <span class="unread_message_count">{{ msg.unread_message_count }}</span>
-                {% endif %}
+  <section class="container column">
+    <div class="post-box flex-box">
+      <div class="chat-select-container">
+        <div class="chat-list-box flex-box column">
+          <p class="chat-list-title">채팅방 리스트</p>
+          {% for msg in latest_messages %}
+          <div class="chat-box between" onclick="redirectToChat({{ msg.chat_room_id }}, {{ msg.receiver_id }})" 
+               data-chat-room-id="{{ msg.chat_room_id }}">
+            <div class="flex-box">
+              <span class="bold">{{ msg.receiver }}</span>
+              <span class="s-text">{{ msg.created_at }}</span>
             </div>
-            
-            {% endfor %}
-
+            <div class="message-content">
+              <p class="chat-thumb-text">{{ msg.message|truncatechars:15 }}</p>
+            </div>
+            {% if msg.unread_message_count > 0 %}
+              <span class="unread_message_count">{{ msg.unread_message_count }}</span>
+            {% endif %}
           </div>
+          {% endfor %}
         </div>
-        <!-- 채팅창-->
-        <div class="chat-main-container">
-          {% if room_number > 0 or room_number == -1 %}
-          <div style="height:500px">
-            <div class="contact-info flex-box">
-              {% if username %}
-              대화상대: {{username}}
-              {% endif %}
-            </div>
-            <!--채팅창 메인-->
-            <div class="chat-container" id="chat-log">
-              {% if room_number == -1 %}
-              <div class="message-box from-you">
-                <p class="s-text">방금 전</p>
-              </div>
-              {% endif %}
-              {% for chat in chat_msgs %}
-              {% if request.user.username != chat.username %}
-              <div class="message-box from-you">
-                {% if chat.id > first_unread_index %}
-                <div class="message-text unread">{{ chat.message }}</div>
-                {% else %}
-                <div class="message-text">{{ chat.message }}</div>
-                {% endif %}
-                <p class="s-text">{{ chat.created_at }}</p>
-                {% if chat.is_read == False %}
-                <p class="s-text unread">읽지 않음</p>
-                {% endif %}
-              </div>
-              {% else %}
-              <div class="message-box from-me">
-                {% if chat.is_read %}
-                <p class="s-text">읽음</p>
-                {% else %}
-                <p class="s-text unread-message">읽지 않음</p>
-                {% endif %}
-                <p class="s-text">{{ chat.created_at }}</p>
-                <div class="message-text">{{ chat.message }}</div>
-              </div>
-              {% endif %}
-              {% endfor %}
-            </div>
-          </div>
-
-          {% comment %} <div class='toast'>
-            <div id="toast-popup" class="toast-popup">
-              <div class="toast-content">
-                <p class="toast-message">새 메시지가 도착했습니다!</p>
-              </div>
-            </div>
-          </div> {% endcomment %}
-
-          <form class="chat-input" id="chat-form">
-            {%csrf_token%}
-            <textarea type="text" id="chat-message-input" name="message" cols="30" rows="10"
-              placeholder="메세지를 입력해주세요"></textarea>
-            <div><button id="chat-message-submit" type="button">전송</button></div>
-          </form>
-
-          {% elif room_number == 0 %}
-          {% comment %} <div class="hanwooplz_logo">
-            <img src="{% static 'hanwooplz_logo' %}">
-          </div> {% endcomment %}
-          {% endif %}
-        </div>
-
       </div>
-    </section>
-  {% comment %} {% include 'footer.html' %} {% endcomment %}
-  {% comment %} {% include 'chatbot.html' %} {% endcomment %}
-
+      <div class="chat-main-container">
+        {% if room_number > 0 or room_number == -1 %}
+        <div style="height:500px">
+          <div class="contact-info flex-box">
+            {% if username %}
+              대화상대: {{ username }}
+            {% endif %}
+          </div>
+          <div class="chat-container" id="chat-log">
+            {% if room_number == -1 %}
+            <div class="message-box from-you">
+              <p class="s-text">방금 전</p>
+            </div>
+            {% endif %}
+            {% for chat in chat_msgs %}
+              <div class="message-box {% if chat.username != request.user.username %}from-you{% else %}from-me{% endif %}">
+                {% if chat.username != request.user.username %}
+                  <div class="message-text {% if chat.id > first_unread_index %}unread{% endif %}">{{ chat.message }}</div>
+                  <p class="s-text">{{ chat.created_at }}</p>
+                  {% if not chat.is_read %}<p class="s-text unread">읽지 않음</p>{% endif %}
+                {% else %}
+                  {% if chat.is_read %}<p class="s-text">읽음</p>{% else %}<p class="s-text unread-message">읽지 않음</p>{% endif %}
+                  <p class="s-text">{{ chat.created_at }}</p>
+                  <div class="message-text">{{ chat.message }}</div>
+                {% endif %}
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+        <div class='toast'>
+          <div id="toast-popup" class="toast-popup">
+            <div class="toast-content">
+              <p class="toast-message">새 메시지가 도착했습니다!</p>
+            </div>
+          </div>
+        </div>
+        <form class="chat-input" id="chat-form">
+          {% csrf_token %}
+          <textarea type="text" id="chat-message-input" name="message" cols="30" rows="10" placeholder="메세지를 입력해주세요"></textarea>
+          <div><button id="chat-message-submit" type="button">전송</button></div>
+        </form>
+        {% elif room_number == 0 %}
+        <!-- room_number가 0일 때 표시할 내용 -->
+        {% endif %}
+      </div>
+    </div>
+  </section>
+  {% include 'footer.html' %}
+  {% include 'chatbot.html' %}
 </body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/uuid/8.3.2/uuid.min.js"></script>
 <script>
   const chatLog = document.querySelector('#chat-log');
   let room_number = parseInt("{{ room_number }}");
 
-  const ws = new WebSocket('ws://127.0.0.1:8000/ws/chat/' + room_number + '/');
-
   function generateMessageId() {
     return uuid.v4();
   }
+
+  const ws = new WebSocket('ws://127.0.0.1:8000/ws/chat/{{ room_number }}/');
 
   document.addEventListener("DOMContentLoaded", function () {
     const messageInputDom = document.querySelector('#chat-message-input');
@@ -149,19 +121,19 @@
     const currentTime = getCurrentTime();
 
     function showNewMessagePopup(messageContent) {
-      const toastPopup = document.querySelector('.toast');
-      toastPopup.style.display = 'flex';
-      let message = document.querySelector('.toast-message');
+      const toast = document.querySelector('.toast'); // .toast 요소를 찾습니다.
+      toast.style.display = 'flex';
+      const message = toast.querySelector('.toast-message'); // .toast 내부에서 .toast-message를 찾습니다.
       message.textContent = messageContent;
-
+    
       setTimeout(function () {
-        toastPopup.style.display = 'none';
+        toast.style.display = 'none';
       }, 2500);
-    } 
+    }
 
     ws.onmessage = function (e) {
       const data = JSON.parse(e.data);
-
+    
       if (data.type === 'chat_message') {
 
         const messageContainer = document.createElement('div');
@@ -262,12 +234,12 @@
   function redirectToChat(chatRoomId, receiverId) {
     const chatBoxes = document.querySelectorAll('.chat-box');
     chatBoxes.forEach(chatBox => {
-        chatBox.classList.remove('selected-chat');
+      chatBox.classList.remove('selected-chat');
     });
 
     const selectedChat = document.querySelector(`[data-chat-room-id="${chatRoomId}"]`);
     if (selectedChat) {
-        selectedChat.classList.add('selected-chat');
+      selectedChat.classList.add('selected-chat');
     }
 
     window.location.href = `/chat/${chatRoomId}/${receiverId}`;

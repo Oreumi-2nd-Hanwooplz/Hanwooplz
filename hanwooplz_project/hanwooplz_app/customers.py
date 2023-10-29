@@ -1,10 +1,8 @@
 import asyncio
 import json
 from channels.generic.websocket import AsyncWebsocketConsumer
-from .models import ChatMessages, ChatRoom
-from django.contrib.auth.models import User
+from .models import ChatMessages, ChatRoom, UserProfile
 from channels.db import database_sync_to_async
-
 
 class ChatConsumer(AsyncWebsocketConsumer):
     async def connect(self):
@@ -25,7 +23,10 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
     @database_sync_to_async
     def get_sender(self, username):
-        return User.objects.get(username=username)
+        try:
+            return UserProfile.objects.get(username=username)
+        except UserProfile.DoesNotExist:
+            return None
 
     @database_sync_to_async
     def save_chat_message(self, room, sender, message, receiver, chat_uuid):
@@ -91,8 +92,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 }
             )
 
-        
-
     # Receive message from room group
     async def chat_message(self, event):
         message = event["message"]
@@ -120,5 +119,3 @@ class ChatConsumer(AsyncWebsocketConsumer):
             "receiver": event["receiver"],
             "is_read": True
         }))
-
-    
