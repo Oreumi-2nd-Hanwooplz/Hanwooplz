@@ -41,7 +41,7 @@
       <div class="chat-main-container">
         {% if room_number > 0 or room_number == -1 %}
         <div style="height:500px">
-          <div class="contact-info flex-box">
+          <div class="contact-info flex-box" onclick="window.location.href= '{% url "hanwooplz_app:myinfo" user_id %}'">
             {% if username %}
               대화상대: {{ username }}
             {% endif %}
