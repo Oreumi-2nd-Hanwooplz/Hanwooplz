@@ -74,7 +74,15 @@
             {% endif %}
             <div class="button">
                 <button class="button-gray" onclick="window.location.href = '{% url "hanwooplz_app:portfolio_list" %}'">목록</button>
-                <button class="button-black" onclick="window.location.href = '{% url "hanwooplz_app:write_portfolio" %}'">글쓰기</button>
+                {% if user.is_authenticated %}
+                <button class="button-black" onclick="window.location.href = '{% url "hanwooplz_app:write_question" %}'" style="cursor: pointer; transition: background-color 0.3s;">
+                    글쓰기
+                </button>
+                {% else %}
+                <button class="button-black" onclick="alert('로그인이 필요합니다.')" style="cursor: pointer; transition: background-color 0.3s;">
+                    글쓰기
+                </button>
+                {% endif %}
             </div>
         </div>
     </article>
