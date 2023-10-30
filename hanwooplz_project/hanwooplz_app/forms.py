@@ -1,5 +1,5 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm
 from django.contrib.auth.forms import UserChangeForm
 from django.contrib.auth import get_user_model 
 from .models import *
@@ -52,9 +52,9 @@ class CustomUserCreationForm(UserCreationForm):
             raise forms.ValidationError('이미 사용중인 아이디 입니다')  
         return username
 
-class CustomUserChangeForm(UserChangeForm):
+class UserProfileForm(forms.ModelForm):
     class Meta:
-        model = get_user_model()
+        model = User
         fields = ['username', 'email', 'full_name', 'job', 'tech_stack', 'career', 'career_detail', 'introduction', 'github_link', 'linkedin_link']
         labels = {            
             'username': '유저 아이디',
@@ -69,8 +69,16 @@ class CustomUserChangeForm(UserChangeForm):
         }
 
     def __init__(self, *args, **kwargs):
-        super(CustomUserChangeForm, self).__init__(*args, **kwargs)
+        super(UserProfileForm, self).__init__(*args, **kwargs)
+        # Set 'github_link' and 'linkedin_link' fields as not required
+        self.fields['github_link'].required = False
+        self.fields['linkedin_link'].required = False
         self.fields['username'].help_text = ''
+
+class CustomPasswordChangeForm(PasswordChangeForm):
+    class Meta:
+        model = User
+
 
 class LoginForm(forms.Form):
     username = forms.CharField(label="아이디")

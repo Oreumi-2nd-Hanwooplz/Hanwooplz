@@ -17,6 +17,7 @@
             <form method="post">
                 {% csrf_token %}
                 {{ form.as_p }}
+                {{ password_change_form.as_p }}
                 <input type="submit" value="Update Profile">
             </form>
         </div>
