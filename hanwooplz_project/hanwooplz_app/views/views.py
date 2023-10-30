@@ -187,3 +187,27 @@ def execute_chatbot(request):
         return JsonResponse({"response": response, "chat_messages": chat_messages_json})
     
     return HttpResponse("Invalid Request")
+
+
+def send_application(request):
+    if request.method == 'POST':
+        # 클라이언트로부터 전달받은 데이터 처리
+        post_id = request.POST.get('postId')
+        author_id = request.POST.get('authorId')
+
+        # 실제로 여기서 게시물 작성자에게 참가 요청을 보내는 로직을 추가해야 합니다.
+
+        # 요청이 성공적으로 처리되었다면 success를 true로 설정
+        success = True
+    else:
+        success = False
+
+    return JsonResponse({'success': success})
+
+def get_notifications(request):
+    if request.user.is_authenticated:
+        notifications = Notifications.objects.filter(user=request.user).order_by('-created_at')
+        notification_list = [notification.content for notification in notifications]
+        return JsonResponse({'notifications': notification_list})
+    else:
+        return JsonResponse({'notifications': []})

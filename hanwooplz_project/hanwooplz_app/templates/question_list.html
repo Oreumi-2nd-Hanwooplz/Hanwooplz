@@ -9,7 +9,7 @@
     <link rel="stylesheet" type="text/css" href="{% static 'css/nav.css' %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'css/footer.css' %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'css/chatbot.css' %}" />
-    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/posts_list.css' %}" />
 
     <title>질의응답</title>
 </head>
@@ -73,7 +73,9 @@
             <div class="no-results">검색 결과가 없습니다.</div>
             {% endif %}
             <div class="button">
-                <button class="button-gray" onclick="window.location.href = '{% url "hanwooplz_app:question_list" %}'">목록</button>
+                <button class="button-gray" onclick="window.location.href = '{% url "hanwooplz_app:question_list" %}'" style="cursor: pointer; transition: background-color 0.3s;">
+                    목록
+                </button>
                 {% if user.is_authenticated %}
                 <button class="button-black" onclick="window.location.href = '{% url "hanwooplz_app:write_question" %}'" style="cursor: pointer; transition: background-color 0.3s;">
                     글쓰기
