@@ -23,8 +23,8 @@ class UserProfile(AbstractUser):
     career = models.IntegerField(default=0)
     career_detail = models.TextField() # could be modified
     introduction = models.TextField()
-    github_link = models.URLField(null=True)
-    linkedin_link = models.URLField(null=True)
+    github_link = models.URLField(blank=True,default='')
+    linkedin_link = models.URLField(blank=True,default='')
 
 class Post(models.Model):
     author = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
@@ -97,3 +97,10 @@ class ChatMessages(models.Model):
     read_or_not = models.BooleanField()
     created_at = models.DateTimeField(auto_now_add=True)
     chat_uuid = models.UUIDField(editable=False, unique=True, null=True)
+
+class Notifications(models.Model):
+    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE, null=True, related_name='user')
+    sender = models.ForeignKey(UserProfile, on_delete=models.CASCADE, null=True,related_name='prj_sender')
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    accept_or_not = models.BooleanField(null=True)
