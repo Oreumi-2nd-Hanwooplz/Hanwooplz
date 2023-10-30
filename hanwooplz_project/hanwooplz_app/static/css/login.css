@@ -47,7 +47,7 @@ body {
     font-size: 16px;
 }
 
-.login-container input[type="submit"] {
+.login-container input[type="submit"]{
     background: #333;
     color: #fff;
     border: none;
@@ -58,5 +58,19 @@ body {
 }
 
 .login-container input[type="submit"]:hover {
+    background: #555;
+}
+
+.login-container input[type="button"]{
+    background: #333;
+    color: #fff;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+.login-container input[type="button"]:hover {
     background: #555;
 }

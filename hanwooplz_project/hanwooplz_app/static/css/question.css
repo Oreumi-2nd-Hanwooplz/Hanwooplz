@@ -72,26 +72,39 @@
     border-radius: 5px;
     font-size: 14px;
     margin-right: 10px;
-    transition: background 0.3s;
+    transition: background-color 0.3s;
 }
 
 .action-buttons a:hover {
     background: #555;
 }
 
+.button_list_edit {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: row;
+    margin-top: 20px;
+}
+
+
+
 .button-black {
-    background: #333;
+    background-color: #333;
     color: #fff;
-    padding: 10px 20px;
     border: none;
-    border-radius: 5px;
+    padding: 6px 12px;
+    border-radius: 4px;
     font-size: 14px;
     cursor: pointer;
-    transition: background 0.3s;
-    display: block;
-    margin: 0 auto;
+    transition: background-color 0.3s;
+}
+
+.button-black:last-child {
+    margin-right: 0;
 }
 
 .button-black:hover {
-    background: #555;
+    background-color: #555;
 }
+

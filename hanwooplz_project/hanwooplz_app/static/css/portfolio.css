@@ -5,7 +5,7 @@
     height: 100vh;
 }
 
-.portfolio-container {
+.post-container {
     background: #f7f7f7;
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -16,7 +16,7 @@
     margin: 0 auto;
 }
 
-.portfolio-container:hover {
+.post-container:hover {
     transform: scale(1.05);
 }
 
@@ -86,26 +86,34 @@
     border-radius: 5px;
     font-size: 14px;
     margin-right: 10px;
-    transition: background 0.3s;
+    transition: background-color 0.3s;
 }
 
 .action-buttons a:hover {
     background: #555;
 }
 
-.button-black {
-    background: #333;
-    color: #fff;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    font-size: 14px;
-    cursor: pointer;
-    transition: background 0.3s;
-    display: block;
-    margin: 0 auto;
+.button_list_edit {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: row;
+    margin-top: 20px;
 }
 
+.button-black {
+    background-color: #333;
+    color: #fff;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+
+
 .button-black:hover {
-    background: #555;
+    background-color: #555;
 }
