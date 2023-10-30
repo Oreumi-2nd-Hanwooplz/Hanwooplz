@@ -24,6 +24,7 @@ urlpatterns = [
     path('execute-chatbot/', views.execute_chatbot, name='execute_chatbot'),
     path('send_application/', views.send_application, name='send_application'),
     path('get_notifications/', views.get_notifications, name='get_notifications'),
+    path('accept_reject_notification/', views.accept_reject_notification, name='accept_reject_notification'),
     
     # portfolio_views.py
     path("portfolio-list/", portfolio_views.portfolio_list, name="portfolio_list"),
