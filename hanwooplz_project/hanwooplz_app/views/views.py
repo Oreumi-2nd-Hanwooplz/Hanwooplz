@@ -207,7 +207,59 @@ def send_application(request):
 def get_notifications(request):
     if request.user.is_authenticated:
         notifications = Notifications.objects.filter(user=request.user).order_by('-created_at')
-        notification_list = [notification.content for notification in notifications]
-        return JsonResponse({'notifications': notification_list})
+
+        notifications_list = []
+        for notification in notifications:
+            postinfo = Post.objects.get(id=notification.post.id)
+            senderinfo = UserProfile.objects.get(id=notification.sender.id)
+            notifications_list.append({
+                'title': postinfo.title,
+                'sender': senderinfo.username,
+                'created_at': notification.created_at,
+                'accept_or_not': notification.accept_or_not,
+            })
+
+        context = {
+        "notifications_list": notifications_list,
+        }
+        return JsonResponse({'notifications': context})
     else:
         return JsonResponse({'notifications': []})
+    
+def accept_reject_notification(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            notification_id = data.get('notificationId')
+            result = data.get('result')
+
+            if notification_id is not None and result is not None:
+                # 알림을 처리하고 결과를 저장하거나 다른 작업 수행
+                try:
+                    notification = Notifications.objects.get(id=notification_id)
+                    if result == '수락':
+                        notification.accept_or_not = True
+                        notification.save()
+                    if result == '거절':
+                        notification.accept_or_not = False
+                        notification.save()
+                    # ...
+
+                    response_data = {'success': True}
+                    return JsonResponse(response_data)
+
+                except Notifications.DoesNotExist:
+                    response_data = {'success': False, 'error': '알림을 찾을 수 없습니다.'}
+                    return JsonResponse(response_data)
+
+            else:
+                response_data = {'success': False, 'error': '잘못된 데이터 요청입니다.'}
+                return JsonResponse(response_data)
+
+        except json.JSONDecodeError as e:
+            response_data = {'success': False, 'error': str(e)}
+            return JsonResponse(response_data)
+
+    else:
+        response_data = {'success': False, 'error': 'POST 요청이 필요합니다.'}
+        return JsonResponse(response_data)
