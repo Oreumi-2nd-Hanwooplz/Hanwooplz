@@ -1,0 +1,15 @@
+[Unit]
+Description=uWSGI service
+After=syslog.target
+
+[Service]
+ExecStart=/home/ubuntu/hanwooplz/hanwooplz_env/bin/uwsgi -i /home/ubuntu/hanwooplz/hanwooplz_project/hanwooplz_project/.config/uwsgi/hanwooplz_project.ini
+
+Restart=always
+KillSignal=SIGQUIT
+Type=notify
+StandardError=syslog
+NotifyAccess=all
+
+[Install]
+WantedBy=multi-user.target
