@@ -11,15 +11,14 @@
     <link rel="stylesheet" type="text/css" href="{% static 'css/chatbot.css' %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'css/posts_list.css' %}" />
     
-    <title>프로젝트 팀원 모집</title>
+    <title>{{ board_name }}</title>
 </head>
 
 <body>
     {% include 'nav.html' %}
-    <article style="padding: 100px;">
-        <div class="posts-list">
-            <h2>프로젝트 팀원 모집</h2>
-            {% comment %} <div class="aside"></div> {% endcomment %}
+    <main>
+        <div class="post-list">
+            <h2>{{ board_name }}</h2>
             <div class="select-group">
                 <form method="GET" action="" id="search-form">
                     <span class="select-text">SELECT</span>
@@ -33,41 +32,18 @@
                     <input type="submit" class="button-black" value="검색" />
                 </form>
             </div>
-            {% if project_lists %}
-            <table class="board-table">
-                <thead>
-                    <tr>
-                        <th>번호</th>
-                        <th>제목</th>
-                        <th>작성자</th>
-                        <th>작성 일시</th>
-                    </tr>
-                </thead>
-
-                <tbody>
-                    {% for post in project_lists %}
-                    <tr>
-                        <td>{{ post.post_project }}</td>
-                        <td>
-                            <a href="{% url 'hanwooplz_app:project' post.post_project %}">
-                                {{ post.title }}
-                            </a>
-                        </td>
-                        <td>
-                            <a href="{% url 'hanwooplz_app:myinfo' post.author_id %}">
-                                {{ post.author }}
-                            </a>
-                        </td>
-                        <td>{{ post.created_at }}</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-
-            <div class="page">
-                <span><a href="#!">◀ 이전</a></span>
-                <span><a href="#!">1</a></span>
-                <span><a href="#!">다음 ▶</a></span>
+            {% if post_lists %}
+            <div class="posts-grid">
+                {% for post in post_lists %}
+                <a class="post-tile" href="{% if is_portfolio %}{% url "hanwooplz_app:portfolio" post.post_portfolio %}{% else %}{% url "hanwooplz_app:project" post.post_project %}{% endif %}">
+                    <picture class="post-thumbnail">
+                        <img src="{% static 'img/'|add:post.tech_stacks.0|add:'.svg' %}" alt="썸네일">
+                    </picture>
+                    <h3 class="post-title">{{ post.title }}</h3>
+                    <p class="post-author">{{ post.author }}</p>
+                    <p class="post-create_at">{{ post.created_at }}</p>
+                </a>
+                {% endfor %}
             </div>
             {% else %}
             <div class="no-results">검색 결과가 없습니다.</div>
@@ -77,7 +53,7 @@
                     목록
                 </button>
                 {% if user.is_authenticated %}
-                <button class="button-black" onclick="window.location.href = '{% url "hanwooplz_app:write_question" %}'" style="cursor: pointer; transition: background-color 0.3s;">
+                <button class="button-black" onclick="window.location.href = '{% if is_portfolio %}{% url "hanwooplz_app:write_portfolio" %}{% else %}{% url "hanwooplz_app:write_project" %}{% endif %}'" style="cursor: pointer; transition: background-color 0.3s;">
                     글쓰기
                 </button>
                 {% else %}
@@ -87,7 +63,7 @@
                 {% endif %}
             </div>
         </div>
-    </article>
+    </main>
     {% include 'footer.html' %}
     {% include 'chatbot.html' %}
 </body>
