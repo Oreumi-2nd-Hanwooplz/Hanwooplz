@@ -39,15 +39,26 @@ def register(request):
 @login_required
 def edit_profile(request):
     if request.method == 'POST':
-        form = CustomUserChangeForm(request.POST, instance=request.user)
-        if form.is_valid():
+        form = UserProfileForm(request.POST, instance=request.user)
+        password_change_form = CustomPasswordChangeForm(request.user, request.POST)
+
+        if form.is_valid() and password_change_form.is_valid():
             form.save()
+            password_change_form.save()
+            update_session_auth_hash(request, request.user)  # This keeps the user logged in after password change
             user_id = request.user.id
-            return redirect(reverse('hanwooplz_app:myinfo', args=[user_id]))  # Change 'profile' to your actual profile URL name
+            messages.success(request, 'Your profile and password have been updated.')
+            return redirect(reverse('hanwooplz_app:myinfo', args=[user_id]))
     else:
-        form = CustomUserChangeForm(instance=request.user)
-    
-    return render(request, 'edit_profile.html', {'form': form})
+        # Form을 생성할 때 아이디와 이메일 필드를 비활성화
+        form = UserProfileForm(instance=request.user)
+        password_change_form = CustomPasswordChangeForm(request.user)
+
+        form.fields['username'].widget.attrs['readonly'] = True
+        form.fields['email'].widget.attrs['readonly'] = True
+
+    return render(request, 'edit_profile.html', {'form': form, 'password_change_form': password_change_form})
+
 
 class LoginView(View):
     def get(self, request):
