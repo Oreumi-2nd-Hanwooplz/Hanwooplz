@@ -5,10 +5,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="{% static 'css/myinfo.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/myinfo.css' %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'css/nav.css' %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'css/footer.css' %}" />
-    <link rel="stylesheet" type="text/css" href="{% static 'css/chatbot.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/chatbot.css' %}" />
     <style>
         h2 {
             padding-bottom: 10px;
@@ -104,13 +104,36 @@
             width: 70px;
             height: 30px;
         }
+
+        .grid-item {
+            background-color: #f5f5f5;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .grid-item a {
+            color: #333;
+            font-weight: bold;
+            text-decoration: none;
+            margin-bottom: 10px;
+        }
+
+        .grid-item p {
+            margin: 0;
+            color: #777;
+            font-size: 14px;
+        }
     </style>
     <title>내 정보</title>
 </head>
 
 <body>
     {% include 'nav.html' %}
-    <main class="flexbox-col">
+    <main class="flexbox-col" style="margin-top: 0; padding-bottom: 120px;">
         <div class="profile-top">
             <div class="profile-left">
                 <form class="profile-pic-upload" method="post" action="" enctype="multipart/form-data">
@@ -120,15 +143,18 @@
                 <div class="profile-pic-wrapper">
                     <a class="profile-pic"><img src="{{ user_profile.profile_picture.url }}" alt="">
                         {% if user_id == request.user.id %}
-                        <input type="submit" value="프로필 업데이트" onclick="window.location.href = '{% url "hanwooplz_app:edit_profile" %}'">
+                        <input type="submit" value="프로필 업데이트" onclick="window.location.href = '{% url "
+                            hanwooplz_app:edit_profile" %}'">
                         {% endif %}
                     </a>
                     {% if user.is_authenticated and user_id != request.user.id %}
-                    <button onclick="window.location.href = '{% url "hanwooplz_app:chat" 0 user_id %}'" style="display: block; margin: 0 auto; background-color: #0077b5; color: #fff; border: none; padding: 6px 12px; border-radius: 4px; font-size: 14px; cursor: pointer; transition: background-color 0.3s;">
+                    <button onclick="window.location.href = '{% url " hanwooplz_app:chat" 0 user_id %}'"
+                        style="display: block; margin: 0 auto; background-color: #0077b5; color: #fff; border: none; padding: 6px 12px; border-radius: 4px; font-size: 14px; cursor: pointer; transition: background-color 0.3s;">
                         채팅하기
                     </button>
                     {% elif not user.is_authenticated %}
-                    <button onclick="alert('로그인이 필요합니다.')" style="display: block; margin: 0 auto; background-color: #0077b5; color: #fff; border: none; padding: 6px 12px; border-radius: 4px; font-size: 14px; cursor: pointer; transition: background-color 0.3s;">
+                    <button onclick="alert('로그인이 필요합니다.')"
+                        style="display: block; margin: 0 auto; background-color: #0077b5; color: #fff; border: none; padding: 6px 12px; border-radius: 4px; font-size: 14px; cursor: pointer; transition: background-color 0.3s;">
                         채팅하기
                     </button>
                     {% endif %}
@@ -137,51 +163,70 @@
                 <div style="display: flex; align-items: center;">
                     {% if github_link %}
                     <div style="margin: 0 15px; margin-top: 40px;">
-                        <a href="{{ github_link }}" target="_blank" style="position: relative; display: block; width: 60px; height: 60px; border-radius: 50%; background-color: #fff; text-align: center; transition: 0.6s; box-shadow: 0 5px 4px rgba(0, 0, 0, 0.5);" onmouseover="this.style.transform='translate(0, -10%)'; this.style.backgroundColor='rgba(0, 0, 0, 0.829)';" onmouseout="this.style.transform='translate(0)'; this.style.backgroundColor='#fff';">
-                            <i class="fab fa-github" style="font-size: 30px; line-height: 60px; transition: 0.3s; color: #000;" onmouseover="this.style.color='#fff';" onmouseout="this.style.color='#000';"></i>
+                        <a href="{{ github_link }}" target="_blank"
+                            style="position: relative; display: block; width: 60px; height: 60px; border-radius: 50%; background-color: #fff; text-align: center; transition: 0.6s; box-shadow: 0 5px 4px rgba(0, 0, 0, 0.5);"
+                            onmouseover="this.style.transform='translate(0, -10%)'; this.style.backgroundColor='rgba(0, 0, 0, 0.829)';"
+                            onmouseout="this.style.transform='translate(0)'; this.style.backgroundColor='#fff';">
+                            <i class="fab fa-github"
+                                style="font-size: 30px; line-height: 60px; transition: 0.3s; color: #000;"
+                                onmouseover="this.style.color='#fff';" onmouseout="this.style.color='#000';"></i>
                         </a>
                     </div>
                     {% endif %}
                     {% if linkedin_link %}
                     <div style="margin: 0 15px; margin-top: 40px;">
-                        <a href="{{ linkedin_link }}" target="_blank" style="position: relative; display: block; width: 60px; height: 60px; border-radius: 50%; background-color: #fff; text-align: center; transition: 0.6s; box-shadow: 0 5px 4px rgba(0, 0, 0, 0.5);" onmouseover="this.style.transform='translate(0, -10%)'; this.style.backgroundColor='#E4405F';" onmouseout="this.style.transform='translate(0)'; this.style.backgroundColor='#fff';">
-                            <i class="fab fa-linkedin-in" style="font-size: 30px; line-height: 60px; transition: 0.3s; color: #000;" onmouseover="this.style.color='#fff';" onmouseout="this.style.color='#000';"></i>
+                        <a href="{{ linkedin_link }}" target="_blank"
+                            style="position: relative; display: block; width: 60px; height: 60px; border-radius: 50%; background-color: #fff; text-align: center; transition: 0.6s; box-shadow: 0 5px 4px rgba(0, 0, 0, 0.5);"
+                            onmouseover="this.style.transform='translate(0, -10%)'; this.style.backgroundColor='#E4405F';"
+                            onmouseout="this.style.transform='translate(0)'; this.style.backgroundColor='#fff';">
+                            <i class="fab fa-linkedin-in"
+                                style="font-size: 30px; line-height: 60px; transition: 0.3s; color: #000;"
+                                onmouseover="this.style.color='#fff';" onmouseout="this.style.color='#000';"></i>
                         </a>
                     </div>
                     {% endif %}
                 </div>
             </div>
-            <div class="profile-right" style="background-color: #fff; border-radius: 5px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); padding: 20px; margin: 20px 0; height: 250px; overflow: hidden;">
+            <div class="profile-right"
+                style="background-color: #fff; border-radius: 5px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); padding: 20px; margin: 20px 0; height: 250px; overflow: hidden;">
                 <div class="profile-right-top" style="text-align: center;">
                     <h3 class="profile-name" style="font-size: 24px; color: #333;">{{ username }}</h3>
                     <br>
-                    <h1 class="profile-name" style="font-size: 24px; margin-bottom: 10px; color: #333;">{{ full_name }}</h1>
+                    <h1 class="profile-name" style="font-size: 24px; margin-bottom: 10px; color: #333;">{{ full_name }}
+                    </h1>
                 </div>
                 <div class="profile-right-bottom" style="margin-top: 20px;">
                     <div class="profile-bio-wrapper" style="margin-top: 10px; overflow: hidden;">
                         <div style="margin-bottom: 10px;">
-                            <span class="profile-info" style="display: inline-block; margin-right: 10px; font-size: 16px; color: #333;">직무: {{ job }}</span>
-                            <span class="profile-info" style="display: inline-block; margin-right: 10px; font-size: 16px; color: #333;">
+                            <span class="profile-info"
+                                style="display: inline-block; margin-right: 10px; font-size: 16px; color: #333;">직무: {{
+                                job }}</span>
+                            <span class="profile-info"
+                                style="display: inline-block; margin-right: 10px; font-size: 16px; color: #333;">
                                 주요 기술 스택:
                                 {% if tech_stack|length > 1 %}
-                                    {{ tech_stack|join:", " }}
+                                {{ tech_stack|join:", " }}
                                 {% else %}
-                                    {{ tech_stack.0 }}
+                                {{ tech_stack.0 }}
                                 {% endif %}
                             </span>
                         </div>
                         <div style="margin-bottom: 10px;">
-                            <span class="profile-info" style="display: inline-block; margin-right: 10px; font-size: 16px; color: #333;">
+                            <span class="profile-info"
+                                style="display: inline-block; margin-right: 10px; font-size: 16px; color: #333;">
                                 {% if career == 0 %}
                                 경력: 신입
                                 {% else %}
                                 경력: {{ career }}년
                                 {% endif %}
                             </span>
-                            <span class="profile-info" style="display: inline-block; margin-right: 10px; font-size: 16px; color: #333;">상세 경력: {{ career_detail }}</span>
-                            <p class="profile-bio" style="font-size: 16px; margin-top: 20px; color: #555;">한 줄 소개: {{ introduction }}</p>
+                            <span class="profile-info"
+                                style="display: inline-block; margin-right: 10px; font-size: 16px; color: #333;">상세 경력:
+                                {{ career_detail }}</span>
+                            <p class="profile-bio" style="font-size: 16px; margin-top: 20px; color: #555;">한 줄 소개: {{
+                                introduction }}</p>
                         </div>
-                    </div>                    
+                    </div>
                 </div>
             </div>
         </div>
@@ -198,41 +243,26 @@
                 </div>
             </div>
             <div class="profile-page-inner" id="category-posts">
-                <table class="board-table">
-                    <thead>
-                        <tr>
-                            <th>번호</th>
-                            <th>제목</th>
-                            <th>글쓴이</th>
-                            <th>일시</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        
-                        {% if posts %}{% for post in posts %}
-                        <tr>
-                            <td>{{ post.post_id }}</td>
-                            <td>
-                                <a href="{% if post.category == 'portfolio' %}{% url 'hanwooplz_app:portfolio' post.post_id %}{% elif post.category == 'project' %}{% url 'hanwooplz_app:project' post.post_id %}{% elif post.category == 'question' %}{% url 'hanwooplz_app:question' post.post_id %}{% endif %}">
-                                    {{ post.title }}
-                                </a>
-                            </td>
-                            <td>
-                                <a>{{ username }}</a>
-                            </td>
-                            <td>{{ post.created_at }}</td>
-                        </tr>
-                        {% endfor %}
-                        {% else %}
-                            {% if selected_category == 'postportfolio' %}표시할 포트폴리오 게시물이 없습니다.
-                            {% elif selected_category == 'postproject' %}표시할 팀원모집 게시물이 없습니다.
-                            {% elif selected_category == 'postquestion' %}표시할 질의응답 게시물이 없습니다.
-                            {% endif %}
-                        {% endif %}
-                    </tbody>
-                </table>
+                {% if posts %}
+                {% for post in posts %}
+                <div class="grid-item">
+                    <a
+                        href="{% if post.category == 'portfolio' %}{% url 'hanwooplz_app:portfolio' post.post_id %}{% elif post.category == 'project' %}{% url 'hanwooplz_app:project' post.post_id %}{% elif post.category == 'question' %}{% url 'hanwooplz_app:question' post.post_id %}{% endif %}">
+                        <h2>{{ post.title }}</h2>
+                    </a>
+                    <p>글쓴이: {{ username }}</p>
+                    <p>게시일: {{ post.created_at }}</p>
+                </div>
+                {% endfor %}
+                {% else %}
+                {% if selected_category == 'postportfolio' %}<p>표시할 포트폴리오 게시물이 없습니다.</p>
+                {% elif selected_category == 'postproject' %}<p>표시할 팀원모집 게시물이 없습니다.</p>
+                {% elif selected_category == 'postquestion' %}<p>표시할 질의응답 게시물이 없습니다.</p>
+                {% endif %}
+                {% endif %}
             </div>
         </div>
+
     </main>
     {% include 'footer.html' %}
     {% include 'chatbot.html' %}
@@ -290,8 +320,8 @@
         }
     });
 
-    $(document).ready(function() {
-        $(".category-button").click(function(event) {
+    $(document).ready(function () {
+        $(".category-button").click(function (event) {
             event.preventDefault();
             var category = $(this).data("category");
             var form = $('<form action="" method="get"></form>');
