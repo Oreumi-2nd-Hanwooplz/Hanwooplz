@@ -29,9 +29,7 @@
                 <div class="ext_link">외부 링크: <a href="{{ ext_link }}">{{ ext_link }}</a></div>
                 <div class="content">{{ content }}</div>
                 {% if author_id != request.user.id %}
-                    <a href="#" onclick="sendApplicationAlert('{{ post_id }}')" style="display: block; margin: 0 auto; background-color: #0077b5; color: #fff; border: none; padding: 6px 12px; border-radius: 4px; font-size: 14px; cursor: pointer; transition: background-color 0.3s;">
-                        참가신청
-                    </a>
+                    <input type="hidden" id="authorId" value="{{ author_id }}">참가신청
                 {% endif %}
                 <div class="subsidiary">
                     <div class="card">
@@ -71,4 +69,24 @@
     var currentUser = "{{ request.user }}"
 </script>
 <script src="{% static 'js/comments.js' %}"></script>
+<script>
+    function sendApplicationAlert(postId) {
+        var authorId = document.getElementById("authorId").value;
+
+        // 여기에서 AJAX 요청을 보냅니다.
+        // jQuery를 사용하는 예시:
+        $.ajax({
+            url: '/send_application/',  // 실제 URL로 변경해야 합니다.
+            method: 'POST',
+            data: { postId: postId, authorId: authorId },
+            success: function (data) {
+                if (data.success) {
+                    alert("참가 요청을 보냈습니다.");
+                } else {
+                    alert("오류가 발생했습니다.");
+                }
+            }
+        });
+    }
+</script>
 </html>

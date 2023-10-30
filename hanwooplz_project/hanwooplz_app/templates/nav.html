@@ -20,7 +20,15 @@
             <li><a href="{% url 'hanwooplz_app:chat' 0 user.id %}">채팅</a></li>
             <li class="icon-item"><a href="{% url 'hanwooplz_app:myinfo' user.id %}"><i class="fas fa-user"></i></a>
             </li>
-            <li class="icon-item"><a href="#"><i class="fas fa-bell"></i></a></li>
+            <li class="icon-item">
+                <a id="notificationButton" href="#"><i class="fas fa-bell"></i></a>
+                <div class="notification-container" id="notificationContainer">
+                    <div id="notificationMessage" class="notification-message">
+                    <span id="notificationCount">0</span>
+                    </div>
+                </div>
+            </li>
+              
             <li class="icon-item"><a href="{% url 'hanwooplz_app:logout' %}"><i class="fas fa-sign-out-alt"></i></a>
             </li>
             {% else %}
@@ -37,4 +45,69 @@
             window.location.href = "{% url 'hanwooplz_app:main' %}";
         });
     });
+
+
+    document.addEventListener("DOMContentLoaded", async function () {
+        const notificationButton = document.getElementById("notificationButton");
+        const notificationMessage = document.getElementById("notificationMessage");
+        const notificationCount = document.getElementById("notificationCount");
+        let isNotificationVisible = false; // 알림 메시지 표시 여부
+    
+        // 페이지 로딩 시 알림 메시지와 알림 개수를 가져옵니다.
+        const initialNotification = await getInitialNotification();
+        const initialNotificationCount = initialNotification.length;
+    
+        // 알림 개수를 표시합니다.
+        notificationCount.textContent = initialNotificationCount;
+    
+        // 클릭 시 알림 메시지를 표시 또는 숨깁니다.
+        notificationButton.addEventListener("click", async function (e) {
+            e.stopPropagation();
+    
+            if (isNotificationVisible) {
+                notificationMessage.style.display = "none";
+            } else {
+                const response = await fetch('/get_notifications/'); // Django 뷰에서 알림을 가져오는 URL
+                const data = await response.json();
+                const notifications = data.notifications;
+
+                if (notifications.length > 0) {
+                    notificationContainer.style.display = "block";
+                    notificationList.innerHTML = "";
+                    notifications.forEach(notification => {
+                        const listItem = document.createElement("li");
+                        listItem.textContent = notification;
+                        notificationList.appendChild(listItem);
+                    });
+                } else {
+                    notificationMessage.style.display = "none";
+                }
+            }
+    
+            isNotificationVisible = !isNotificationVisible; // 표시 여부를 토글합니다.
+        });
+    });
+
+      // 서버에서 초기 알림 메시지를 가져오는 비동기 함수
+      function getInitialNotification() {
+        return new Promise((resolve) => {
+          setTimeout(() => {
+            resolve([2]); // 초기 알림 메시지가 없다고 가정
+          }, 1000);
+        });
+      }
+      
+      // 서버에서 새 알림 메시지를 가져오는 비동기 함수
+      function getNewNotification() {
+        return new Promise((resolve) => {
+          setTimeout(() => {
+            const newNotification = [
+              "게시물 1에서 사용자 A로부터 참가 신청이 왔습니다.",
+              "게시물 2에서 사용자 B로부터 참가 신청이 왔습니다.",
+            ];
+            resolve(newNotification);
+          }, 1000);
+        });
+      }
+      
 </script>
