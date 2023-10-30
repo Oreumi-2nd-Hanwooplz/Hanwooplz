@@ -8,8 +8,6 @@
         <link rel="stylesheet" type="text/css" href="{% static 'css/chatbot.css' %}" />
         <link rel="stylesheet" type="text/css" href="{% static 'css/index.css' %}" />
         <link rel="stylesheet" type="text/css" href="{% static 'css/nav.css' %}" />
-        <link rel="stylesheet" type="text/css" href="{% static 'css/post_list.css' %}" />
-        <link rel="stylesheet" type="text/css" href="{% static 'css/portfolio.css' %}" />
         <link rel="stylesheet" type="text/css" href="{% static 'css/footer.css' %}" />
         <title>저기압일땐 고기앞으로</title>
 </head>
@@ -21,7 +19,7 @@
                         <header>
                                 <div id="text-welcome">
                                         <h1>Final Project</h1>
-                                        <p>Hanwooplz</p>
+                                        <p style="color: black;">Hanwooplz</p>
                                 </div>
                         </header>
                 </section>
@@ -31,32 +29,32 @@
                                 <a href="" class="project-tile" target="_blank">
                                         <img src='https://www.sanoee.co.kr/shopimages/isanoee/0460010000993.jpg?1626754270'
                                                 alt="">
-                                        <p>이지환</p>
+                                        <p style="color: white;">이지환</p>
                                 </a>
                                 <a href="" class="project-tile" target="_blank">
                                         <img src="https://thehelpfultipper.com/wp-content/uploads/2022/05/loading-dot-animation-css.png"
                                                 alt="">
-                                        <p>양승조</p>
+                                        <p style="color: white;">양승조</p>
                                 </a>
                                 <a href="" class="project-tile" target="_blank">
                                         <img src='https://www.sanoee.co.kr/shopimages/isanoee/0460010000993.jpg?1626754270'
                                                 alt="">
-                                        <p>최성진</p>
+                                        <p style="color: white;">최성진</p>
                                 </a>
                                 <a href="" class="project-tile" target="_blank">
                                         <img src='https://www.sanoee.co.kr/shopimages/isanoee/0460010000993.jpg?1626754270'
                                                 alt="">
-                                        <p>최기용</p>
+                                        <p style="color: white;">최기용</p>
                                 </a>
                                 <a href="" class="project-tile" target="_blank">
                                         <img src="https://thehelpfultipper.com/wp-content/uploads/2022/03/beating-heart-css-html-project.jpg"
                                                 alt="">
-                                        <p>이민호</p>
+                                        <p style="color: white;">이민호</p>
                                 </a>
                                 <a href="https://github.com/byunduhyeon/" class="project-tile" target="_blank">
                                         <img src='https://www.sanoee.co.kr/shopimages/isanoee/0460010000993.jpg?1626754270'
                                                 alt="">
-                                        <p>변두현</p>
+                                        <p style="color: white;">변두현</p>
                                 </a>
                         </div>
                         <a href="https://github.com/hwan3526/hanwooplz" target="_blank" class="btn">
@@ -84,166 +82,19 @@
                                 </a>
                         </div>
                 </section>
-                <section id="contact" class="main-container">
+                <section id="portfolio-section" class="main-container">
                         <div id="contact-links" class="projects-grid">
                                 <h1>포트폴리오</h1>
-                                <div class="wrap">
-                                        <div class="tile">
-                                                <!-- 예제 -->
-                                                <img
-                                                        src='https://www.sanoee.co.kr/shopimages/isanoee/0460010000993.jpg?1626754270' />
-                                                <div class="text">
-                                                        <h1>한우</h1>
-                                                        <h2 class="animate-text">++등급</h2>
-                                                        <p class="animate-text">살치살 부채살 안심 꽃등심
-                                                                안창살 갈비살 채끝살</p>
-                                                </div>
-                                        </div>
-                                        <!-- 예제 -->
-                                        <div class="portfolio-container">
-                                                <h3 class="title">{{ title }}</h3>
-                                                <div class="period">프로젝트 기간: {{ start_date }}~{{ end_date }}</div>
-                                                <div class="members">총 참여인원: {{ members }} 명</div>
-                                                <div class="tech-stack-conatiner">
-                                                        {% for tech_stack in tech_stacks %}
-                                                        <div class="tech-stack">#{{ tech_stack }} </div>
-                                                        {% endfor %}
-                                                </div>
-                                                <div class="ext_link">외부 링크: {{ ext_link }}</div>
-                                                <div class="content">{{ content }}</div>
-                                                <div class="subsidiary">
-                                                        <div class="card">
-                                                                <p><strong>{{ author }}</strong> 님</p>
-                                                                <p>{{ created_at }}</p>
-                                                        </div>
-                                                </div>
-                                                <div class="action-buttons">
-                                                        <a href="">댓글</a>
-                                                </div>
-                                                <br>
-                                                <a href="{% url 'hanwooplz_app:portfolio_list' %}">목록으로</a>
-                                        </div>
-                                </div>
-                </section>
-                <section id="contact" class="main-container">
-                        <div id="contact-links" class="projects-grid">
-                                <h1 id="myList">팀원모집</h1>
-                                <div class="box">
-                                        <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/t1.PNG?raw=true"
-                                                        alt=""></a>
-                                        <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/t2.PNG?raw=true"
-                                                        alt=""></a>
-                                        <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/t3.PNG?raw=true"
-                                                        alt=""></a>
-                                        <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/t4.PNG?raw=true"
-                                                        alt=""></a>
-                                        <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/t5.PNG?raw=true"
-                                                        alt=""></a>
-                                        <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/t6.PNG?raw=true"
-                                                        alt=""></a>
-                                        <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/tv1.PNG?raw=true"
-                                                        alt=""></a>
-                                        <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/tv2.PNG?raw=true"
-                                                        alt=""></a>
-                                        <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/tv3.PNG?raw=true"
-                                                        alt=""></a>
-                                        <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/tv4.PNG?raw=true"
-                                                        alt=""></a>
-                                        <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/tv5.PNG?raw=true"
-                                                        alt=""></a>
-                                        <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/tv6.PNG?raw=true"
-                                                        alt=""></a>
-                                        <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/tv7.PNG?raw=true"
-                                                        alt=""></a>
-                                        <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/tv8.PNG?raw=true"
-                                                        alt=""></a>
-                                        <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/tv9.PNG?raw=true"
-                                                        alt=""></a>
-                                        <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/tv10.PNG?raw=true"
-                                                        alt=""></a>
-                                        <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/tv11.PNG?raw=true"
-                                                        alt=""></a>
-                                        <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/tv12.PNG?raw=true"
-                                                        alt=""></a>
-                                </div>
                         </div>
                 </section>
-                <section id="contact" class="main-container">
+                <section id="project-section" class="main-container">
                         <div id="contact-links" class="projects-grid">
-                                <div class="question-list" style="width: 1200px; margin: 0 auto;">
-                                        <h2 style="padding-bottom: 10px; border-bottom: 1px solid gray;">질의응답</h2>
-
-                                        <div class="aside"
-                                                style="width: 300px; float: left; padding-bottom: 20px; color: black;">
-                                        </div>
-
-                                        <div class="select-grup" style="width: auto; float: right; text-align: right;">
-                                                <form action="">
-                                                        <span class="select-text"
-                                                                style="color: gray; font-size: 120%; font-weight: bolder; padding: 10px;">SELECT</span>
-                                                        <span>
-                                                                <select class="select-dropbox"
-                                                                        style="height: 25px; font-size: 16px; color: black">
-                                                                        <option value="s-title">제목</option>
-                                                                        <option value="s-writer">글쓴이</option>
-                                                                        <option value="s-">일시</option>
-                                                                </select>
-                                                        </span>
-                                                        <span>
-                                                                <input type="text" name="search" class="select-textbox"
-                                                                        style="height: 20px;">
-                                                                <input type="submit" class="button-black" value="검색"
-                                                                        style="border: 0px; border-radius: 5px; background-color: rgb(46, 46, 46); color: rgb(255, 255, 255); font: 12px 굴림; font-weight: bold; width: 70px; height: 30px;">
-                                                        </span>
-                                                </form>
-                                        </div>
-
-                                        <table class="board-table" style="width: 100%; border-spacing: 0;">
-                                                <thead>
-                                                        <tr style="color: black;">
-                                                                <th>번호</th>
-                                                                <th>제목</th>
-                                                                <th>글쓴이</th>
-                                                                <th>일시</th>
-                                                                <th>조회수</th>
-                                                        </tr>
-                                                </thead>
-
-                                                <tbody>
-                                                        {% for post in question_lists %}
-                                                        <tr>
-                                                                <td>{{ post.post_question }}</td>
-                                                                <td>
-                                                                        <a
-                                                                                href="{% url 'hanwooplz_app:question' post.post_question %}">
-                                                                                {{ post.title }}
-                                                                        </a>
-                                                                </td>
-                                                                <td>
-                                                                        <a
-                                                                                href="{% url 'hanwooplz_app:myinfo' post.author_id %}">
-                                                                                {{ post.author}}
-                                                                        </a>
-                                                                </td>
-                                                                <td>{{ post.created_at }}</td>
-                                                        </tr>
-                                                </tbody>
-                                                {% endfor %}
-                                        </table>
-
-                                        <div class="page" style="text-align: center; padding: 20px;">
-                                                <span><a href="#!">◀ 이전</a></span>
-                                                <span><a href="#!">1</a></span>
-                                                <span><a href="#!">다음 ▶</a></span>
-                                        </div>
-
-                                        <div class="button" style="float: right; text-align: center;">
-                                                <span><input type="button" class="button-gray" value="목록"
-                                                                style="border: 0px; border-radius: 5px; background-color: gray; color: white; font: 12px 굴림; font-weight: bold; width: 60px; height: 30px;"></span>
-                                                <span><input type="button" class="button-black" value="글쓰기"
-                                                                style="border: 0px; border-radius: 5px; background-color: rgb(46, 46, 46); color: white; font: 12px 굴림; font-weight: bold; width: 70px; height: 30px;"></span>
-                                        </div>
-                                </div>
+                                <h1>팀원모집</h1>
+                        </div>
+                </section>
+                <section id="question-section" class="main-container">
+                        <div id="contact-links" class="projects-grid">
+                                <h1>질의응답</h1>
                         </div>
 
                 </section>
@@ -253,5 +104,31 @@
 </body>
 <script src="{% static 'js/chatbot.js' %}"></script>
 <script src="{% static 'js/index.js' %}"></script>
+<script>
+        $(document).ready(function () {
+                // 포트폴리오 섹션 로드
+                $.get("{% url 'hanwooplz_app:portfolio_list' %}", function (data) {
+                        $("#portfolio-section").html(data);
+                        $("#portfolio-section .navbar").remove();
+                        $("#portfolio-section .footer").remove();
+                        $("#portfolio-section .container-fluid").remove();
+                });
+                // 팀원모집 섹션 로드
+                $.get("{% url 'hanwooplz_app:project_list' %}", function (data) {
+                        $("#project-section").html(data);
+                        $("#project-section .navbar").remove();
+                        $("#project-section .footer").remove();
+                        $("#project-section .container-fluid").remove();
+                });
+
+                // 질의응답 섹션 로드
+                $.get("{% url 'hanwooplz_app:question_list' %}", function (data) {
+                        $("#question-section").html(data);
+                        $("#question-section .navbar").remove();
+                        $("#question-section .footer").remove();
+                        $("#question-section .container-fluid").remove();
+                });
+        });
+</script>
 
 </html>
