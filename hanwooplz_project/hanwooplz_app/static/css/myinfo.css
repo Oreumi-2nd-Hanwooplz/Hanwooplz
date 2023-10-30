@@ -332,7 +332,7 @@ fieldset {
     position: relative;
     display: grid;
     align-items: center;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
     grid-column-gap: 1em;
     grid-row-gap: 1em;
 }
@@ -552,7 +552,7 @@ body.light .profile-page-block a {
     }
 
     .profile-page-inner {
-        grid-template-columns: 1fr;
+        grid-template-rows: 1fr;
     }
 
     .profile-page-block a {
