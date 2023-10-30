@@ -2,6 +2,7 @@ from pyexpat.errors import messages
 from django.shortcuts import render, redirect, get_object_or_404, reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
+from django.views.decorators.csrf import ensure_csrf_cookie
 from django.views import View
 from django.http import HttpResponse
 from django.http import JsonResponse
@@ -200,16 +201,28 @@ def execute_chatbot(request):
     return HttpResponse("Invalid Request")
 
 
+@login_required
+@ensure_csrf_cookie
 def send_application(request):
     if request.method == 'POST':
-        # 클라이언트로부터 전달받은 데이터 처리
-        post_id = request.POST.get('postId')
-        author_id = request.POST.get('authorId')
+        post_id = request.POST.get('post_id')  # 게시물 ID를 받아옵니다.
+        author_id = request.POST.get('author_id')  # 게시물 작성자 ID를 받아옵니다.
+        sender_id = request.user.id  # 요청을 보낸 사용자의 ID
 
-        # 실제로 여기서 게시물 작성자에게 참가 요청을 보내는 로직을 추가해야 합니다.
+        try:
+            post = Post.objects.get(pk=post_id)
+            recipient = UserProfile.objects.get(pk=author_id)
+            sender = UserProfile.objects.get(pk=sender_id)
 
-        # 요청이 성공적으로 처리되었다면 success를 true로 설정
-        success = True
+            # 알림 메시지 생성
+            notification = Notifications(user=recipient, sender=sender, post=post, accept_or_not=None, )
+            notification.save()
+
+            # 요청이 성공적으로 처리되었다면 success를 true로 설정
+            success = True
+        except (Post.DoesNotExist, UserProfile.DoesNotExist) as e:
+            # 필요한 객체를 찾을 수 없는 경우
+            success = False
     else:
         success = False
 

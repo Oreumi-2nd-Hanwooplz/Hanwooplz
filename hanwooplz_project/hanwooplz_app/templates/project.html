@@ -29,8 +29,10 @@
                 <div class="ext_link">외부 링크: <a href="{{ ext_link }}">{{ ext_link }}</a></div>
                 <div class="content">{{ content }}</div>
                 {% if author_id != request.user.id %}
-                    <input type="hidden" id="authorId" value="{{ author_id }}">참가신청
+                    <input type="hidden" name="csrfmiddlewaretoken" value="{% csrf_token %}">
+                    <button id="joinProjectButton" data-recipient-id="{{ author_id }}" data-post-id="{{ post_id }}">참가신청</button>
                 {% endif %}
+
                 <div class="subsidiary">
                     <div class="card">
                         작성자: <a href="{% url 'hanwooplz_app:myinfo' author_id %}"><strong>{{ author }}</strong> 님</a>
@@ -70,23 +72,47 @@
 </script>
 <script src="{% static 'js/comments.js' %}"></script>
 <script>
-    function sendApplicationAlert(postId) {
-        var authorId = document.getElementById("authorId").value;
 
-        // 여기에서 AJAX 요청을 보냅니다.
-        // jQuery를 사용하는 예시:
-        $.ajax({
-            url: '/send_application/',  // 실제 URL로 변경해야 합니다.
-            method: 'POST',
-            data: { postId: postId, authorId: authorId },
-            success: function (data) {
-                if (data.success) {
-                    alert("참가 요청을 보냈습니다.");
-                } else {
-                    alert("오류가 발생했습니다.");
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                // 이름으로 시작하는 쿠키가 있는지 확인
+                if (cookie.substring(0, name.length + 1) === name + '=') {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
                 }
             }
+        }
+        return cookieValue;
+    }
+
+    var joinButton = document.getElementById('joinProjectButton');
+    joinButton.addEventListener('click', function () {
+        var recipientId = joinButton.getAttribute('data-recipient-id');
+        var postId = joinButton.getAttribute('data-post-id');
+        sendNotification(recipientId, postId);
+    });
+
+    async function sendNotification(recipientId, postId) {
+        const csrftoken = getCookie('csrftoken');
+        const response = await fetch('/send_application/', {
+            method: 'POST',
+            body: JSON.stringify({ recipient_id: recipientId, post_id: postId }),
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrftoken
+            }
         });
+        const data = await response.json();
+        if (data.success) {
+            // 알림이 성공적으로 전송되었을 때 수행할 동작을 추가하세요.
+            alert('알림이 성공적으로 전송되었습니다.');
+        } else {
+            alert('알림 전송 중 오류가 발생했습니다.');
+        }
     }
 </script>
 </html>
