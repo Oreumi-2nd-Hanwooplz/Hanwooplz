@@ -7,106 +7,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="{% static 'css/nav.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/question.css' %}">
-    <style>
-        .main-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-
-        .question-container {
-            background: #f7f7f7;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            max-width: 400px;
-            text-align: center;
-            transition: transform 0.3s;
-            margin: 0 auto;
-        }
-
-        .question-container:hover {
-            transform: scale(1.05);
-        }
-
-        .title {
-            font-size: 24px;
-            color: #3498db;
-        }
-
-        .keyword-conatiner {
-            margin: 10px 0;
-        }
-
-        .keyword {
-            background: #3498db;
-            color: #fff;
-            border-radius: 5px;
-            padding: 5px 10px;
-            margin-right: 5px;
-            font-size: 14px;
-            display: inline-block;
-        }
-
-        .content {
-            font-size: 16px;
-            margin-top: 20px;
-            color: #333;
-        }
-
-        .subsidiary {
-            display: flex;
-            justify-content: center;
-            font-size: 12px;
-            color: #555;
-            margin-top: 20px;
-        }
-
-        .card {
-            background: #fff;
-            border-radius: 5px;
-            padding: 10px;
-            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-        }
-
-        .action-buttons {
-            margin-top: 20px;
-        }
-
-        .action-buttons a {
-            text-decoration: none;
-            background: #3498db;
-            color: #fff;
-            padding: 10px 20px;
-            border-radius: 5px;
-            font-size: 14px;
-            margin-right: 10px;
-            transition: background 0.3s;
-        }
-
-        .action-buttons a:hover {
-            background: #555;
-        }
-
-        .button-black {
-            background: #333;
-            color: #fff;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            font-size: 14px;
-            cursor: pointer;
-            transition: background 0.3s;
-            display: block;
-            margin: 0 auto;
-        }
-
-        .button-black:hover {
-            background: #555;
-        }
-    </style>
-    <title>Question</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/chatbot.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/footer.css' %}">
+    <title>{{ title }}</title>
 </head>
 
 <body>
@@ -124,7 +27,7 @@
                 <div class="subsidiary">
                     <div class="card">
                         작성자: <a href="{% url 'hanwooplz_app:myinfo' author_id %}"><strong>{{ author }}</strong> 님</a>
-                        {% if user.is_authenticated and user_id != request.user.id %}
+                        {% if user.is_authenticated and author_id != request.user.id %}
                         <button onclick="window.location.href = '{% url "hanwooplz_app:chat" 0 author_id %}'" style="display: block; margin: 0 auto; background-color: #0077b5; color: #fff; border: none; padding: 6px 12px; border-radius: 4px; font-size: 14px; cursor: pointer; transition: background-color 0.3s;">
                             채팅하기
                         </button>
@@ -143,15 +46,19 @@
                     <br>
                     <p>{{ like }} 회</p>
                 </div>
-                <a href="{% url 'hanwooplz_app:question_list' %}">목록으로</a>
             </div>
-            {% if author_id == request.user.id %}
-            <button class="button-black" onclick="window.location.href = '{% url "hanwooplz_app:write_question" post_question_id %}'">수정하기</button>
-            {% endif %}
+            <div class="button_list_edit">
+                <button class="button-black" onclick="window.location.href = '{% url 'hanwooplz_app:question_list' %}'">목록으로</button>
+                {% if author_id == request.user.id %}
+                <button class="button-black" onclick="window.location.href = '{% url "hanwooplz_app:write_question" post_question_id %}'">수정하기</button>
+                {% endif %}
+            <div/>
             {% include "comment.html" %}
         </main>
 
     </div>
+    {% include 'footer.html' %}
+    {% include 'chatbot.html' %}
 
 </body>
 <script>

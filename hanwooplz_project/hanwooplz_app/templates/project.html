@@ -5,14 +5,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="{% static 'css/nav.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'css/question.css' %}">
-    <title>Portfolio</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/portfolio.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/chatbot.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/footer.css' %}">
+    <title>{{ title }}</title>
 </head>
 <body>
     {% include "nav.html" %}
     <div class="main-container">
         <main>
-            <div class="project-container">
+            <div class="post-container">
                 <picture style="width: 100%; height: 300px;">
                     <img src="{% static 'img/'|add:tech_stacks.0|add:'.svg' %}" alt="썸네일" style="height: 100%; width: 100%; object-fit: cover;">
                 </picture>
@@ -24,7 +26,7 @@
                         <div class="tech-stack">#{{ tech_stack }} </div>
                     {% endfor %}
                 </div>
-                <a class="ext_link" target="blank" href="{{ ext_link }}">외부 링크: {{ ext_link }}</a>
+                <div class="ext_link">외부 링크: <a href="{{ ext_link }}">{{ ext_link }}</a></div>
                 <div class="content">{{ content }}</div>
                 {% if author_id != request.user.id %}
                     <a href="#" onclick="sendApplicationAlert('{{ post_id }}')" style="display: block; margin: 0 auto; background-color: #0077b5; color: #fff; border: none; padding: 6px 12px; border-radius: 4px; font-size: 14px; cursor: pointer; transition: background-color 0.3s;">
@@ -34,7 +36,7 @@
                 <div class="subsidiary">
                     <div class="card">
                         작성자: <a href="{% url 'hanwooplz_app:myinfo' author_id %}"><strong>{{ author }}</strong> 님</a>
-                        {% if user.is_authenticated and user_id != request.user.id %}
+                        {% if user.is_authenticated and author_id != request.user.id %}
                         <button onclick="window.location.href = '{% url "hanwooplz_app:chat" 0 author_id %}'" style="display: block; margin: 0 auto; background-color: #0077b5; color: #fff; border: none; padding: 6px 12px; border-radius: 4px; font-size: 14px; cursor: pointer; transition: background-color 0.3s;">
                             채팅하기
                         </button>
@@ -49,15 +51,19 @@
                 <div class="action-buttons">
                     <a href="">댓글</a>
                 </div>
-                <a href="{% url 'hanwooplz_app:project_list' %}">목록으로</a>
             </div>
-            {% if author_id == request.user.id %}
-            <button class="button-black" onclick="window.location.href = '{% url "hanwooplz_app:write_project" post_project_id %}'">수정하기</button>
-            {% endif %}
+            <div class="button_list_edit">
+                <button class="button-black" onclick="window.location.href = '{% url 'hanwooplz_app:project_list' %}'">목록으로</button>
+                {% if author_id == request.user.id %}
+                <button class="button-black" onclick="window.location.href = '{% url "hanwooplz_app:write_project" post_project_id %}'">수정하기</button>
+                {% endif %}
+            </div>
             {% include "comment.html" %}
         </main>
 
     </div>
+    {% include 'footer.html' %}
+    {% include 'chatbot.html' %}
     
 </body>
 <script>
