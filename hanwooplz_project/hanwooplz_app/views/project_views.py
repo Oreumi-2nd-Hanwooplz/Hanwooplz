@@ -31,6 +31,7 @@ def project_list(request, page_num=1):
                     'author_id': post.author_id,
                     'post_project': project.id,
                     'author': author.username,
+                    'tech_stacks': project.tech_stack,
                 })
             elif search_type == "writer" and (query in author.username):
                 project_lists.append({
@@ -39,6 +40,7 @@ def project_list(request, page_num=1):
                     'author_id': post.author_id,
                     'post_project': project.id,
                     'author': author.username,
+                    'tech_stacks': project.tech_stack,
                 })
         else:
             # 검색 쿼리가 없는 경우, 모든 포트폴리오 추가
@@ -48,10 +50,13 @@ def project_list(request, page_num=1):
                 'author_id': post.author_id,
                 'post_project': project.id,
                 'author': author.username,
+                'tech_stacks': project.tech_stack,
             })
 
     context = {
-        "project_lists": project_lists,
+        "post_lists": project_lists,
+        "board_name": "프로젝트 팀원 모집",
+        "is_portfolio": False,
     }
 
     return render(request, 'project_list.html', context)

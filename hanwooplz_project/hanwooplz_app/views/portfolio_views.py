@@ -31,6 +31,7 @@ def portfolio_list(request, page_num=1):
                     'author_id': post.author_id,
                     'post_portfolio': portfolio.id,
                     'author': author.username,
+                    'tech_stacks': portfolio.tech_stack,
                 })
             elif search_type == "writer" and (query in author.username):
                 portfolio_lists.append({
@@ -39,6 +40,7 @@ def portfolio_list(request, page_num=1):
                     'author_id': post.author_id,
                     'post_portfolio': portfolio.id,
                     'author': author.username,
+                    'tech_stacks': portfolio.tech_stack,
                 })
         else:
             # 검색 쿼리가 없는 경우, 모든 포트폴리오 추가
@@ -48,13 +50,16 @@ def portfolio_list(request, page_num=1):
                 'author_id': post.author_id,
                 'post_portfolio': portfolio.id,
                 'author': author.username,
+                'tech_stacks': portfolio.tech_stack,
             })
 
     context = {
-        "portfolio_lists": portfolio_lists,
+        "post_lists": portfolio_lists,
+        "board_name": "포트폴리오",
+        "is_portfolio": True,
     }
 
-    return render(request, 'portfolio_list.html', context)
+    return render(request, 'project_list.html', context)
 
 
 
