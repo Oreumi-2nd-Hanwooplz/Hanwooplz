@@ -19,16 +19,17 @@ if (statusOption) {
                 }
             });
     });
+
+    document.addEventListener("DOMContentLoaded", function () {
+        var statusOption = document.getElementById("status-select");
+        if (projectStatus === "0") {
+            statusOption.selectedIndex = 2;
+        } else if (projectStatus === "1") {
+            statusOption.selectedIndex = 0;
+        } else {
+            statusOption.selectedIndex = 1;
+        }
+    })
 }
 
 
-document.addEventListener("DOMContentLoaded", function () {
-    var statusOption = document.getElementById("status-select");
-    if (projectStatus === "0") {
-        statusOption.selectedIndex = 2;
-    } else if (projectStatus === "1") {
-        statusOption.selectedIndex = 0;
-    } else {
-        statusOption.selectedIndex = 1;
-    }
-})
