@@ -145,7 +145,7 @@ $(document).ready(function () {
     setTimeout(function () {
         $("#chatBox").removeClass("closed");
         $("#closeButton").show();
-    }, 5000);
+    }, 0);
     document.getElementById('micIcon').className = "fas fa-microphone";
 
 });

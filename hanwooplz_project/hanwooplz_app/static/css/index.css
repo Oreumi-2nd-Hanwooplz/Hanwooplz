@@ -1,7 +1,7 @@
 :root {
-    --primary: #141414;
+    --primary: #ffffff;
     --light: #F3F3F3;
-    --dark: #686868;
+    --dark: #ffffff;
 }
 
 
@@ -14,7 +14,6 @@ html {
 body {
     margin: 0;
     padding: 0;
-    background: linear-gradient(62deg, #3a3d40 0%, #181719 100%);
     font-family: Helvetica, Arial, sans-serif;
     color: white;
 }
@@ -98,10 +97,42 @@ h1+p {
     gap: 2em;
 }
 
+.project-link {
+    width: 300px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    text-align: center;
+    transition: transform 0.3s;
+    position: relative;
+}
+
+.project-link img {
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 10px;
+}
+
+.project-link:hover {
+    transform: scale(1.1);
+}
+
+.project-link p {
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.project-link:hover p {
+    opacity: 1;
+}
+
 .project-tile {
     text-decoration: none;
     color: inherit;
     border: 1px solid #3a3d40;
+    transition: transform 0.3s;
+    position: relative;
 }
 
 .project-tile img {
@@ -115,27 +146,32 @@ h1+p {
     margin: 0;
     padding: 1rem 2rem;
     font-size: 1.2rem;
-    background: linear-gradient(62deg, #3a3d40 0%, #181719 100%);
+    background: black;
 }
 
 .project-tile p::before {
-    content: '< ';
     margin-right: 5px;
     font-size: 0.9rem;
     visibility: hidden;
 }
 
 .project-tile p::after {
-    content: ' / >';
     margin-left: 5px;
     font-size: 0.9rem;
     visibility: hidden;
 }
 
+.project-tile:hover {
+    transform: scale(1.1);
+}
+
+.project-tile:hover p {
+    opacity: 1;
+}
+
 .project-tile:hover p::before,
 .project-tile:hover p::after {
     visibility: visible;
-    color: #cd7f32;
 }
 
 .btn {
