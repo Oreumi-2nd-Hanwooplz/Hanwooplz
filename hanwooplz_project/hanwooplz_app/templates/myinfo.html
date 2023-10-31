@@ -147,7 +147,7 @@
                         {% endif %}
                     </a>
                     {% if user.is_authenticated and user_id != request.user.id %}
-                    <button onclick="window.location.href = '{% url " hanwooplz_app:chat" 0 user_id %}'"
+                    <button onclick="window.location.href = '{% url "hanwooplz_app:chat" 0 user_id %}'"
                         style="display: block; margin: 0 auto; background-color: #0077b5; color: #fff; border: none; padding: 6px 12px; border-radius: 4px; font-size: 14px; cursor: pointer; transition: background-color 0.3s;">
                         채팅하기
                     </button>
@@ -198,7 +198,10 @@
                     <div class="profile-bio-wrapper" style="margin-top: 10px; overflow: hidden;">
                         <div style="margin-bottom: 10px;">
                             <span class="profile-info"
-                                style="display: inline-block; margin-right: 10px; font-size: 16px; color: #333;">직무: {{ job }}</span>
+                                style="display: inline-block; margin-right: 10px; font-size: 16px; color: #333;">
+                                직무: {{ job }}
+                            </span>
+
                             <span class="profile-info"
                                 style="display: inline-block; margin-right: 10px; font-size: 16px; color: #333;">
                                 주요 기술 스택:
@@ -219,8 +222,12 @@
                                 {% endif %}
                             </span>
                             <span class="profile-info"
-                                style="display: inline-block; margin-right: 10px; font-size: 16px; color: #333;">상세 경력: {{ career_detail }}</span>
-                            <p class="profile-bio" style="font-size: 16px; margin-top: 20px; color: #555;">한 줄 소개: {{ introduction }}</p>
+                                style="display: inline-block; margin-right: 10px; font-size: 16px; color: #333;">상세 경력:
+                                {{ career_detail }}</span>
+                            <p class="profile-bio" style="font-size: 16px; margin-top: 20px; color: #555;">
+                                한 줄 소개: {{ introduction }}
+                            </p>
+
                         </div>
                     </div>
                 </div>

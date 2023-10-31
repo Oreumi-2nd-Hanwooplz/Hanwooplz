@@ -208,13 +208,13 @@ def execute_chatbot(request):
     
     return HttpResponse("Invalid Request")
 
-
 @login_required
 @ensure_csrf_cookie
 def send_application(request):
     if request.method == 'POST':
-        post_id = request.POST.get('post_id')  # 게시물 ID를 받아옵니다.
-        author_id = request.POST.get('author_id')  # 게시물 작성자 ID를 받아옵니다.
+        data = json.loads(request.body.decode('utf-8'))
+        post_id = data.get('post_id')
+        author_id = data.get('recipient_id')
         sender_id = request.user.id  # 요청을 보낸 사용자의 ID
 
         try:
@@ -222,12 +222,14 @@ def send_application(request):
             recipient = UserProfile.objects.get(pk=author_id)
             sender = UserProfile.objects.get(pk=sender_id)
 
-            # 알림 메시지 생성
-            notification = Notifications(user=recipient, sender=sender, post=post, accept_or_not=None, )
-            notification.save()
-
-            # 요청이 성공적으로 처리되었다면 success를 true로 설정
-            success = True
+            # 중복 레코드 방지를 위해 먼저 확인
+            if not Notifications.objects.filter(user=recipient, sender=sender, post=post).exists():
+                # 중복 레코드가 없을 때만 알림 메시지 생성
+                notification = Notifications(user=recipient, sender=sender, post=post, accept_or_not=None)
+                notification.save()
+                success = True
+            else:
+                success = False  # 이미 존재하는 레코드라면 중복 처리
         except (Post.DoesNotExist, UserProfile.DoesNotExist) as e:
             # 필요한 객체를 찾을 수 없는 경우
             success = False
@@ -257,7 +259,7 @@ def get_notifications(request):
         return JsonResponse({'notifications': context})
     else:
         return JsonResponse({'notifications': []})
-    
+
 def accept_reject_notification(request):
     if request.method == 'POST':
         try:
@@ -295,7 +297,16 @@ def accept_reject_notification(request):
     else:
         response_data = {'success': False, 'error': 'POST 요청이 필요합니다.'}
         return JsonResponse(response_data)
+      
+def check_duplicate_notification(request):
+    if request.method == 'POST':
+        recipient_id = request.POST.get('recipient_id')
+        post_id = request.POST.get('post_id')
 
+        # 중복 알림 확인 로직
+        duplicate = Notifications.objects.filter(user=recipient_id, post=post_id).exists()
+
+        return JsonResponse({'duplicate': duplicate})
 # 아이디 찾기
 
 def find_id(request):

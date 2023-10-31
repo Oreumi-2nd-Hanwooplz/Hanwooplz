@@ -9,6 +9,7 @@ body{
     background-color: #fff;
     border: 1px solid #dedede;
     align-items: stretch;
+    height: 800px;
 }
 
 .button-box{
@@ -89,7 +90,7 @@ button:hover{
 /* 채팅창 메인 */
 .chat-container{
     padding: 14px 20px 0px 20px;
-    height: 280px;
+    height: 450px;
     overflow-y: auto; 
 }
 
@@ -127,9 +128,9 @@ button:hover{
     border:1px solid #818181;
     border-radius: 8px;
     justify-content: space-between;
-    /* position: absolute; chat-main-container에 대해 상대적인 위치 설정 */
-    bottom: 5px;
+
     width: 95%;
+    height: 170px;
 }
 
 .chat-input textarea{
@@ -167,7 +168,8 @@ a{
 }
 
 .unread_message_count {
-    font-size: 13px;
+    font-size: 15px;
+    font-weight: bold;
     opacity: 0.8;
     color: red;
     justify-content: center;
