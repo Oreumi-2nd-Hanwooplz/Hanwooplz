@@ -131,6 +131,8 @@ def write_project(request, post_project_id=None):
             }
             return render(request, 'write_project.html', context)
         
+        request.POST._mutable = True
+        request.POST['tech_stack'] = request.POST.get('tech_stack').split()
         post_form = PostForm(request.POST, request.FILES, instance=post)
         post_project_form = PostProjectForm(request.POST, request.FILES, instance=post_project)
 

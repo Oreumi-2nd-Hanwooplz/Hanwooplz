@@ -100,6 +100,8 @@ def write_question(request, post_question_id=None):
             }
             return render(request, 'write_question.html', context)
         
+        request.POST._mutable = True
+        request.POST['keyword'] = request.POST.get('keyword').split()
         post_form = PostForm(request.POST, request.FILES, instance=post)
         post_question_form = PostQuestionForm(request.POST, request.FILES, instance=post_question)
 
