@@ -1,0 +1,26 @@
+# deploy.yml
+name: deploy django uwsgi nginx
+
+on:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    name: deploy
+    runs-on: ubuntu-latest # 실행될 인스턴스 OS와 버전
+
+    steps:
+      - name: excuting remote ssh commands
+        uses: appleboy/ssh-action@v0.1.6 # ssh 접속하는 오픈소스
+        with:
+          host: ${{ secrets.REMOTE_IP }}
+          username: ubuntu
+          key: ${{ secrets.REMOTE_PRIVATE_KEY }}
+          script: |
+            cd /home/ubuntu/hanwooplz
+            . hanwooplz_env/bin/activate
+            git switch main
+            git pull
+            pip install requirements.txt
+            sudo systemctl restart uwsgi nginx
