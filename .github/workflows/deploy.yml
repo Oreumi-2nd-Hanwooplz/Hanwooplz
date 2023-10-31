@@ -2,7 +2,7 @@
 name: deploy django uwsgi nginx
 
 on:
-  pull_request:
+  push:
     branches: [ main ]
 
 jobs:
