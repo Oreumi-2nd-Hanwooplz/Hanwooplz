@@ -18,7 +18,7 @@
                 <input type="submit" value="로그인">
                 <input type="button" value="회원가입" onclick='window.location.href="{% url 'hanwooplz_app:register' %}"'>
             </form>
-            <a href="#">아이디/비밀번호 찾기</a>
+            <a href="{% url 'hanwooplz_app:find_id' %}">아이디</a>/<a href="{% url 'hanwooplz_app:find_pw' %}">비밀번호 찾기</a>
         </div>
     </div>
 </body>

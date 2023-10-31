@@ -12,6 +12,8 @@ from ..serializers import *
 import json
 import openai
 from django.db.models import Q
+from django.contrib.auth.forms import PasswordResetForm
+
 
 # Create your views here.
 def main(request):
@@ -287,3 +289,53 @@ def accept_reject_notification(request):
     else:
         response_data = {'success': False, 'error': 'POST 요청이 필요합니다.'}
         return JsonResponse(response_data)
+
+# 아이디 찾기
+
+def find_id(request):
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        email = request.POST.get('email')
+        user = get_user_model().objects.filter(full_name=name, email=email).first()
+
+        if user:
+            return render(request, 'find_userinfo/found_id.html', {'user_id': user.username})
+        else:
+            return render(request, 'find_userinfo/not_found.html')
+
+    return render(request, 'find_userinfo/find_id.html')
+
+# 비밀번호 찾기
+
+def find_pw(request):
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        username = request.POST.get('username')
+        user_model = get_user_model()
+
+        try:
+            user = user_model.objects.get(email=email, username=username)
+        except user_model.DoesNotExist:
+            # 사용자를 찾을 수 없음
+            return render(request, 'find_userinfo/not_found.html')
+
+        # 새로운 임시 비밀번호 생성
+        new_password = user_model.objects.make_random_password()
+
+        # 비밀번호 업데이트
+        user.set_password(new_password)
+        user.save()
+
+        # 사용자에게 새로운 비밀번호 전달하는 방법 (이메일 등)
+
+        # 여기에서는 임시 비밀번호를 템플릿을 통해 보여줍니다.
+        context = {
+            'new_password': new_password,
+        }
+        return render(request, 'find_userinfo/found_pw.html', context)
+    else:
+        return render(request, 'find_userinfo/find_pw.html')
+
+def found_pw(request):
+    # Your code to render the password reset done page goes here
+    return render(request, 'find_userinfo/found_pw.html')
