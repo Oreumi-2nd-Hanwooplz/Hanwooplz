@@ -17,6 +17,7 @@ urlpatterns = [
     path('find_pw/', views.find_pw, name='find_pw'),
     path('found_pw/', views.found_pw, name='found_pw'),
     path('edit_profile/', views.edit_profile, name='edit_profile'),
+    path('change_password/', views.change_password, name='change_password'),
     path("question-list/", question_views.question_list, name="question_list"),
     path("question/<int:post_question_id>", question_views.question, name="question"),
     path("write-question/", question_views.write_question, name="write_question"),
