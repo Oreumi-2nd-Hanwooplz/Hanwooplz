@@ -8,11 +8,11 @@ on:
 jobs:
   deploy:
     name: deploy
-    runs-on: ubuntu-latest # 실행될 인스턴스 OS와 버전
+    runs-on: ubuntu-latest
 
     steps:
       - name: excuting remote ssh commands
-        uses: appleboy/ssh-action@v0.1.6 # ssh 접속하는 오픈소스
+        uses: appleboy/ssh-action@v0.1.6
         with:
           host: ${{ secrets.REMOTE_IP }}
           username: ubuntu
