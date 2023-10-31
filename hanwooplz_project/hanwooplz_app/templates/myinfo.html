@@ -143,8 +143,7 @@
                 <div class="profile-pic-wrapper">
                     <a class="profile-pic"><img src="{{ user_profile.profile_picture.url }}" alt="">
                         {% if user_id == request.user.id %}
-                        <input type="submit" value="프로필 업데이트" onclick="window.location.href = '{% url "
-                            hanwooplz_app:edit_profile" %}'">
+                        <input type="submit" value="프로필 업데이트" onclick="window.location.href = '{% url "hanwooplz_app:edit_profile" %}'">
                         {% endif %}
                     </a>
                     {% if user.is_authenticated and user_id != request.user.id %}

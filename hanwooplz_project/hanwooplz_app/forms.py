@@ -1,5 +1,5 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm
+from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm, SetPasswordForm
 from django.contrib.auth.forms import UserChangeForm
 from django.contrib.auth import get_user_model 
 from .models import *
@@ -160,3 +160,29 @@ class PostQuestionForm(forms.ModelForm):
     class Meta:
         model = PostQuestion
         fields = ['keyword']
+
+class CustomSetPasswordForm(SetPasswordForm):
+    username = forms.CharField(
+        label="아이디",
+        widget=forms.TextInput(attrs={'autocomplete': 'username'}),
+    )
+    email = forms.EmailField(
+        label="이메일",
+        widget=forms.EmailInput(attrs={'autocomplete': 'email'}),
+    )
+    full_name = forms.CharField(
+        label="이름",
+        widget=forms.TextInput(attrs={'autocomplete': 'name'}),
+    )
+
+    def clean(self):
+        cleaned_data = super().clean()
+        username = cleaned_data.get('username')
+        email = cleaned_data.get('email')
+        full_name = cleaned_data.get('full_name')
+        user = User.objects.filter(username=username, email=email, full_name=full_name).first()
+
+        if not user:
+            raise forms.ValidationError('입력한 정보와 일치하는 사용자를 찾을 수 없습니다.')
+
+        return cleaned_data
