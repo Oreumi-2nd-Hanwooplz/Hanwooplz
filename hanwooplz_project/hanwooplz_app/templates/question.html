@@ -23,7 +23,7 @@
                     <div class="keyword">#{{ keyword }} </div>
                     {% endfor %}
                 </div>
-                <div class="content">{{ content }}</div>
+                <div class="content">{{ content | safe }}</div>
                 <div class="subsidiary">
                     <div class="card">
                         작성자: <a href="{% url 'hanwooplz_app:myinfo' author_id %}"><strong>{{ author }}</strong> 님</a>
@@ -52,7 +52,7 @@
                 {% if author_id == request.user.id %}
                 <button class="button-black" onclick="window.location.href = '{% url "hanwooplz_app:write_question" post_question_id %}'">수정하기</button>
                 {% endif %}
-            <div/>
+            </div>
             {% include "comment.html" %}
         </main>
 

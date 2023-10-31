@@ -13,7 +13,11 @@ urlpatterns = [
     path('login/', views.LoginView.as_view(), name="login"),
     path("logout/", views.log_out, name="logout"),
     path('register/', views.register, name='register'),
+    path('find_id/', views.find_id, name='find_id'),
+    path('find_pw/', views.find_pw, name='find_pw'),
+    path('found_pw/', views.found_pw, name='found_pw'),
     path('edit_profile/', views.edit_profile, name='edit_profile'),
+    path('change_password/', views.change_password, name='change_password'),
     path("question-list/", question_views.question_list, name="question_list"),
     path("question/<int:post_question_id>", question_views.question, name="question"),
     path("write-question/", question_views.write_question, name="write_question"),
@@ -37,6 +41,7 @@ urlpatterns = [
     path("project/<int:post_project_id>", project_views.project, name="project"),
     path("write-project/", project_views.write_project, name="write_project"),
     path("write-project/<int:post_project_id>", project_views.write_project, name="write_project"),
+    path("update-status/", project_views.update_views, name="update_status"),
 
     # question_views.py
     path("question-list/", question_views.question_list, name="question_list"),

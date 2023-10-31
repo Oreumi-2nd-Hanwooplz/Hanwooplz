@@ -24,7 +24,7 @@
                     {% endfor %}
                 </div>
                 <div class="ext_link">외부 링크: <a href="{{ ext_link }}">{{ ext_link }}</a></div>
-                <div class="content">{{ content }}</div>
+                <div class="content">{{ content | safe }}</div>
                 <div class="subsidiary">
                     <div class="card">
                         작성자: <a href="{% url 'hanwooplz_app:myinfo' author_id %}"><strong>{{ author }}</strong> 님</a>
