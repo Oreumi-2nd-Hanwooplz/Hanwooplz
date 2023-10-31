@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.http import JsonResponse
 from ..forms import *
 from ..models import *
 from ..serializers import *
@@ -21,6 +22,8 @@ def project_list(request, page_num=1):
     for project in post_project:
         post = Post.objects.get(id=project.post_id)
         author = UserProfile.objects.get(id=post.author_id)
+        is_recruiting = True if project.status == 1 else False
+        project_status = "모집 완료" if project.status == 2 else "모집 중단"
 
         if query:
             # 검색 쿼리와 검색 옵션에 따라 검색 결과 필터링
@@ -32,6 +35,8 @@ def project_list(request, page_num=1):
                     'post_project': project.id,
                     'author': author.username,
                     'tech_stacks': project.tech_stack,
+                    'isRecruiting': is_recruiting,
+                    "project_status": project_status,
                 })
             elif search_type == "writer" and (query in author.username):
                 project_lists.append({
@@ -41,6 +46,8 @@ def project_list(request, page_num=1):
                     'post_project': project.id,
                     'author': author.username,
                     'tech_stacks': project.tech_stack,
+                    'isRecruiting': is_recruiting,
+                    "project_status": project_status,
                 })
         else:
             # 검색 쿼리가 없는 경우, 모든 포트폴리오 추가
@@ -51,6 +58,8 @@ def project_list(request, page_num=1):
                 'post_project': project.id,
                 'author': author.username,
                 'tech_stacks': project.tech_stack,
+                'isRecruiting': is_recruiting,
+                "project_status": project_status,
             })
 
     context = {
@@ -83,6 +92,7 @@ def project(request, post_project_id=None):
             'content': post.content,
             'post_project_id' : post_project_id,
             'post_id': post.id,
+            'project_status': post_project.status,
         }
         return render(request, 'project.html', context)
     else:
@@ -98,6 +108,7 @@ def write_project(request, post_project_id=None):
         post_project = PostProject()
         post = Post()
     
+    # 작성 시
     if request.method == 'POST':
         if 'delete-button' in request.POST:
             post.delete()
@@ -127,6 +138,9 @@ def write_project(request, post_project_id=None):
                 post_project.post_id = post.id
                 post_project.save()
                 post_project_id = post_project.id
+                user = get_object_or_404(UserProfile, pk=request.user.id)
+                project = get_object_or_404(PostProject, pk=post_project_id)
+                ProjectMembers.objects.create(project=project, members=user)
             else:
                 post.save()
                 post_project.save()
@@ -144,6 +158,8 @@ def write_project(request, post_project_id=None):
                 'content': request.POST.get('content'),
             }
             return render(request, 'write_project.html', context)
+        
+    # 게시물 수정 시
     else:
         if post_project_id:
             if request.user.id == post.author_id:
@@ -166,3 +182,13 @@ def write_project(request, post_project_id=None):
                 return redirect('hanwooplz_app:project', post_project_id)
         else:
             return render(request, 'write_project.html')
+
+def update_views(request):
+    if request.method == "POST":
+        project_id = request.POST.get("project_id")
+        status = request.POST.get("status")
+        project = get_object_or_404(PostProject, pk=project_id)
+        project.status = status
+        project.save()
+        return JsonResponse({"success": True})
+    return JsonResponse({"success": False})

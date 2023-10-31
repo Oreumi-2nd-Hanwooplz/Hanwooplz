@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="{% static 'css/nav.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/portfolio.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static "css/project.css" %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/chatbot.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/footer.css' %}">
     <title>{{ title }}</title>
@@ -15,7 +16,10 @@
     <div class="main-container">
         <main>
             <div class="post-container">
-                <picture style="width: 100%; height: 300px;">
+                <picture style="width: 100%;">
+                    {% if project_status != 1 %}
+                    <p id="deprecated">{% if project_status == 2 %}모집 완료{% else %}모집 중단{% endif %}</p>
+                    {% endif %}
                     <img src="{% static 'img/'|add:tech_stacks.0|add:'.svg' %}" alt="썸네일" style="height: 100%; width: 100%; object-fit: cover;">
                 </picture>
                 <h3 class="title">{{ title }}</h3>
@@ -28,7 +32,16 @@
                 </div>
                 <div class="ext_link">외부 링크: <a href="{{ ext_link }}">{{ ext_link }}</a></div>
                 <div class="content">{{ content }}</div>
-                {% if author_id != request.user.id %}
+                {% if author_id == request.user.id %}
+                <form id="status-form" method="POST">
+                    {% csrf_token %}
+                    <select name="status" id="status-select">
+                        <option value="1">모집중</option>
+                        <option value="2">모집완료</option>
+                        <option value="0">모집중단</option>
+                    </select>
+                </form>
+                {% elif author_id != request.user.id and project_status == 1 %}
                     <input type="hidden" name="csrfmiddlewaretoken" value="{% csrf_token %}">
                     <button id="joinProjectButton" data-recipient-id="{{ author_id }}" data-post-id="{{ post_id }}">참가신청</button>
                 {% endif %}
@@ -69,6 +82,8 @@
 <script>
     var postId = "{{ post_id }}"
     var currentUser = "{{ request.user }}"
+    var projectStatus = "{{ project_status }}"
+    var projectId = "{{ post_project_id }}"
 </script>
 <script src="{% static 'js/comments.js' %}"></script>
 <script>
@@ -90,11 +105,15 @@
     }
 
     var joinButton = document.getElementById('joinProjectButton');
-    joinButton.addEventListener('click', function () {
-        var recipientId = joinButton.getAttribute('data-recipient-id');
-        var postId = joinButton.getAttribute('data-post-id');
-        sendNotification(recipientId, postId);
-    });
+
+    if (joinButton) {
+        joinButton.addEventListener('click', function () {
+            var recipientId = joinButton.getAttribute('data-recipient-id');
+            var postId = joinButton.getAttribute('data-post-id');
+            sendNotification(recipientId, postId);
+        });
+    }
+    
 
     async function sendNotification(recipientId, postId) {
         const csrftoken = getCookie('csrftoken');
@@ -115,4 +134,5 @@
         }
     }
 </script>
+<script src="{% static "js/updateStatus.js" %}"></script>
 </html>

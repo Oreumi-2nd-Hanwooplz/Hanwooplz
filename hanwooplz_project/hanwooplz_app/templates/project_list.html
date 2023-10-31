@@ -37,6 +37,9 @@
                 {% for post in post_lists %}
                 <a class="post-tile" href="{% if is_portfolio %}{% url "hanwooplz_app:portfolio" post.post_portfolio %}{% else %}{% url "hanwooplz_app:project" post.post_project %}{% endif %}">
                     <picture class="post-thumbnail">
+                        {% if not post.isRecruiting and post.post_project %}
+                        <p id="deprecated">{{ post.project_status }}</p>
+                        {% endif %}
                         <img src="{% static 'img/'|add:post.tech_stacks.0|add:'.svg' %}" alt="썸네일">
                     </picture>
                     <h3 class="post-title">{{ post.title }}</h3>

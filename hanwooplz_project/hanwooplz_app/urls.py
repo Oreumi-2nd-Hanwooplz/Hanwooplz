@@ -37,6 +37,7 @@ urlpatterns = [
     path("project/<int:post_project_id>", project_views.project, name="project"),
     path("write-project/", project_views.write_project, name="write_project"),
     path("write-project/<int:post_project_id>", project_views.write_project, name="write_project"),
+    path("update-status/", project_views.update_views, name="update_status"),
 
     # question_views.py
     path("question-list/", question_views.question_list, name="question_list"),
