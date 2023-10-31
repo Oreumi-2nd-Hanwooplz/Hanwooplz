@@ -22,5 +22,5 @@ jobs:
             . hanwooplz_env/bin/activate
             git switch main
             git pull
-            pip install requirements.txt
+            pip3 install -r requirements.txt
             sudo systemctl restart uwsgi nginx
