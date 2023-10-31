@@ -19,7 +19,7 @@
   <section class="container column">
     <div class="post-box flex-box">
       <div class="chat-select-container">
-        <div class="chat-list-box flex-box column">
+        <div class="chat-list-box flex-box column" id="chat-list-box">
           <p class="chat-list-title">채팅방 리스트</p>
           {% for msg in latest_messages %}
           <div class="chat-box between" onclick="redirectToChat({{ msg.chat_room_id }}, {{ msg.receiver_id }})" 
@@ -27,13 +27,13 @@
             <div class="flex-box">
               <span class="bold">{{ msg.receiver }}</span>
               <span class="s-text">{{ msg.created_at }}</span>
+              {% if msg.unread_message_count > 0 %}
+              <span class="unread_message_count">{{ msg.unread_message_count }}</span>
+              {% endif %}
             </div>
             <div class="message-content">
               <p class="chat-thumb-text">{{ msg.message|truncatechars:15 }}</p>
             </div>
-            {% if msg.unread_message_count > 0 %}
-              <span class="unread_message_count">{{ msg.unread_message_count }}</span>
-            {% endif %}
           </div>
           {% endfor %}
         </div>
@@ -57,21 +57,14 @@
                 {% if chat.username != request.user.username %}
                   <div class="message-text {% if chat.id > first_unread_index %}unread{% endif %}">{{ chat.message }}</div>
                   <p class="s-text">{{ chat.created_at }}</p>
-                  {% if not chat.is_read %}<p class="s-text unread">읽지 않음</p>{% endif %}
+                  {% if not chat.is_read %}<p class="s-text unread"></p>{% endif %}
                 {% else %}
-                  {% if chat.is_read %}<p class="s-text">읽음</p>{% else %}<p class="s-text unread-message">읽지 않음</p>{% endif %}
+                  {% if chat.is_read %}<p class="s-text"></p>{% else %}<p class="s-text unread-message"></p>{% endif %}
                   <p class="s-text">{{ chat.created_at }}</p>
                   <div class="message-text">{{ chat.message }}</div>
                 {% endif %}
               </div>
             {% endfor %}
-          </div>
-        </div>
-        <div class='toast'>
-          <div id="toast-popup" class="toast-popup">
-            <div class="toast-content">
-              <p class="toast-message">새 메시지가 도착했습니다!</p>
-            </div>
           </div>
         </div>
         <form class="chat-input" id="chat-form">
@@ -92,6 +85,7 @@
 <script>
   const chatLog = document.querySelector('#chat-log');
   let room_number = parseInt("{{ room_number }}");
+  const chatList = document.querySelector('#chat-list-box');
 
   function generateMessageId() {
     return uuid.v4();
@@ -120,18 +114,31 @@
 
     const currentTime = getCurrentTime();
 
-    function showNewMessagePopup(messageContent) {
-      const toast = document.querySelector('.toast'); // .toast 요소를 찾습니다.
-      const message = toast.querySelector('.toast-message'); // .toast 내부에서 .toast-message를 찾습니다.
-      message.textContent = messageContent;
-      toast.style.display = 'flex'; // 토스트를 표시합니다.
-    
-      // 2.5초 후 토스트를 숨깁니다.
-      setTimeout(function () {
-        toast.style.display = 'none';
-      }, 2500);
+
+
+    function scrollToBottom() {
+      chatLog.scrollTop = chatLog.scrollHeight;
     }
     
+    // 안 읽은 메시지 스크롤 관리 함수
+    function handleUnreadMessages() {
+      const unreadMessages = document.querySelectorAll('.unread');
+
+      if (unreadMessages.length > 0) {
+        // 안 읽은 메시지가 있을 때
+        if (unreadMessages.length <= 3) {
+          // 안 읽은 메시지가 3개 이하일 때
+          scrollToBottom();
+        } else {
+          // 안 읽은 메시지가 3개보다 많을 때
+          // 가장 오래된 안 읽은 메시지가 화면의 최상단에 오도록 스크롤
+          unreadMessages[0].scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      } else {
+        // 모든 메시지가 읽혔을 때
+        scrollToBottom();
+      }
+    }
 
     ws.onmessage = function (e) {
       const data = JSON.parse(e.data);
@@ -146,7 +153,7 @@
         if (currentUser === username) {
           messageContainer.className = 'message-box from-me';
           messageContainer.innerHTML = `
-            <p class="s-text unread-message">읽지 않음</p>
+            <p class="s-text unread-message"></p>
             <p class="s-text">${data.created_at}</p>
             <div class="message-text">${data.message}</div>
           `;
@@ -172,19 +179,28 @@
         if (isScrolledToBottom()) {
           scrollToBottom();
         }
+
+        handleUnreadMessages();
+
+        scrollToBottom();
+
       };
+
+
 
       if (data.type === 'chat_message_read') {
         let unreadMessages = document.querySelectorAll('.unread-message');
         unreadMessages.forEach(message => {
-          message.textContent = '읽음';
+          message.textContent = '';
         });
       }
+
+      
     }
 
-    function scrollToBottom() {
-      chatLog.scrollTop = chatLog.scrollHeight;
-    }
+    
+
+  
 
     if (room_number > 0 || room_number == -1) {
       chatMessageSubmitBtn.addEventListener('click', function () {
@@ -328,6 +344,55 @@
       }
     });
   });
+
+  const ws2 = new WebSocket('ws://127.0.0.1:8000/ws/chat_list/');
+
+  ws2.onmessage = function (e) {
+    const chatListData = JSON.parse(e.data);
+
+    // 채팅 목록 업데이트 로직
+    chatList.innerHTML = '';  // 기존 목록 초기화
+
+    chatListData.forEach(msg => {
+      const chatBox = document.createElement('div');
+      chatBox.className = 'chat-box between';
+      chatBox.dataset.chatRoomId = msg.chat_room_id;
+
+      // 채팅방 목록 항목 구성
+      const flexBox = document.createElement('div');
+      flexBox.className = 'flex-box';
+      const receiverSpan = document.createElement('span');
+      receiverSpan.className = 'bold';
+      receiverSpan.textContent = msg.receiver;
+      const dateSpan = document.createElement('span');
+      dateSpan.className = 's-text';
+      dateSpan.textContent = msg.created_at;
+
+      flexBox.appendChild(receiverSpan);
+      flexBox.appendChild(dateSpan);
+
+      chatBox.appendChild(flexBox);
+
+      const messageContent = document.createElement('div');
+      messageContent.className = 'message-content';
+      const chatThumbText = document.createElement('p');
+      chatThumbText.className = 'chat-thumb-text';
+      chatThumbText.textContent = msg.message;
+
+      messageContent.appendChild(chatThumbText);
+
+      chatBox.appendChild(messageContent);
+
+      if (msg.unread_message_count > 0) {
+        const unreadMessageCount = document.createElement('span');
+        unreadMessageCount.className = 'unread_message_count';
+        unreadMessageCount.textContent = msg.unread_message_count;
+        chatBox.appendChild(unreadMessageCount);
+      }
+
+      chatList.appendChild(chatBox);
+    });
+  };
 </script>
 
 </html>

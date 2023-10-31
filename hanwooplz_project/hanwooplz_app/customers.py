@@ -3,6 +3,9 @@ import json
 from channels.generic.websocket import AsyncWebsocketConsumer
 from .models import ChatMessages, ChatRoom, UserProfile
 from channels.db import database_sync_to_async
+from django.contrib.auth import get_user_model
+from django.db.models import Q
+from django.utils import timezone
 
 class ChatConsumer(AsyncWebsocketConsumer):
     async def connect(self):
@@ -119,3 +122,63 @@ class ChatConsumer(AsyncWebsocketConsumer):
             "receiver": event["receiver"],
             "is_read": True
         }))
+
+User = get_user_model()
+class ChatListConsumer(AsyncWebsocketConsumer):
+    async def connect(self):
+        if not self.scope.get('user') or self.scope['user'].is_anonymous:
+            await self.close()
+        else:
+            await self.accept()
+            await self.get_chat_list()
+
+
+    async def disconnect(self, close_code):
+        pass
+
+    def format_datetime(self, dt):
+        today = timezone.now().date()
+        if dt.date() == today:
+            return dt.strftime("오늘 %p %I:%M")
+        yesterday = today - timezone.timedelta(days=1)
+        if dt.date() == yesterday:
+            return dt.strftime("어제 %p %I:%M")
+        return dt.strftime("%Y-%m-%d %p %I:%M")
+
+    async def get_chat_list(self):
+        user = self.scope['user']
+        chat_rooms = ChatRoom.objects.filter(Q(sender=user) | Q(receiver=user))
+
+        latest_messages = []
+        for room in chat_rooms:
+            try:
+                unread_message_count = ChatMessages.objects.filter(
+                    Q(chat_room=room),
+                    ~Q(sender=user),
+                    Q(read_or_not=False)
+                ).count()
+
+                latest_message = ChatMessages.objects.filter(chat_room=room.id).latest('created_at')
+
+                receiver = None
+
+                if latest_message.chat_room.sender == user:
+                    receiver = latest_message.chat_room.receiver
+                else:
+                    receiver = latest_message.chat_room.sender
+
+                latest_messages.append({
+                    'chat_room_id': room.id,
+                    'receiver_id': receiver.id,
+                    'receiver': receiver.username,
+                    'message': latest_message.message,
+                    'created_at': self.format_datetime(latest_message.created_at),
+                    'unread_message_count': unread_message_count,
+                })
+            except ChatMessages.DoesNotExist:
+                pass
+
+        latest_messages.sort(key=lambda x: x['created_at'], reverse=True)
+
+        # 채팅방 목록 데이터를 클라이언트로 전송
+        await self.send(text_data=json.dumps(latest_messages))

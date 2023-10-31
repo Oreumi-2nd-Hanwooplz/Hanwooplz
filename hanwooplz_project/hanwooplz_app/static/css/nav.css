@@ -221,6 +221,28 @@
     overflow-y: auto; /* 스크롤 가능하도록 */
 }
 
+.notification-item {
+    background-color: #f2f2f2;
+    padding: 10px;
+    border: 1px solid #ccc;
+    margin-bottom: 10px;
+    color: #333; /* 텍스트 색상 지정 */
+    font-size: 14px; /* 글꼴 크기 지정 */
+}
+
+
+.notification-count {
+    position: absolute;
+    top: 10px; /* 조절할 수 있는 값으로 벨 아이콘 위쪽 간격 설정 */
+    right: 10px; /* 조절할 수 있는 값으로 벨 아이콘 오른쪽 간격 설정 */
+    background-color: red; /* 배경색 설정 */
+    color: white; /* 텍스트 색상 설정 */
+    border-radius: 50%; /* 원 모양으로 설정 */
+    padding: 4px 8px; /* 내부 여백 설정 */
+    font-size: 12px; /* 글꼴 크기 설정 */
+}
+
+
 .notification-message {
     padding: 10px;
 }

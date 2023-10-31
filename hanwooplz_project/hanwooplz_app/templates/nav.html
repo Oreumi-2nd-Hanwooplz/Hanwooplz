@@ -47,34 +47,16 @@
         });
     });
 </script>
-<!-- HTML 템플릿 -->
-<script>
-    // CSRF 토큰을 가져오는 함수
-    function getCookie(name) {
-        let cookieValue = null;
-        if (document.cookie && document.cookie !== '') {
-            const cookies = document.cookie.split(';');
-            for (let i = 0; i < cookies.length; i++) {
-                const cookie = cookies[i].trim();
-                // 이름으로 시작하는 쿠키가 있는지 확인
-                if (cookie.substring(0, name.length + 1) === name + '=') {
-                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                    break;
-                }
-            }
-        }
-        return cookieValue;
-    }
 
+<script>
     document.addEventListener("DOMContentLoaded", async function () {
         const notificationButton = document.getElementById("notificationButton");
         const notificationContainer = document.getElementById("notificationContainer");
         const notificationMessage = document.getElementById("notificationMessage");
-        const notificationList = document.createElement("ul");
         const notificationCount = document.getElementById("notificationCount");
-        let isNotificationVisible = false;
+        let isNotificationVisible = false; // 항상 열리도록 변경
         let notifications = [];
-
+    
         // 함수를 사용하여 알림 갯수 업데이트
         async function updateNotificationCount() {
             // CSRF 토큰 가져오기
@@ -89,71 +71,69 @@
             notifications = data.notifications.notifications_list;
             notificationCount.textContent = notifications.length;
         }
-
+    
         // 페이지 로드 시 알림 갯수 업데이트
         updateNotificationCount();
-
+    
         notificationButton.addEventListener("click", async function (e) {
             e.stopPropagation();
-
-            if (isNotificationVisible) {
-                notificationContainer.style.display = "none";
-            } else {
-                if (notificationCount.textContent > 0) {
-                    notificationContainer.style.display = "block";
-                    notificationList.innerHTML = "";
-                    notifications.forEach(notification => {
-                        const listItem = document.createElement("li");
-                        listItem.textContent = `'${notification.title}' 게시글에서 ${notification.sender}로부터 참가요청이 왔습니다.`;
-
+    
+            if (notificationCount.textContent > 0) {
+                notificationContainer.style.display = "block";
+                notificationMessage.innerHTML = "";
+    
+                notifications.forEach(notification => {
+                    const listItem = document.createElement("div"); // 각 알림 메시지를 감싸는 div
+                    listItem.classList.add("notification-item");
+    
+                    const messageText = document.createElement("p");
+                    messageText.textContent = `'${notification.title}' 게시글에서 ${notification.sender}로부터 참가요청이 왔습니다.`;
+                    listItem.appendChild(messageText);
+    
+                    const actionButtons = document.createElement("div"); // 액션 버튼들을 감싸는 div
+                    actionButtons.classList.add("action-buttons");
+    
+                    if (notification.accept_or_not === null) {
+                        // 상태가 아직 설정되지 않았을 때만 버튼 표시
                         const acceptButton = document.createElement("button");
                         acceptButton.textContent = "수락";
                         acceptButton.addEventListener("click", async function () {
-                            notification.accept_or_not = true;
-                            await sendAcceptanceResult(notification.accept_or_not, "수락");
-                            updateNotificationCount();
-                            updateNotificationMessage(); // 알림 메시지 업데이트 호출 추가
+                            const result = await sendAcceptanceResult(notification.id, '수락');
+                            if (result.success) {
+                                notification.accept_or_not = true;
+                                messageText.textContent += " (수락함)";
+                                acceptButton.style.display = "none";
+                                rejectButton.style.display = "none"; // 오타 수정
+                            }
                         });
-                        listItem.appendChild(acceptButton);
-
+                        actionButtons.appendChild(acceptButton);
+    
                         const rejectButton = document.createElement("button");
                         rejectButton.textContent = "거절";
                         rejectButton.addEventListener("click", async function () {
-                            notification.accept_or_not = false;
-                            await sendAcceptanceResult(notification.accept_or_not, "거절");
-                            updateNotificationCount();
-                            updateNotificationMessage(); // 알림 메시지 업데이트 호출 추가
+                            const result = await sendAcceptanceResult(notification.id, '거절');
+                            if (result.success) {
+                                notification.accept_or_not = false;
+                                messageText.textContent += " (거절함)";
+                                acceptButton.style.display = "none";
+                                rejectButton.style.display = "none";
+                            }
                         });
-                        listItem.appendChild(rejectButton);
-
-                        notificationList.appendChild(listItem);
-                    });
-                    notificationMessage.appendChild(notificationList);
-                } else {
-                    notificationContainer.style.display = "none";
-                }
+                        actionButtons.appendChild(rejectButton);
+                    }
+    
+                    listItem.appendChild(actionButtons);
+                    notificationMessage.appendChild(listItem);
+                });
+            } else {
+                notificationContainer.style.display = "none";
             }
+    
+            notificationCount.textContent = 0;
 
             isNotificationVisible = !isNotificationVisible;
         });
-
-        // 알림 메시지 갱신
-        function updateNotificationMessage() {
-            notificationList.innerHTML = "";
-            notifications.forEach(notification => {
-                const listItem = document.createElement("li");
-                listItem.textContent = `'${notification.title}' 게시글에서 ${notification.sender}로부터 참가요청이 왔습니다.`;
-
-                if (notification.accept_or_not === "수락") {
-                    listItem.textContent += " (수락함)";
-                } else if (notification.accept_or_not === "거절") {
-                    listItem.textContent += " (거절함)";
-                }
-
-                notificationList.appendChild(listItem);
-            });
-        }
-
+    
         // 결과 서버로 보내기
         async function sendAcceptanceResult(notificationId, result) {
             // 서버에 결과 보내는 로직 추가
@@ -173,6 +153,26 @@
                 console.error('결과 서버로 전송 중 오류가 발생했습니다.');
             }
         }
-    });
+    
+        // CSRF 토큰을 가져오는 함수
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    // 이름으로 시작하는 쿠키가 있는지 확인
+                    if (cookie.substring(0, name.length + 1) === name + '=') {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
 
+        notificationCount.textContent = 0;
+
+    });
+    
 </script>

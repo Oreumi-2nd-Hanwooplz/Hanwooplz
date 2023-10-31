@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="{% static 'css/nav.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/portfolio.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static "css/project.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/project.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/chatbot.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/footer.css' %}">
     <title>{{ title }}</title>
@@ -31,7 +31,7 @@
                     {% endfor %}
                 </div>
                 <div class="ext_link">외부 링크: <a href="{{ ext_link }}">{{ ext_link }}</a></div>
-                <div class="content">{{ content }}</div>
+                <div class="content">{{ content | safe }}</div>
                 {% if author_id == request.user.id %}
                 <form id="status-form" method="POST">
                     {% csrf_token %}
@@ -42,7 +42,7 @@
                     </select>
                 </form>
                 {% elif author_id != request.user.id and project_status == 1 %}
-                    <input type="hidden" name="csrfmiddlewaretoken" value="{% csrf_token %}">
+                    <input type="hidden" name="csrfmiddlewaretoken" value='{% csrf_token %}'>
                     <button id="joinProjectButton" data-recipient-id="{{ author_id }}" data-post-id="{{ post_id }}">참가신청</button>
                 {% endif %}
 

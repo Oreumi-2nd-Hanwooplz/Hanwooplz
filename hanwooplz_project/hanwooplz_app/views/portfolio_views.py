@@ -113,6 +113,8 @@ def write_portfolio(request, post_portfolio_id=None):
             }
             return render(request, 'write_portfolio.html', context)
         
+        request.POST._mutable = True
+        request.POST['tech_stack'] = request.POST.get('tech_stack').split()
         post_form = PostForm(request.POST, request.FILES, instance=post)
         post_portfolio_form = PostPortfolioForm(request.POST, request.FILES, instance=post_portfolio)
 
