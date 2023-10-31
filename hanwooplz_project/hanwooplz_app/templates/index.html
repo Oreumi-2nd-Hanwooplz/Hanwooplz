@@ -105,28 +105,28 @@
 <script src="{% static 'js/chatbot.js' %}"></script>
 <script src="{% static 'js/index.js' %}"></script>
 <script>
-        $(document).ready(function () {
+        jQuery(document).ready(function () {
                 // 포트폴리오 섹션 로드
-                $.get("{% url 'hanwooplz_app:portfolio_list' %}", function (data) {
-                        $("#portfolio-section").html(data);
-                        $("#portfolio-section .navbar").remove();
-                        $("#portfolio-section .footer").remove();
-                        $("#portfolio-section .container-fluid").remove();
+                jQuery.get("{% url 'hanwooplz_app:portfolio_list' %}", function (data) {
+                        jQuery("#portfolio-section").html(data);
+                        jQuery("#portfolio-section .navbar").remove();
+                        jQuery("#portfolio-section .footer").remove();
+                        jQuery("#portfolio-section .container-fluid").remove();
                 });
                 // 팀원모집 섹션 로드
-                $.get("{% url 'hanwooplz_app:project_list' %}", function (data) {
-                        $("#project-section").html(data);
-                        $("#project-section .navbar").remove();
-                        $("#project-section .footer").remove();
-                        $("#project-section .container-fluid").remove();
+                jQuery.get("{% url 'hanwooplz_app:project_list' %}", function (data) {
+                        jQuery("#project-section").html(data);
+                        jQuery("#project-section .navbar").remove();
+                        jQuery("#project-section .footer").remove();
+                        jQuery("#project-section .container-fluid").remove();
                 });
 
                 // 질의응답 섹션 로드
-                $.get("{% url 'hanwooplz_app:question_list' %}", function (data) {
-                        $("#question-section").html(data);
-                        $("#question-section .navbar").remove();
-                        $("#question-section .footer").remove();
-                        $("#question-section .container-fluid").remove();
+                jQuery.get("{% url 'hanwooplz_app:question_list' %}", function (data) {
+                        jQuery("#question-section").html(data);
+                        jQuery("#question-section .navbar").remove();
+                        jQuery("#question-section .footer").remove();
+                        jQuery("#question-section .container-fluid").remove();
                 });
         });
 </script>
