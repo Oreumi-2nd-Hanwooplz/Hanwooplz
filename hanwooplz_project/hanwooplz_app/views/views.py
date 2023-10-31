@@ -1,7 +1,7 @@
 from pyexpat.errors import messages
 from django.shortcuts import render, redirect, get_object_or_404, reverse
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.views import View
 from django.http import HttpResponse
@@ -12,7 +12,7 @@ from ..serializers import *
 import json
 import openai
 from django.db.models import Q
-from django.contrib.auth.forms import PasswordResetForm
+from django.contrib.auth.forms import PasswordResetForm, PasswordChangeForm
 
 
 # Create your views here.
@@ -43,24 +43,30 @@ def register(request):
 def edit_profile(request):
     if request.method == 'POST':
         form = UserProfileForm(request.POST, instance=request.user)
-        password_change_form = CustomPasswordChangeForm(request.user, request.POST)
 
-        if form.is_valid() and password_change_form.is_valid():
+        if form.is_valid():
             form.save()
-            password_change_form.save()
-            update_session_auth_hash(request, request.user)  # This keeps the user logged in after password change
             user_id = request.user.id
-            messages.success(request, 'Your profile and password have been updated.')
             return redirect(reverse('hanwooplz_app:myinfo', args=[user_id]))
     else:
-        # Form을 생성할 때 아이디와 이메일 필드를 비활성화
         form = UserProfileForm(instance=request.user)
-        password_change_form = CustomPasswordChangeForm(request.user)
-
         form.fields['username'].widget.attrs['readonly'] = True
         form.fields['email'].widget.attrs['readonly'] = True
 
-    return render(request, 'edit_profile.html', {'form': form, 'password_change_form': password_change_form})
+    return render(request, 'edit_profile.html', {'form': form})
+
+def change_password(request):
+    if request.method == 'POST':
+        password_change_form = PasswordChangeForm(request.user, request.POST)
+
+        if password_change_form.is_valid():
+            password_change_form.save()
+            update_session_auth_hash(request, request.user) 
+            return redirect(reverse("hanwooplz_app:login"))
+    else:
+        password_change_form = PasswordChangeForm(request.user)
+
+    return render(request, 'change_password.html', {'password_change_form': password_change_form})
 
 
 class LoginView(View):
