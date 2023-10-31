@@ -62,6 +62,11 @@ def project_list(request, page_num=1):
                 "project_status": project_status,
             })
 
+    # "전체" 및 "모집중"에 따라 포스트 필터링
+    filter_option = request.GET.get('filter_option')
+    if filter_option == 'recruiting':
+        project_lists = [project for project in project_lists if project['isRecruiting']]
+
     context = {
         "post_lists": project_lists,
         "board_name": "프로젝트 팀원 모집",
