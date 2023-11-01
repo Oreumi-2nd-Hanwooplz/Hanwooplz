@@ -1,5 +1,187 @@
 {% load static %}
+<style>
+    *,
+    *::after,
+    *::before {
+        box-sizing: border-box;
+        padding: 0;
+        margin: 0;
+    }
 
+    .html {
+        font-size: 62.5%;
+    }
+
+    .navbar input[type="checkbox"],
+    .navbar .hamburger-lines {
+        display: none;
+    }
+
+    .container {
+        max-width: 1200px;
+        width: 90%;
+        margin: auto;
+    }
+
+    .navbar {
+        box-shadow: 0px 5px 10px 0px #aaa;
+        position: fixed;
+        width: 100%;
+        background: #fff;
+        color: #000;
+        opacity: 0.85;
+        z-index: 100;
+    }
+
+    .navbar-container {
+        display: flex;
+        justify-content: space-between;
+        height: 64px;
+        align-items: center;
+    }
+
+    .menu-items {
+        order: 2;
+        display: flex;
+    }
+
+    .logo {
+        order: 1;
+        font-size: 2.3rem;
+    }
+
+    .menu-items li {
+        list-style: none;
+        margin-left: 1.5rem;
+        font-size: 1.3rem;
+    }
+
+    .navbar a {
+        color: #444;
+        text-decoration: none;
+        font-weight: 500;
+        transition: color 0.3s ease-in-out;
+    }
+
+    .navbar a:hover {
+        color: #117964;
+    }
+
+    @media (max-width: 768px) {
+        .navbar {
+            opacity: 0.95;
+        }
+
+        .navbar-container input[type="checkbox"],
+        .navbar-container .hamburger-lines {
+            display: block;
+        }
+
+        .navbar-container {
+            display: block;
+            position: relative;
+            height: 64px;
+        }
+
+        .navbar-container input[type="checkbox"] {
+            position: absolute;
+            display: block;
+            height: 32px;
+            width: 30px;
+            top: 20px;
+            left: 20px;
+            z-index: 5;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .navbar-container .hamburger-lines {
+            display: block;
+            height: 28px;
+            width: 35px;
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .navbar-container .hamburger-lines .line {
+            display: block;
+            height: 4px;
+            width: 100%;
+            border-radius: 10px;
+            background: #333;
+        }
+
+        .navbar-container .hamburger-lines .line1 {
+            transform-origin: 0% 0%;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .navbar-container .hamburger-lines .line2 {
+            transition: transform 0.2s ease-in-out;
+        }
+
+        .navbar-container .hamburger-lines .line3 {
+            transform-origin: 0% 100%;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .navbar .menu-items {
+            padding-top: 100px;
+            background: #fff;
+            height: 100vh;
+            max-width: 300px;
+            transform: translate(-150%);
+            display: flex;
+            flex-direction: column;
+            margin-left: -40px;
+            padding-left: 40px;
+            transition: transform 0.5s ease-in-out;
+            box-shadow: 5px 0px 10px 0px #aaa;
+            overflow: scroll;
+        }
+
+        .navbar .menu-items li {
+            margin-bottom: 1.8rem;
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        .logo {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 2.5rem;
+        }
+
+        .navbar-container input[type="checkbox"]:checked~.menu-items {
+            transform: translateX(0);
+        }
+
+        .navbar-container input[type="checkbox"]:checked~.hamburger-lines .line1 {
+            transform: rotate(45deg);
+        }
+
+        .navbar-container input[type="checkbox"]:checked~.hamburger-lines .line2 {
+            transform: scaleY(0);
+        }
+
+        .navbar-container input[type="checkbox"]:checked~.hamburger-lines .line3 {
+            transform: rotate(-45deg);
+        }
+
+    }
+
+    @media (max-width: 500px) {
+        .navbar-container input[type="checkbox"]:checked~.logo {
+            display: none;
+        }
+    }
+</style>
 <nav class="navbar">
     <div class="navbar-container container">
         <input type="checkbox" name="yourCheckboxName" id="yourCheckboxId">
@@ -56,7 +238,7 @@
         const notificationCount = document.getElementById("notificationCount");
         let isNotificationVisible = false; // 항상 열리도록 변경
         let notifications = [];
-    
+
         // 함수를 사용하여 알림 갯수 업데이트
         async function updateNotificationCount() {
             // CSRF 토큰 가져오기
@@ -71,28 +253,28 @@
             notifications = data.notifications.notifications_list;
             notificationCount.textContent = notifications.length;
         }
-    
+
         // 페이지 로드 시 알림 갯수 업데이트
         updateNotificationCount();
-    
+
         notificationButton.addEventListener("click", async function (e) {
             e.stopPropagation();
-    
+
             if (notificationCount.textContent > 0) {
                 notificationContainer.style.display = "block";
                 notificationMessage.innerHTML = "";
-    
+
                 notifications.forEach(notification => {
                     const listItem = document.createElement("div"); // 각 알림 메시지를 감싸는 div
                     listItem.classList.add("notification-item");
-    
+
                     const messageText = document.createElement("p");
                     messageText.textContent = `'${notification.title}' 게시글에서 ${notification.sender}로부터 참가요청이 왔습니다.`;
                     listItem.appendChild(messageText);
-    
+
                     const actionButtons = document.createElement("div"); // 액션 버튼들을 감싸는 div
                     actionButtons.classList.add("action-buttons");
-    
+
                     if (notification.accept_or_not === null) {
                         // 상태가 아직 설정되지 않았을 때만 버튼 표시
                         const acceptButton = document.createElement("button");
@@ -107,7 +289,7 @@
                             }
                         });
                         actionButtons.appendChild(acceptButton);
-    
+
                         const rejectButton = document.createElement("button");
                         rejectButton.textContent = "거절";
                         rejectButton.addEventListener("click", async function () {
@@ -121,19 +303,19 @@
                         });
                         actionButtons.appendChild(rejectButton);
                     }
-    
+
                     listItem.appendChild(actionButtons);
                     notificationMessage.appendChild(listItem);
                 });
             } else {
                 notificationContainer.style.display = "none";
             }
-    
+
             notificationCount.textContent = 0;
 
             isNotificationVisible = !isNotificationVisible;
         });
-    
+
         // 결과 서버로 보내기
         async function sendAcceptanceResult(notificationId, result) {
             // 서버에 결과 보내는 로직 추가
@@ -153,7 +335,7 @@
                 console.error('결과 서버로 전송 중 오류가 발생했습니다.');
             }
         }
-    
+
         // CSRF 토큰을 가져오는 함수
         function getCookie(name) {
             let cookieValue = null;
@@ -174,5 +356,5 @@
         notificationCount.textContent = 0;
 
     });
-    
+
 </script>
