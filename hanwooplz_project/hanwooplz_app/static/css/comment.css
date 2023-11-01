@@ -12,12 +12,25 @@
 
 .comment-author {
     font-weight: bold;
-    margin-bottom: 5px;
+    /* margin-bottom: 5px; */
     color: #3498db;
 }
 
 .comment-content {
     color: #333;
+}
+
+.comment-createdat {
+    color: gray;
+    font-size: smaller;
+}
+
+.comment-like {
+    background-color: #ededed;
+    border-radius: 10px;
+    height: 20px;
+    display: inline-block;
+    color: #f189a9;
 }
 
 #submit-button {

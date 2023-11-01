@@ -23,6 +23,25 @@ h2 {
     padding-bottom: 20px;
 }
 
+.tab-list {
+    list-style: none;
+    display: flex;
+    /* border-bottom: 1px solid #777; */
+}
+
+.tab {
+    width: 64px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.tab.active{
+    font-weight: bold;
+    background-color: #ededed;
+}
+
 .select-group {
     width: auto;
     float: right;
@@ -123,7 +142,7 @@ main {
     width: 100%;
     max-width: 1200px;
     margin: 0 auto;
-    padding-top: 40px;
+    padding: 40px 0;
     display: flex;
     flex-direction: column;
 }
@@ -166,6 +185,10 @@ main {
     height: 150px;
     object-fit: contain;
     background-color: white;
+}
+
+.post-author, .post-created_at {
+    color: gray;
 }
 
 #deprecated {
