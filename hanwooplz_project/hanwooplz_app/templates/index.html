@@ -16,12 +16,12 @@
         {% include 'nav.html' %}
         <main style="padding-bottom: 165px;">
                 <section id="welcome-section">
-                        <header>
-                                <div id="text-welcome">
-                                        <h1>Final Project</h1>
-                                        <p style="color: black;">Hanwooplz</p>
-                                </div>
-                        </header>
+                        <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;">
+                                <img src="{% static 'img/project.jpg' %}" alt="" width="2600" height="700">
+                                <h1 style="font-size: 5.1em; color: black;">Hanwooplz</h1>
+                                <h2 style="color: black;">최고의 팀원과 프로젝트를 진행하여</h2>
+                                <h2 style="color: black;">멋진 포트폴리오를 만드세요</h2>
+                            </div>
                 </section>
                 <section id="projects">
                         <h1>About Hanwooplz team members</h1>
@@ -64,7 +64,7 @@
                 </section>
                 <section id="contact">
                         <h1>프로젝트</h1>
-                        <div id="contact-links" class="projects-grid">
+                        <div id="contact-links" class="projects-grid" style="padding-left: 70px;">
                                 <a class="project-link" target="_blank">
                                         <img
                                                 src='https://user-images.githubusercontent.com/81272766/254787638-392b9f6c-fe6e-4946-ae91-4e524951566f.jpg'>
