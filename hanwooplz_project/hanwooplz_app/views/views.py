@@ -267,6 +267,7 @@ def accept_reject_notification(request):
         try:
             data = json.loads(request.body)
             notification_id = data.get('notificationId')
+            
             result = data.get('result')
             if notification_id is not None and result is not None:
                 # 알림을 처리하고 결과를 저장하거나 다른 작업 수행
