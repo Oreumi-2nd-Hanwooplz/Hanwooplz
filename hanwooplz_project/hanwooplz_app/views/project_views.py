@@ -1,5 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
+from django.db.models import Q
 from django.contrib import messages
 from django.http import JsonResponse
 from ..forms import *
@@ -14,12 +16,25 @@ def project_list(request, page_num=1):
     end_index = page_num * items_per_page
 
     post_project = PostProject.objects.order_by('-id')[start_index:end_index]
+    post_project = PostProject.objects.order_by('-id')
     project_lists = []
+
+    #paginator
+    page = request.GET.get("page", 1)
+    paginator = Paginator(post_project, 9)
+    page_obj = paginator.get_page(page)
 
     query = request.GET.get('search')
     search_type = request.GET.get('search_type')  # 검색 옵션을 가져옵니다
+    """
+    if query:
+        if search_type == "title_content":
+            post = post_project.filter(Q(title__icontains=query) | Q(content__icontains=query))
+        # else:
+        #     post = post_project.filter( Q())
+    """
 
-    for project in post_project:
+    for project in page_obj:
         post = Post.objects.get(id=project.post_id)
         author = UserProfile.objects.get(id=post.author_id)
         is_recruiting = True if project.status == 1 else False
@@ -71,6 +86,7 @@ def project_list(request, page_num=1):
         "post_lists": project_lists,
         "board_name": "프로젝트 팀원 모집",
         "is_portfolio": False,
+        "page_obj": page_obj,
     }
 
     return render(request, 'project_list.html', context)

@@ -44,8 +44,8 @@ document.addEventListener("DOMContentLoaded", function () {
                     })
                     
                     commentBox.appendChild(commentAuthor);
-                    commentBox.appendChild(commentContent);
                     commentBox.appendChild(commentTimestamp);
+                    commentBox.appendChild(commentContent);
                     commentBox.appendChild(commentLike);
                     commentList.appendChild(commentBox);
 

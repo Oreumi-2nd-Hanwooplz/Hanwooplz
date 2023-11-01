@@ -34,10 +34,10 @@
             </div>
             {% if post_lists %}
             {% if not is_portfolio %}
-            <div>
-                <ul>
-                    <li><a href="?filter_option=all">전체</a></li>
-                    <li><a href="?filter_option=recruiting">모집중</a></li>
+            <div class="tab-container">
+                <ul class="tab-list">
+                    <li class="tab"><a href="?filter_option=all">전체</a></li>
+                    <li class="tab"><a href="?filter_option=recruiting">모집중</a></li>
                 </ul>
             </div>
             {% endif %}
@@ -48,13 +48,32 @@
                         {% if not post.isRecruiting and post.post_project %}
                         <p id="deprecated">{{ post.project_status }}</p>
                         {% endif %}
-                        <img src="{% static 'img/'|add:post.tech_stacks.0|title|add:'.svg' %}" alt="썸네일">
+                        <img src="{% static 'img/'|add:post.tech_stacks.0|add:'.svg' %}" alt="썸네일">
                     </picture>
                     <h3 class="post-title">{{ post.title }}</h3>
                     <p class="post-author">{{ post.author }}</p>
-                    <p class="post-create_at">{{ post.created_at }}</p>
+                    <p class="post-created_at">{{ post.created_at }}</p>
                 </a>
                 {% endfor %}
+            </div>
+            <div class="page">
+                {% if page_obj.has_previous %}
+                <span><a href="?page={{ page_obj.previous_page_number }}">◀ 이전</a></span>
+                {% else %}
+                <span><a href="#" tabindex="-1">◀ 이전</a></span>
+                {% endif %}
+                {% for page_number in page_obj.paginator.page_range %}
+                {% if page_number == page_obj.number %}
+                <span><a href="?page={{ page_number }}">{{ page_number }}</a></span>
+                {% else %}
+                <span><a href="?page={{ page_number }}">{{ page_number }}</a></span>
+                {% endif %}
+                {% endfor %}
+                {% if page_obj.has_next %}
+                <span><a href="?page={{ page_obj.next_page_number }}">다음 ▶</a></span>
+                {% else %}
+                <span><a tabindex="-1" aria-disabled="true" href="#!">다음 ▶</a></span>
+                {% endif %}
             </div>
             {% else %}
             <div class="no-results">검색 결과가 없습니다.</div>
@@ -101,5 +120,18 @@
             titleElement.textContent = '프로젝트 팀원 모집: 작성자 검색결과';
         }
     });
+</script>
+<script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const filterOption = urlParams.get('filter_option');
+    const tabList = document.querySelectorAll('.tab');
+
+    tabList.forEach(tab => tab.classList.remove('active'));
+
+    if (filterOption === 'recruiting') {
+        document.querySelector('.tab a[href="?filter_option=recruiting"]').parentElement.classList.add('active');
+    } else {
+        document.querySelector('.tab a[href="?filter_option=all"]').parentElement.classList.add('active');
+    }
 </script>
 </html>
