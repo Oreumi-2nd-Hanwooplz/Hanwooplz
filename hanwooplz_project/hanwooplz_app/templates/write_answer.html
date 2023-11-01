@@ -1,0 +1,78 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/question.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/write.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/nav.css' %}" />
+    <title>게시글 작성</title>
+</head>
+
+<body>
+
+    {% include 'nav.html' %}
+
+    <section class="main">
+        <div class="question-container">
+            <h3 class="title">{{ title_question }}</h3>
+            <div class="keyword-conatiner">
+                {% for keyword in keywords_question %}
+                <div class="keyword">#{{ keyword }} </div>
+                {% endfor %}
+            </div>
+            <div class="content">{{ content_question | safe }}</div>
+            <div class="subsidiary">
+                <div class="card">
+                    작성자: <a href="{% url 'hanwooplz_app:myinfo' author_id_question %}"><strong>{{ author_question }}</strong> 님</a>
+                    <p>작성 일시: {{ created_at_question }}</p>
+                </div>
+            </div>
+        </div>
+        <form id="post" method="POST" action="{% if post_answer_id %}{% url 'hanwooplz_app:write_answer' post_question_id post_answer_id %}{% else %}{% url 'hanwooplz_app:write_answer' post_question_id %}{% endif %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="write-box">
+                <textarea id="content" name="content">{{ content }}</textarea>
+            </div>
+
+            <aside>
+                <div class="box">
+                    <div class="info-box">
+                        <h2>UPLOAD INFO</h2>
+                    </div>
+                    <div class="save-box">
+                        <div class="save-button-wrapper">
+                        {% if post_author_id == request.user.id %}
+                            <input type="submit" class="temp-save-button" name="delete-button" value="삭제"/>
+                            <input type="submit" class="save-button" value="수정"/>
+                        {% else %}
+                            <input type="submit" class="temp-save-button" name="temp-save-button" value="임시저장"/>
+                            <input type="submit" class="save-button" value="글 작성"/>
+                        {% endif %}
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="temp-post-box" style="display: none;">
+                    <h5>임시저장된 글</h5>
+
+                    {% for temp in temporary %}
+                        <div class="popup-title">
+                            <input type="hidden" id="{{temp.id}}" value="{{temp.id}}">
+                            <p class="top-title">제목: <span>{{ temp.title }}</span></p>
+                            <input type="hidden" class="top-content" style="display:none;" value="{{ temp.content }}">
+                            <p class="top-created">작성 날짜: {{temp.upload_date | date:'Y-m-d H:i:s'}}</p>
+                        </div>
+                    {% endfor %}
+                </div>
+            </aside>
+        </form>
+    </section>
+    
+    {% include 'footer.html' %}
+    
+</body>
+<script src="{% static 'js/tinymce/tinymce.min.js' %}"></script>
+<script src="{% static 'js/tinymce.js' %}"></script>
+</html>

@@ -8,8 +8,6 @@ urlpatterns = [
     path('', views.main, name='main'),
     path('index/',views.index, name='index'),
     path('write/',views.write, name='write'),
-    path('chat/<int:room_number>/<int:receiver_id>', chat_views.current_chat, name='chat'),
-    path('chat-msg/<int:room_number>', chat_views.chat_msg, name='chat_msg'),
     path('login/', views.LoginView.as_view(), name="login"),
     path("logout/", views.log_out, name="logout"),
     path('register/', views.register, name='register'),
@@ -18,10 +16,6 @@ urlpatterns = [
     path('found_pw/', views.found_pw, name='found_pw'),
     path('edit_profile/', views.edit_profile, name='edit_profile'),
     path('change_password/', views.change_password, name='change_password'),
-    path("question-list/", question_views.question_list, name="question_list"),
-    path("question/<int:post_question_id>", question_views.question, name="question"),
-    path("write-question/", question_views.write_question, name="write_question"),
-    path("write-question/<int:post_question_id>", question_views.write_question, name="write_question"),
     path("myinfo/<int:user_id>", views.myinfo, name="myinfo"),
     path("post/", views.post, name="post"),
     path("post-list/", views.post_list, name="post_list"),
@@ -48,6 +42,8 @@ urlpatterns = [
     path("question/<int:post_question_id>", question_views.question, name="question"),
     path("write-question/", question_views.write_question, name="write_question"),
     path("write-question/<int:post_question_id>", question_views.write_question, name="write_question"),
+    path("write-answer/<int:post_question_id>", question_views.write_answer, name="write_answer"),
+    path("write-answer/<int:post_question_id>/<int:post_answer_id>", question_views.write_answer, name="write_answer"),
     
     # comment_views.py
     path("api/post/<int:post_id>/comments/", comment_views.CommentList.as_view(), name="comment_list"),
@@ -55,4 +51,8 @@ urlpatterns = [
     path("api/comment/<int:pk>/like/", comment_views.CommentLikeView.as_view(), name="comment_like"),
     path("question-test/", comment_views.question_test, name="question_test"),
     path("post-test/", comment_views.post_test, name="post_test"),
+    
+    # chat_views.py
+    path('chat/<int:room_number>/<int:receiver_id>', chat_views.current_chat, name='chat'),
+    path('chat-msg/<int:room_number>', chat_views.chat_msg, name='chat_msg'),
 ]

@@ -62,6 +62,24 @@ def question(request, post_question_id=None):
         post_question = get_object_or_404(PostQuestion, id=post_question_id)
         post = get_object_or_404(Post, id=post_question.post_id)
         author = get_object_or_404(UserProfile, id=post.author_id)
+
+        post_answer = PostAnswer.objects.filter(question_id=post_question_id)
+        if post_answer:
+            post_ = Post.objects.filter(id__in=post_answer.values_list('post_id', flat=True))
+            author_ = UserProfile.objects.filter(id__in=post_.values_list('author_id', flat=True))
+            post_answer, post_ , author_ = post_answer.values(), post_.values(), author_.values()
+            for p_ in post_:
+                p_.pop('id')
+            for a_ in author_:
+                a_.pop('id')
+            answers = []
+            for i in range(len(post_answer)):
+                answers.append({**post_answer[i],**post_[i],**author_[i]})
+            answered = True if request.user.id in post_.values_list('author_id', flat=True) else False
+        else:
+            answers = []
+            answered = False
+
         context = {
             'title': post.title,
             'content': post.content,
@@ -72,6 +90,8 @@ def question(request, post_question_id=None):
             'keywords': post_question.keyword,
             'post_question_id' : post_question_id,
             'post_id': post.id,
+            'answers': answers,
+            'answered': answered,
         }
         return render(request, 'question.html', context)
     else:
@@ -143,3 +163,98 @@ def write_question(request, post_question_id=None):
                 return redirect('hanwooplz_app:question', post_question_id)
         else:
             return render(request, 'write_question.html')
+
+@login_required(login_url='login')
+def write_answer(request, post_question_id, post_answer_id=None):
+    if post_question_id:
+        post_question = get_object_or_404(PostQuestion, id=post_question_id)
+        post_ = get_object_or_404(Post, id=post_question.post_id)
+        author_ = get_object_or_404(UserProfile, id=post_.author_id)
+        if post_answer_id:
+            post_answer = get_object_or_404(PostAnswer, id=post_answer_id)
+            post = get_object_or_404(Post, id=post_answer.post_id)
+        else:
+            post_answer = PostAnswer()
+            post = Post()
+    else:
+        messages.info('올바르지 않은 접근입니다.')
+        return redirect('hanwooplz_app:question_list')
+    
+    if request.method == 'POST':
+        if 'delete-button' in request.POST:
+            post.delete()
+            return redirect('hanwooplz_app:question', post_question_id)
+        if 'temp-save-button' in request.POST:
+            messages.info(request, '임시저장은 현재 지원되지 않는 기능입니다.')
+            context={
+                'title_question': post_.title,
+                'keywords_question': post_question.keyword,
+                'content_question': post_.content,
+                'author_question': author_.username,
+                'author_id_question': author_.id,
+                'created_at_question': post_.created_at,
+                'post_question_id': post_question_id,
+                'content': request.POST.get('content'),
+            }
+            return render(request, 'write_answer.html', context)
+        
+        request.POST._mutable = True
+        request.POST['title'] = '제목없음'
+        post_form = PostForm(request.POST, request.FILES, instance=post)
+
+        if post_form.is_valid():
+            post = post_form.save(commit=False)
+            if not post_answer_id:
+                post.author_id = request.user.id
+                post.save()
+                post_answer.post_id = post.id
+                post_answer.question_id = post_question_id
+                post_answer.save()
+            else:
+                post.save()
+                post_answer.save()
+
+            return redirect('hanwooplz_app:question', post_question_id)
+        else:
+            messages.info(request, '답변을 등록하는데 실패했습니다. 다시 시도해주세요.')
+            context={
+                'title_question': post_.title,
+                'keywords_question': post_question.keyword,
+                'content_question': post_.content,
+                'author_question': author_.username,
+                'author_id_question': author_.id,
+                'created_at_question': post_.created_at,
+                'post_question_id': post_question_id,
+                'content': request.POST.get('content'),
+            }
+            return render(request, 'write_answer.html', context)
+    else:
+        if post_answer_id:
+            if request.user.id == post.author_id:
+                context = {
+                    'title_question': post_.title,
+                    'keywords_question': post_question.keyword,
+                    'content_question': post_.content,
+                    'author_question': author_.username,
+                    'author_id_question': author_.id,
+                    'created_at_question': post_.created_at,
+                    'post_question_id': post_question_id,
+                    'post_answer_id': post_answer_id,
+                    'content': post.content,
+                    'post_author_id': post.author_id,
+                }
+                return render(request, 'write_answer.html', context)
+            else:
+                messages.info('올바르지 않은 접근입니다.')
+                return redirect('hanwooplz_app:question', post_question_id)
+        else:
+            context = {
+                    'title_question': post_.title,
+                    'keywords_question': post_question.keyword,
+                    'content_question': post_.content,
+                    'author_question': author_.username,
+                    'author_id_question': author_.id,
+                    'created_at_question': post_.created_at,
+                    'post_question_id': post_question_id,
+            }
+            return render(request, 'write_answer.html', context)
