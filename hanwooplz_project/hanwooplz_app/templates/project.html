@@ -16,53 +16,71 @@
     <div class="main-container">
         <main>
             <div class="post-container">
-                <picture style="width: 100%;">
+                <picture style="width: 100%; height: 300px">
                     {% if project_status != 1 %}
                     <p id="deprecated">{% if project_status == 2 %}모집 완료{% else %}모집 중단{% endif %}</p>
                     {% endif %}
-                    <img src="{% static 'img/'|add:tech_stacks.0|add:'.svg' %}" alt="썸네일" style="height: 100%; width: 100%; object-fit: cover;">
+                    <img src="{% static 'img/'|add:tech_stacks.0|add:'.svg' %}" alt="썸네일" style="height: 100%; width: 80%;">
                 </picture>
-                <h3 class="title">{{ title }}</h3>
-                <div class="period">프로젝트 기간: {{ start_date }}~{{ end_date }}</div>
-                <div class="members">현재 참여인원: {{ members }} 명 / {{ target_members }} 명</div>
+                <div class="title-box">
+                    <h3 class="title">{{ title }}</h3>
+                    {% if author_id == request.user.id %}
+                    <form id="status-form" method="POST">
+                        {% csrf_token %}
+                        <select name="status" id="status-select">
+                            <option value="1">모집중</option>
+                            <option value="2">모집완료</option>
+                            <option value="0">모집중단</option>
+                        </select>
+                    </form>
+                    {% else %}
+                    {% if project_status == 1 %}
+                    <p class="project-status">모집중</p>
+                    {% else %}
+                    <p class="project-status" style="background-color: red">{% if project_status == 0 %}모집 중단{% else %}모집 완료{% endif %}</p>
+                    {% endif %}
+                    {% endif %}
+                </div>
+                
+                <div class="info-box">
+                    <div class="info-title">프로젝트 기간</div>
+                    <div class="info-content">{{ start_date }}~{{ end_date }}</div>
+                </div>
+                <div class="info-box">
+                    <div class="info-title">현재 참여인원</div>
+                    <div class="info-content">{{ members }} 명 / {{ target_members }} 명</div>
+                </div>
                 <div class="tech-stack-conatiner">
                     {% for tech_stack in tech_stacks %}
                         <div class="tech-stack">#{{ tech_stack }} </div>
                     {% endfor %}
                 </div>
-                <div class="ext_link">외부 링크: <a href="{{ ext_link }}">{{ ext_link }}</a></div>
-                <div class="content">{{ content | safe }}</div>
-                {% if author_id == request.user.id %}
-                <form id="status-form" method="POST">
-                    {% csrf_token %}
-                    <select name="status" id="status-select">
-                        <option value="1">모집중</option>
-                        <option value="2">모집완료</option>
-                        <option value="0">모집중단</option>
-                    </select>
-                </form>
-                {% elif author_id != request.user.id and project_status == 1 %}
-                    <input type="hidden" name="csrfmiddlewaretoken" value='{% csrf_token %}'>
-                    <button id="joinProjectButton" data-recipient-id="{{ author_id }}" data-post-id="{{ post_id }}">참가신청</button>
-                {% endif %}
-
+                <div class="info-box">
+                    <div class="info-title">외부 링크</div>
+                    <div class="info-content"><a href="{{ ext_link }}">{{ ext_link }}</a></div>
+                </div>
+                <div class="content-box">
+                    <div class="content-title">내용</div>
+                    <div class="content">{{ content | safe }}</div>
+                </div>
                 <div class="subsidiary">
                     <div class="card">
                         작성자: <a href="{% url 'hanwooplz_app:myinfo' author_id %}"><strong>{{ author }}</strong> 님</a>
+                        <p>작성 일시: {{ created_at }}</p>
                         {% if user.is_authenticated and author_id != request.user.id %}
                         <button onclick="window.location.href = '{% url "hanwooplz_app:chat" 0 author_id %}'" style="display: block; margin: 0 auto; background-color: #0077b5; color: #fff; border: none; padding: 6px 12px; border-radius: 4px; font-size: 14px; cursor: pointer; transition: background-color 0.3s;">
                             채팅하기
                         </button>
                         {% elif not user.is_authenticated %}
-                        <button onclick="alert('로그인이 필요합니다.')" style="display: block; margin: 0 auto; background-color: #0077b5; color: #fff; border: none; padding: 6px 12px; border-radius: 4px; font-size: 14px; cursor: pointer; transition: background-color 0.3s;">
+                        <button onclick="alert('로그인이 필요합니다.')">
                             채팅하기
                         </button>
                         {% endif %}
-                        <p>작성 일시: {{ created_at }}</p>
+                        {% if author_id != request.user.id and project_status == 1 %}
+                        {% csrf_token %}
+                        <button id="joinProjectButton" data-recipient-id="{{ author_id }}" data-post-id="{{ post_id }}">참가신청</button>
+                        {% endif %}
                     </div>
-                </div>
-                <div class="action-buttons">
-                    <a href="">댓글</a>
                 </div>
             </div>
             <div class="button_list_edit">
