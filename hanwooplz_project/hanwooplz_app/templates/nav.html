@@ -192,11 +192,9 @@
             <span class="line line3"></span>
         </div>
         <ul class="menu-items">
-            {% comment %} <li><a href="{% url 'hanwooplz_app:index' %}">홈</a></li> {% endcomment %}
             <li><a href="{% url 'hanwooplz_app:portfolio_list' %}">포트폴리오</a></li>
             <li><a href="{% url 'hanwooplz_app:project_list' %}">팀원모집</a></li>
             <li><a href="{% url 'hanwooplz_app:question_list' %}">질의응답</a></li>
-            {% comment %} <li class="icon-item"><a href="#"><i class="fas fa-cog"></i></a></li> {% endcomment %}
 
             {% if user.is_authenticated %}
             <li><a href="{% url 'hanwooplz_app:chat' 0 user.id %}">채팅</a></li>
@@ -204,8 +202,8 @@
             </li>
             <li class="icon-item">
                 <a id="notificationButton" href="#"><i class="fas fa-bell"></i></a>
+                <span id="notificationCount" class="notification-count"></span>
                 <div class="notification-container" id="notificationContainer">
-                    <span id="notificationCount" class="notification-count">0</span>
                     <div id="notificationMessage" class="notification-message">
                         <ul id="notificationList"></ul>
                     </div>
@@ -236,7 +234,7 @@
         const notificationContainer = document.getElementById("notificationContainer");
         const notificationMessage = document.getElementById("notificationMessage");
         const notificationCount = document.getElementById("notificationCount");
-        let isNotificationVisible = false; // 항상 열리도록 변경
+        let isNotificationVisible = true;
         let notifications = [];
 
         // 함수를 사용하여 알림 갯수 업데이트
@@ -251,7 +249,22 @@
             });
             const data = await response.json();
             notifications = data.notifications.notifications_list;
-            notificationCount.textContent = notifications.length;
+
+            let unresponse_list = [];
+
+            notifications.forEach(notification => {
+                if (notification.accept_or_not === null) {
+                    unresponse_list.push(notification);
+                }
+            })
+
+            if (unresponse_list.length > 0) {
+                notificationCount.textContent = unresponse_list.length;
+                notificationCount.style.display = "block"; // 값이 있을 때 보이도록 설정
+            } else {
+                notificationCount.style.display = "none"; // 값이 없을 때 숨김
+            }
+
         }
 
         // 페이지 로드 시 알림 갯수 업데이트
@@ -259,33 +272,39 @@
 
         notificationButton.addEventListener("click", async function (e) {
             e.stopPropagation();
-
-            if (notificationCount.textContent > 0) {
+    
+            
                 notificationContainer.style.display = "block";
                 notificationMessage.innerHTML = "";
+
+                // 알림 리스트를 accept_or_not=null 우선 순위로 정렬
+                notifications.sort((a, b) => {
+                    if (a.accept_or_not === null && b.accept_or_not !== null) return -1;
+                    if (a.accept_or_not !== null && b.accept_or_not === null) return 1;
+                    return 0;
+                });
 
                 notifications.forEach(notification => {
                     const listItem = document.createElement("div"); // 각 알림 메시지를 감싸는 div
                     listItem.classList.add("notification-item");
 
                     const messageText = document.createElement("p");
-                    messageText.textContent = `'${notification.title}' 게시글에서 ${notification.sender}로부터 참가요청이 왔습니다.`;
-                    listItem.appendChild(messageText);
-
-                    const actionButtons = document.createElement("div"); // 액션 버튼들을 감싸는 div
-                    actionButtons.classList.add("action-buttons");
-
+                  
                     if (notification.accept_or_not === null) {
-                        // 상태가 아직 설정되지 않았을 때만 버튼 표시
+                        messageText.textContent = `'${notification.title}' 게시글에서 ${notification.sender}로부터 참가요청이 왔습니다.\n${notification.created_at}`;
+                        listItem.appendChild(messageText);
+                        const actionButtons = document.createElement("div"); // 액션 버튼들을 감싸는 div
+                        actionButtons.classList.add("action-buttons");
+
                         const acceptButton = document.createElement("button");
                         acceptButton.textContent = "수락";
                         acceptButton.addEventListener("click", async function () {
                             const result = await sendAcceptanceResult(notification.id, '수락');
                             if (result.success) {
                                 notification.accept_or_not = true;
-                                messageText.textContent += " (수락함)";
                                 acceptButton.style.display = "none";
-                                rejectButton.style.display = "none"; // 오타 수정
+                                rejectButton.style.display = "none";
+                                messageText.textContent = `'${notification.title}' 게시글에서 ${notification.sender}의 참가를 수락했습니다.\n${notification.created_at}`;
                             }
                         });
                         actionButtons.appendChild(acceptButton);
@@ -296,22 +315,28 @@
                             const result = await sendAcceptanceResult(notification.id, '거절');
                             if (result.success) {
                                 notification.accept_or_not = false;
-                                messageText.textContent += " (거절함)";
+                                messageText.textContent = `'${notification.title}' 게시글에서 ${notification.sender}의 참가를 거절했습니다.\n${notification.created_at}`;
                                 acceptButton.style.display = "none";
                                 rejectButton.style.display = "none";
                             }
                         });
                         actionButtons.appendChild(rejectButton);
+
+                        listItem.appendChild(actionButtons);
+                    } else if (notification.accept_or_not === true) {
+                        messageText.textContent = `'${notification.title}' 게시글에서 ${notification.sender}의 참가를 수락했습니다.\n${notification.created_at}`;
+                        listItem.appendChild(messageText);
+                    } else if (notification.accept_or_not === false) {
+                        messageText.textContent = `'${notification.title}' 게시글에서 ${notification.sender}의 참가를 거절했습니다.\n${notification.created_at}`;
+                        listItem.appendChild(messageText);
                     }
 
-                    listItem.appendChild(actionButtons);
+    
+                    
                     notificationMessage.appendChild(listItem);
                 });
-            } else {
-                notificationContainer.style.display = "none";
-            }
-
-            notificationCount.textContent = 0;
+            
+    
 
             isNotificationVisible = !isNotificationVisible;
         });
@@ -352,8 +377,6 @@
             }
             return cookieValue;
         }
-
-        notificationCount.textContent = 0;
 
     });
 

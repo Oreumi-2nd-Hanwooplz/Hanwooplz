@@ -240,16 +240,18 @@ def send_application(request):
 
 def get_notifications(request):
     if request.user.is_authenticated:
-        notifications = Notifications.objects.filter(user=request.user).order_by('-created_at')
+        notifications = Notifications.objects.filter(Q(user=request.user) | Q(sender=request.user)).order_by('-created_at')
 
         notifications_list = []
         for notification in notifications:
             postinfo = Post.objects.get(id=notification.post.id)
             senderinfo = UserProfile.objects.get(id=notification.sender.id)
+            created_at_formatted = notification.created_at.strftime('%Y-%m-%d %H:%M')
             notifications_list.append({
+                'id': notification.id,
                 'title': postinfo.title,
                 'sender': senderinfo.username,
-                'created_at': notification.created_at,
+                'created_at': created_at_formatted,
                 'accept_or_not': notification.accept_or_not,
             })
 
@@ -265,8 +267,8 @@ def accept_reject_notification(request):
         try:
             data = json.loads(request.body)
             notification_id = data.get('notificationId')
+            
             result = data.get('result')
-
             if notification_id is not None and result is not None:
                 # 알림을 처리하고 결과를 저장하거나 다른 작업 수행
                 try:
@@ -277,7 +279,6 @@ def accept_reject_notification(request):
                     if result == '거절':
                         notification.accept_or_not = False
                         notification.save()
-                    # ...
 
                     response_data = {'success': True}
                     return JsonResponse(response_data)
