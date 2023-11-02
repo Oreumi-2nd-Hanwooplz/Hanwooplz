@@ -146,7 +146,7 @@
                         <a class="profile-pic"><img src="{% static 'img/basicuser.png' %}" alt="Default Profile Image" class="default-profile-image">
                     {% endif %}
                         {% if user_id == request.user.id %}
-                        <input type="submit" value="프로필 업데이트" onclick="window.location.href = '{% url "hanwooplz_app:edit_profile" %}'">
+                        <input type="submit" value="프로필 업데이트" onclick="window.location.href = '{% url "hanwooplz_app:edit_profile" %}'" style="margin-bottom: 50px;">
                         {% endif %}
                     </a>
                     {% if user.is_authenticated and user_id != request.user.id %}
