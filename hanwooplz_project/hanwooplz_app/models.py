@@ -25,6 +25,7 @@ class UserProfile(AbstractUser):
     introduction = models.TextField()
     github_link = models.URLField(blank=True,default='')
     linkedin_link = models.URLField(blank=True,default='')
+    user_img = models.ImageField(upload_to="user_img", default=None, null=True)
 
 class Post(models.Model):
     author = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
@@ -61,16 +62,25 @@ class ProjectMembers(models.Model):
 
 class PostQnA(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
-    like = models.IntegerField(default=0)
 
     class Meta:
         abstract = True
 
 class PostQuestion(PostQnA):
     keyword = ArrayField(models.CharField(max_length=20))
+    like = models.ManyToManyField(UserProfile, through="QuestionLike")
 
 class PostAnswer(PostQnA):
     question = models.ForeignKey(PostQuestion, on_delete=models.CASCADE)
+    like = models.ManyToManyField(UserProfile, through="AnswerLike")
+
+class QuestionLike(models.Model):
+    question = models.ForeignKey(PostQuestion, on_delete=models.CASCADE)
+    like = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+
+class AnswerLike(models.Model):
+    answer = models.ForeignKey(PostAnswer, on_delete=models.CASCADE)
+    like = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
 
 class Comment(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE, null=True)
