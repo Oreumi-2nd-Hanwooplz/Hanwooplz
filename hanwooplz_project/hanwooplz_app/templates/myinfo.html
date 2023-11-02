@@ -142,7 +142,7 @@
                 </form>
                 <div class="profile-pic-wrapper">
                     {% if user.user_img %}
-                        <a class="profile-pic"><img src="{% static '{{user.user_img.url}}' %}" alt="Profile Image" class="current-profile-image">
+                        <a class="profile-pic"><img src="{{ user.user_img.url }}" alt="Profile Image" class="current-profile-image">
                     {% else %}
                         <a class="profile-pic"><img src="{% static 'img/basicuser.png' %}" alt="Default Profile Image" class="default-profile-image">
                     {% endif %}
