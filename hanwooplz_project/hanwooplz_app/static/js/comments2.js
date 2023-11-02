@@ -94,60 +94,67 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         // 댓글 등록
-        submitButton.addEventListener("click", function () {
-            var commentData = {
-                content: commentText.value
-            };
+        if (submitButton) {
+            submitButton.addEventListener("click", function () {
+                var commentData = {
+                    content: commentText.value
+                };
 
-            fetch(`/api/post/${answerId}/comments/`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "X-CSRFToken": csrfToken,
-                },
-                body: JSON.stringify(commentData),
-            })
-                .then(function (response) {
-                    if (response.status === 201) {
-                        commentText.value = "";
-                        fetchComments();
-                    } else {
-                        alert("댓글 작성에 실패했습니다.");
-                    }
-                });
-        });
+                fetch(`/api/post/${answerId}/comments/`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRFToken": csrfToken,
+                    },
+                    body: JSON.stringify(commentData),
+                })
+                    .then(function (response) {
+                        if (response.status === 201) {
+                            commentText.value = "";
+                            fetchComments();
+                        } else {
+                            alert("댓글 작성에 실패했습니다.");
+                        }
+                    });
+            });
+        }
+        
 
         // 댓글 추천
         function upvoteComment(commentId) {
-            fetch(`/api/comment/${commentId}/like/`, {
-                method: "PATCH",
-                headers: {
-                    "Content-Type": "application/json",
-                    "X-CSRFToken": csrfToken,
-                },
-            })
-                .then(function (response) {
-                    if (response.status === 200) {
-                        return response.json();
-                    } else {
-                        console.error("댓글 추천 또는 취소 실패");
-                        return null;
-                    }
+            if (currentUser != "AnonymousUser") {
+                fetch(`/api/comment/${commentId}/like/`, {
+                    method: "PATCH",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRFToken": csrfToken,
+                    },
                 })
-                .then(function (data) {
-                    var message = data.message;
-                    var data = data.comment_data;
+                    .then(function (response) {
+                        if (response.status === 200) {
+                            return response.json();
+                        } else {
+                            console.error("댓글 추천 또는 취소 실패");
+                            return null;
+                        }
+                    })
+                    .then(function (data) {
+                        var message = data.message;
+                        var data = data.comment_data;
 
-                    var commentLike = document.getElementById(`${commentId}`);
-                    commentLike.textContent = data.like.length;
+                        var commentLike = document.getElementById(`${commentId}`);
+                        commentLike.textContent = data.like.length;
 
-                    if (message) {
-                        alert(message);
-                    }
-                })
-                .catch(function (error) {
-                    console.error(error);
-                })
+                        if (message) {
+                            alert(message);
+                        }
+                    })
+                    .catch(function (error) {
+                        console.error(error);
+                    })
+            } else {
+                alert("댓글을 추천하려면 로그인이 필요합니다.");
+            }
         }
 
         // 댓글 삭제
