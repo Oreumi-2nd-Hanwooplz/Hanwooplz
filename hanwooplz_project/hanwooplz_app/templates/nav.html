@@ -310,7 +310,10 @@
             notifications.forEach(notification => {
                 if (notification.accept_or_not === null && currentUser === notification.user) {
                     unresponse_list.push(notification);
+                } else if (notification.accept_or_not !== null && notification.read_or_not === false && currentUser !== notification.user) {
+                    unresponse_list.push(notification);
                 }
+
             })
 
             if (unresponse_list.length > 0) {
@@ -327,6 +330,8 @@
 
         notificationButton.addEventListener("click", async function (e) {
             e.stopPropagation();
+
+            
     
             // notificationContainer를 토글
             if (isNotificationVisible) {
@@ -341,7 +346,7 @@
                 incomingRequestHeader.textContent = "수신 요청";
                 incomingRequestContainer.appendChild(incomingRequestHeader);
 
-                notificationMessage.appendChild(incomingRequestContainer);
+                
 
                 // '요청 응답' 메시지 컨테이너
                 const responseMessageContainer = document.createElement("div");
@@ -349,14 +354,15 @@
                 responseMessageHeader.textContent = "요청 응답";
                 responseMessageContainer.appendChild(responseMessageHeader);
 
-                notificationMessage.appendChild(responseMessageContainer);
+                let hasIncomingRequests = false;
+                let hasResponseMessages = false;
 
-                // 알림 리스트를 accept_or_not=null 우선 순위로 정렬
-                notifications.sort((a, b) => {
-                    if (a.accept_or_not === null && b.accept_or_not !== null) return -1;
-                    if (a.accept_or_not !== null && b.accept_or_not === null) return 1;
-                    return 0;
-                });
+            // 알림 리스트를 accept_or_not=null 우선 순위로 정렬
+            notifications.sort((a, b) => {
+                if (a.accept_or_not === null && b.accept_or_not !== null) return -1;
+                if (a.accept_or_not !== null && b.accept_or_not === null) return 1;
+                return 0;
+            });
 
                 notifications.forEach(notification => {
                     if (notification.accept_or_not === null && currentUser === notification.user) {
@@ -414,13 +420,18 @@
                             }
                         });
 
-                        senderLink.addEventListener("click", () => {
-                            if(notification.senderlink) {
+                        listItem.addEventListener("click", () => {
+                            if (notification.senderlink) {
                                 window.location.href = notification.senderlink;
                             }
                         });
 
+                        if (!notification.read_or_not) {
+                            listItem.style.backgroundColor = '#ccc'; 
+                        }
+
                         incomingRequestContainer.appendChild(listItem);
+                        hasIncomingRequests = true;
                     } else if (notification.accept_or_not === true && currentUser === notification.sender) {
                         const listItem = document.createElement("div");
                         listItem.classList.add("notification-item");
@@ -435,7 +446,12 @@
                             }
                         });
 
+                        if (!notification.read_or_not) {
+                            listItem.style.backgroundColor = '#ccc'; 
+                        }
+
                         responseMessageContainer.appendChild(listItem);
+                        hasResponseMessages = true;
                     } else if (notification.accept_or_not === false && currentUser === notification.sender) {
                         const listItem = document.createElement("div");
                         listItem.classList.add("notification-item");
@@ -449,16 +465,66 @@
                                 window.location.href = notification.titlelink;
                             }
                         });
+
+                        if (!notification.read_or_not) {
+                            listItem.style.backgroundColor = '#ccc'; 
+                        }
                     
                         responseMessageContainer.appendChild(listItem);
+                        hasResponseMessages = true;
                     }
                 });
+
+                if (!hasIncomingRequests) {
+                    const emptyMessage = document.createElement("p");
+                    emptyMessage.textContent = "수신 요청이 없습니다.";
+                    incomingRequestContainer.appendChild(emptyMessage);
+                }
+            
+                if (!hasResponseMessages) {
+                    const emptyMessage = document.createElement("p");
+                    emptyMessage.textContent = "요청 응답이 없습니다.";
+                    responseMessageContainer.appendChild(emptyMessage);
+                }
+
+                notificationMessage.appendChild(incomingRequestContainer);
+                notificationMessage.appendChild(responseMessageContainer);
+
             }
             
-    
-
+            await markNotificationsAsRead();
+            
             isNotificationVisible = !isNotificationVisible;
+            await updateNotificationCount();
         });
+
+
+        async function markNotificationsAsRead() {
+            const unreadNotifications = notifications.filter(
+                (notification) =>
+                    notification.accept_or_not !== null &&
+                    notification.read_or_not === false &&
+                    currentUser !== notification.user
+            );
+            console.log(unreadNotifications)
+            if (unreadNotifications.length > 0) {
+                const notificationIds = unreadNotifications.map((notification) => notification.id);
+                console.log(notificationIds)
+                const csrftoken = getCookie("csrftoken");
+                await fetch("/mark_notifications_as_read/", {
+                    method: "POST",
+                    body: JSON.stringify({ notificationIds }),
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRFToken": csrftoken,
+                    },
+                });
+        
+                unreadNotifications.forEach((notification) => {
+                    notification.read_or_not = true;
+                });
+            }
+        }
 
         // 결과 서버로 보내기
         async function sendAcceptanceResult(notificationId, result) {
