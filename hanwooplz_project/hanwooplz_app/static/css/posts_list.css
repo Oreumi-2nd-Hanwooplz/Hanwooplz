@@ -37,7 +37,7 @@ h2 {
     align-items: center;
 }
 
-.tab.active{
+.tab.active {
     font-weight: bold;
     background-color: #ededed;
 }
@@ -130,7 +130,8 @@ table.board-table {
     text-align: center;
     font-size: 24px;
     margin: 20px 0;
-    color: #777; /* 원하는 색상으로 변경 가능 */
+    color: #777;
+    /* 원하는 색상으로 변경 가능 */
 }
 
 main {
@@ -188,7 +189,8 @@ main {
     background-color: white;
 }
 
-.post-author, .post-created_at {
+.post-author,
+.post-created_at {
     color: gray;
 }
 
@@ -210,4 +212,13 @@ main {
     display: flex;
     justify-content: flex-end;
     gap: 5px;
+}
+
+.refresh {
+    background-color: #ededed;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
 }
