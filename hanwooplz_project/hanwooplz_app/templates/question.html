@@ -41,7 +41,7 @@
                 </div>
                 <div class="action-buttons">
                     <a href="">댓글</a>
-                    <a href="">추천</a>
+                    <a href="{% url "hanwooplz_app:question_like" post_question_id %}">추천</a>
                     <br>
                     <br>
                     <p>{{ like }} 회</p>
@@ -80,7 +80,7 @@
                     <a href="">추천</a>
                     <br>
                     <br>
-                    <p>{{ answer.like }} 회</p>
+                    <p>{{ answer.likes }} 회</p>
                 </div>
             </div>
             <div class="button_list_edit">
