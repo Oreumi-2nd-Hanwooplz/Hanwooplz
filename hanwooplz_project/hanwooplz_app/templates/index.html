@@ -5,6 +5,7 @@
 <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
         <link rel="stylesheet" type="text/css" href="{% static 'css/chatbot.css' %}" />
         <link rel="stylesheet" type="text/css" href="{% static 'css/index.css' %}" />
         <link rel="stylesheet" type="text/css" href="{% static 'css/nav.css' %}" />
@@ -24,7 +25,7 @@
                         </div>
                 </section>
                 <section id="projects">
-                        <h1>About Hanwooplz team members</h1>
+                        <h1 style="margin-top: 60px;">About Hanwooplz team members</h1>
                         <div id="projects-grid">
                                 <a href="https://github.com/hwan3526" class="project-tile" target="_blank">
                                         <img src='https://avatars.githubusercontent.com/u/41356191?v=4'
@@ -80,6 +81,39 @@
                                                 src='https://user-images.githubusercontent.com/81272766/269529874-7949794b-58f3-491c-99e7-9fa242580970.png'>
                                         <p>Dangun clone</p>
                                 </a>
+                        </div>
+                </section>
+                <section id="contact">
+                        <h1>기술스택</h1>
+                        <div id="contact-links" class="projects-grid" style="padding-left: 70px;">
+                                <div class="project-link" target="_blank">
+                                        <img src="{% static 'img/AWS.png' %}">
+                                        <p>AWS</p>
+                                </div>
+                                <div class="project-link" target="_blank">
+                                        <img src="{% static 'img/SQL.svg' %}">
+                                        <p>PostgreSQL</p>
+                                </div>
+                                <div class="project-link" target="_blank">
+                                        <img src="{% static 'img/HTML5.svg' %}">
+                                        <p>HTML</p>
+                                </div>
+                                <div class="project-link" target="_blank">
+                                        <img src="{% static 'img/css.svg' %}">
+                                        <p>CSS</p>
+                                </div>
+                                <div class="project-link" target="_blank">
+                                        <img src="{% static 'img/JavaScript.svg' %}">
+                                        <p>Javascript</p>
+                                </div>
+                                <div class="project-link" target="_blank">
+                                        <img src="{% static 'img/Django.svg' %}">
+                                        <p>Django</p>
+                                </div>
+                                <div class="project-link" target="_blank">
+                                        <img src="{% static 'img/python.svg' %}">
+                                        <p>Python</p>
+                                </div>
                         </div>
                 </section>
                 <section id="portfolio-section" class="main-container">
@@ -145,5 +179,4 @@
                 });
         });
 </script>
-
 </html>

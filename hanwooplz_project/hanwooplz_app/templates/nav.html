@@ -181,6 +181,61 @@
             display: none;
         }
     }
+
+    .icon-item {
+        position: relative;
+        margin-right: 10px;
+    }
+
+    .icon-item a {
+        text-decoration: none;
+        color: rgb(0, 0, 0);
+        font-size: 24px;
+        transition: color 0.3s;
+    }
+
+    .icon-item a:hover {
+        color: #007bff;
+    }
+
+    .notification-count {
+        position: absolute;
+        top: 30px;
+        right: auto;
+        color: #fff;
+        border-radius: 50%;
+        padding: 4px 8px;
+    }
+
+    .notification-container {
+        position: absolute;
+        top: 100%;
+        right: 0;
+        width: 400px;
+        background-color: white;
+        border: 10px solid #ffffff;
+        border-radius: 10px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        display: none;
+    }
+
+    .notification-message {
+        padding: 20px;
+    }
+
+    .notification-list {
+        list-style: none;
+        padding: 0;
+    }
+
+    .notification-list-item {
+        padding: 50px;
+        border-bottom: 5px solid #eee;
+    }
+
+    .notification-list-item:hover {
+        background-color: #0a9aa2;
+    }
 </style>
 <nav class="navbar">
     <div class="navbar-container container">
@@ -272,7 +327,6 @@
 
         notificationButton.addEventListener("click", async function (e) {
             e.stopPropagation();
-    
             // notificationContainer를 토글
             if (isNotificationVisible) {
                 notificationContainer.style.display = "none";
@@ -292,7 +346,6 @@
                     listItem.classList.add("notification-item");
 
                     const messageText = document.createElement("p");
-                  
                     if (notification.accept_or_not === null) {
                         messageText.textContent = `'${notification.title}' 게시글에서 ${notification.sender}로부터 참가요청이 왔습니다.\n${notification.created_at}`;
                         listItem.appendChild(messageText);
@@ -334,12 +387,9 @@
                         listItem.appendChild(messageText);
                     }
 
-    
-                    
                     notificationMessage.appendChild(listItem);
                 });
             }
-            
 
             isNotificationVisible = !isNotificationVisible;
         });
