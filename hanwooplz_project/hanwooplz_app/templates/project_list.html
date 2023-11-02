@@ -131,11 +131,17 @@
     });
     document.addEventListener("DOMContentLoaded", function() {
         var searchType = new URLSearchParams(window.location.search).get('search_type');
-        var titleElement = document.querySelector('.search-type');
+        var titleElement = document.querySelector('.post-list h2');
+        var board_name = '';
+        if (window.location.href.includes('project-list')) {
+            board_name = '프로젝트 팀원 모집';
+        } else if (window.location.href.includes('portfolio-list')) {
+            board_name = '포트폴리오';
+        }
         if (searchType === 'title_content') {
-            titleElement.textContent = '프로젝트 팀원 모집: 제목+내용 검색결과';
+            titleElement.textContent = board_name + ': 제목+내용 검색결과';
         } else if (searchType === 'writer') {
-            titleElement.textContent = '프로젝트 팀원 모집: 작성자 검색결과';
+            titleElement.textContent = board_name + ': 작성자 검색결과';
         }
     });
 </script>
