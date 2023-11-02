@@ -121,7 +121,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 var data = data.comment_data;
 
                 var commentLike = document.getElementById(`${commentId}`);
-                commentLike.textContent = data.like.length;
+                commentLike.textContent = "👍 " + data.like.length;
 
                 if (message) {
                     alert(message);

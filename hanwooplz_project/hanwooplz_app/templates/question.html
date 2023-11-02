@@ -39,21 +39,17 @@
                     </div>
                 </div>
                 <div class="action-buttons">
-                    <a href="">댓글</a>
-                    <a href="{% url "hanwooplz_app:question_like" post_question_id %}">추천</a>
-                    <br>
-                    <br>
-                    <p>{{ like }} 회</p>
+                    <a href="{% url "hanwooplz_app:question_like" post_question_id %}">추천 {{ like }} 회</a>
                 </div>
             </div>
             <div class="button_list_edit">
-                <button class="button-black" onclick="window.location.href = '{% url 'hanwooplz_app:question_list' %}'">목록으로</button>
                 {% if author_id == request.user.id %}
                 <button class="button-black" onclick="window.location.href = '{% url "hanwooplz_app:write_question" post_question_id %}'">수정하기</button>
                 {% endif %}
                 {% if user.is_authenticated and not answered %}
                 <button class="button-black" onclick="window.location.href = '{% url "hanwooplz_app:write_answer" post_question_id %}'">답변하기</button>
                 {% endif %}
+                <button class="button-black" onclick="window.location.href = '{% url 'hanwooplz_app:question_list' %}'">목록으로</button>
             </div>
             {% include "comment.html" %}
             <div class="answer-container-wrapper">
@@ -76,11 +72,7 @@
                         </div>
                     </div>
                     <div class="action-buttons">
-                        <a href="">댓글</a>
-                        <a href="{% url "hanwooplz_app:question_like" post_question_id answer.id %}">추천</a>
-                        <br>
-                        <br>
-                        <p>{{ answer.like }} 회</p>
+                        <a href="{% url "hanwooplz_app:question_like" post_question_id answer.id %}">추천 {{ answer.likes }} 회</a>
                     </div>
                 </div>
                 <div class="button_list_edit">
