@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
     var commentText = document.getElementById("comment-input");
-    var submitButton = document.getElementById("submit-button");
+    var submitButton = document.getElementById("comment-submit-button");
     var csrfToken = document.querySelector("input[name=csrfmiddlewaretoken]").value;
 
     // 댓글 불러오기
