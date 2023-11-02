@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect, get_object_or_404, reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.views.decorators.csrf import ensure_csrf_cookie
+from django.conf import settings
 from django.views import View
 from django.http import HttpResponse
 from django.http import JsonResponse
@@ -178,6 +179,7 @@ class ChatBot():
     def __init__(self, model='gpt-3.5-turbo'):
         self.model = model
         self.messages = []
+        openai.api_key = settings.OPENAI_KEY
 
     def ask(self, question):
         self.messages.append({
