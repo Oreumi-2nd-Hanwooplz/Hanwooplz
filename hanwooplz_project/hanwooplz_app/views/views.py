@@ -245,14 +245,18 @@ def get_notifications(request):
         notifications_list = []
         for notification in notifications:
             postinfo = Post.objects.get(id=notification.post.id)
+            projectinfo = PostProject.objects.get(post_id=postinfo.id)
             senderinfo = UserProfile.objects.get(id=notification.sender.id)
             created_at_formatted = notification.created_at.strftime('%Y-%m-%d %H:%M')
             notifications_list.append({
                 'id': notification.id,
+                'user': notification.user.username,
                 'title': postinfo.title,
                 'sender': senderinfo.username,
                 'created_at': created_at_formatted,
                 'accept_or_not': notification.accept_or_not,
+                'titlelink': f'/project/{projectinfo.id}',
+                'senderlink': f'/myinfo/{senderinfo.id}',
             })
 
         context = {
