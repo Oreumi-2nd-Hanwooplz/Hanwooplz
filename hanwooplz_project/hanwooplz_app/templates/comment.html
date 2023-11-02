@@ -6,8 +6,10 @@
   </div>
   {% if user.is_authenticated %}
   <form action="" method="post">
-    <textarea name="comment" id="comment-input" cols="30" rows="5"></textarea>
-    <button type="button" id="comment-submit-button">댓글 등록</button>
+    <textarea name="comment" id="comment-input" cols="30" rows="3"></textarea>
+    <div id="comment-submit-button-wrapper">
+      <button type="button" id="comment-submit-button">댓글 등록</button>
+    </div>
   </form>
   {% endif %}
 </div>
