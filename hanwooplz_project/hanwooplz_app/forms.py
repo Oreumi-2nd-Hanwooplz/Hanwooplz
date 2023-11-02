@@ -55,8 +55,9 @@ class CustomUserCreationForm(UserCreationForm):
 class UserProfileForm(forms.ModelForm):
     class Meta:
         model = User
-        fields = ['username', 'email', 'full_name', 'job', 'tech_stack', 'career', 'career_detail', 'introduction', 'github_link', 'linkedin_link']
-        labels = {            
+        fields = ['user_img', 'username', 'email', 'full_name', 'job', 'tech_stack', 'career', 'career_detail', 'introduction', 'github_link', 'linkedin_link']
+        labels = {
+            'user_img': '프로필 이미지',            
             'username': '유저 아이디',
             'full_name': '이름', 
             'job': '직무', 
@@ -71,6 +72,7 @@ class UserProfileForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(UserProfileForm, self).__init__(*args, **kwargs)
         # Set 'github_link' and 'linkedin_link' fields as not required
+        self.fields['user_img'].required = False
         self.fields['github_link'].required = False
         self.fields['linkedin_link'].required = False
         self.fields['username'].help_text = ''
