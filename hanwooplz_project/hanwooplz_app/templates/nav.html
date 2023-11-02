@@ -185,7 +185,7 @@
 <nav class="navbar">
     <div class="navbar-container container">
         <input type="checkbox" name="yourCheckboxName" id="yourCheckboxId">
-        <h2 class="logo" id="logo">Hanwooplz</h2>
+        <h2 class="logo" id="logo" style="text-shadow: 0 0 20px rgba(0, 0, 255, 0.8);">Hanwooplz</h2>
         <div class="hamburger-lines">
             <span class="line line1"></span>
             <span class="line line2"></span>
@@ -272,71 +272,71 @@
 
         notificationButton.addEventListener("click", async function (e) {
             e.stopPropagation();
-    
-            
-                notificationContainer.style.display = "block";
-                notificationMessage.innerHTML = "";
 
-                // 알림 리스트를 accept_or_not=null 우선 순위로 정렬
-                notifications.sort((a, b) => {
-                    if (a.accept_or_not === null && b.accept_or_not !== null) return -1;
-                    if (a.accept_or_not !== null && b.accept_or_not === null) return 1;
-                    return 0;
-                });
 
-                notifications.forEach(notification => {
-                    const listItem = document.createElement("div"); // 각 알림 메시지를 감싸는 div
-                    listItem.classList.add("notification-item");
+            notificationContainer.style.display = "block";
+            notificationMessage.innerHTML = "";
 
-                    const messageText = document.createElement("p");
-                  
-                    if (notification.accept_or_not === null) {
-                        messageText.textContent = `'${notification.title}' 게시글에서 ${notification.sender}로부터 참가요청이 왔습니다.\n${notification.created_at}`;
-                        listItem.appendChild(messageText);
-                        const actionButtons = document.createElement("div"); // 액션 버튼들을 감싸는 div
-                        actionButtons.classList.add("action-buttons");
+            // 알림 리스트를 accept_or_not=null 우선 순위로 정렬
+            notifications.sort((a, b) => {
+                if (a.accept_or_not === null && b.accept_or_not !== null) return -1;
+                if (a.accept_or_not !== null && b.accept_or_not === null) return 1;
+                return 0;
+            });
 
-                        const acceptButton = document.createElement("button");
-                        acceptButton.textContent = "수락";
-                        acceptButton.addEventListener("click", async function () {
-                            const result = await sendAcceptanceResult(notification.id, '수락');
-                            if (result.success) {
-                                notification.accept_or_not = true;
-                                acceptButton.style.display = "none";
-                                rejectButton.style.display = "none";
-                                messageText.textContent = `'${notification.title}' 게시글에서 ${notification.sender}의 참가를 수락했습니다.\n${notification.created_at}`;
-                            }
-                        });
-                        actionButtons.appendChild(acceptButton);
+            notifications.forEach(notification => {
+                const listItem = document.createElement("div"); // 각 알림 메시지를 감싸는 div
+                listItem.classList.add("notification-item");
 
-                        const rejectButton = document.createElement("button");
-                        rejectButton.textContent = "거절";
-                        rejectButton.addEventListener("click", async function () {
-                            const result = await sendAcceptanceResult(notification.id, '거절');
-                            if (result.success) {
-                                notification.accept_or_not = false;
-                                messageText.textContent = `'${notification.title}' 게시글에서 ${notification.sender}의 참가를 거절했습니다.\n${notification.created_at}`;
-                                acceptButton.style.display = "none";
-                                rejectButton.style.display = "none";
-                            }
-                        });
-                        actionButtons.appendChild(rejectButton);
+                const messageText = document.createElement("p");
 
-                        listItem.appendChild(actionButtons);
-                    } else if (notification.accept_or_not === true) {
-                        messageText.textContent = `'${notification.title}' 게시글에서 ${notification.sender}의 참가를 수락했습니다.\n${notification.created_at}`;
-                        listItem.appendChild(messageText);
-                    } else if (notification.accept_or_not === false) {
-                        messageText.textContent = `'${notification.title}' 게시글에서 ${notification.sender}의 참가를 거절했습니다.\n${notification.created_at}`;
-                        listItem.appendChild(messageText);
-                    }
+                if (notification.accept_or_not === null) {
+                    messageText.textContent = `'${notification.title}' 게시글에서 ${notification.sender}로부터 참가요청이 왔습니다.\n${notification.created_at}`;
+                    listItem.appendChild(messageText);
+                    const actionButtons = document.createElement("div"); // 액션 버튼들을 감싸는 div
+                    actionButtons.classList.add("action-buttons");
 
-    
-                    
-                    notificationMessage.appendChild(listItem);
-                });
-            
-    
+                    const acceptButton = document.createElement("button");
+                    acceptButton.textContent = "수락";
+                    acceptButton.addEventListener("click", async function () {
+                        const result = await sendAcceptanceResult(notification.id, '수락');
+                        if (result.success) {
+                            notification.accept_or_not = true;
+                            acceptButton.style.display = "none";
+                            rejectButton.style.display = "none";
+                            messageText.textContent = `'${notification.title}' 게시글에서 ${notification.sender}의 참가를 수락했습니다.\n${notification.created_at}`;
+                        }
+                    });
+                    actionButtons.appendChild(acceptButton);
+
+                    const rejectButton = document.createElement("button");
+                    rejectButton.textContent = "거절";
+                    rejectButton.addEventListener("click", async function () {
+                        const result = await sendAcceptanceResult(notification.id, '거절');
+                        if (result.success) {
+                            notification.accept_or_not = false;
+                            messageText.textContent = `'${notification.title}' 게시글에서 ${notification.sender}의 참가를 거절했습니다.\n${notification.created_at}`;
+                            acceptButton.style.display = "none";
+                            rejectButton.style.display = "none";
+                        }
+                    });
+                    actionButtons.appendChild(rejectButton);
+
+                    listItem.appendChild(actionButtons);
+                } else if (notification.accept_or_not === true) {
+                    messageText.textContent = `'${notification.title}' 게시글에서 ${notification.sender}의 참가를 수락했습니다.\n${notification.created_at}`;
+                    listItem.appendChild(messageText);
+                } else if (notification.accept_or_not === false) {
+                    messageText.textContent = `'${notification.title}' 게시글에서 ${notification.sender}의 참가를 거절했습니다.\n${notification.created_at}`;
+                    listItem.appendChild(messageText);
+                }
+
+
+
+                notificationMessage.appendChild(listItem);
+            });
+
+
 
             isNotificationVisible = !isNotificationVisible;
         });
