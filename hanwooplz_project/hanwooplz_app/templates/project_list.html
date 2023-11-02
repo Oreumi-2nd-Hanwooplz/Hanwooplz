@@ -62,23 +62,39 @@
                 {% endfor %}
             </div>
             <div class="page">
-                {% if page_obj.has_previous %}
+            {% if page_obj.has_previous %}
+                {% if query %}
                 <span><a href="?page={{ page_obj.previous_page_number }}&search_type={{ search_type }}&search={{ query }}">◀ 이전</a></span>
                 {% else %}
-                <span><a href="#" tabindex="-1">◀ 이전</a></span>
+                <span><a href="?page={{ page_obj.previous_page_number }}">◀ 이전</a></span>
                 {% endif %}
-                {% for page_number in page_obj.paginator.page_range %}
+            {% else %}
+                <span><a href="javascript:void(0)" tabindex="-1">◀ 이전</a></span>
+            {% endif %}
+            {% for page_number in page_obj.paginator.page_range %}
                 {% if page_number == page_obj.number %}
-                <span><a href="?page={{ page_number }}&search_type={{ search_type }}&search={{ query }}">{{ page_number }}</a></span>
+                    {% if query %}
+                    <span><a href="?page={{ page_number }}&search_type={{ search_type }}&search={{ query }} "><b>{{ page_number }}</b></a></span>
+                    {% else %}
+                    <span><a href="?page={{ page_number }}"><b>{{ page_number }}</b></a></span>
+                    {% endif %}
                 {% else %}
-                <span><a href="?page={{ page_number }}&search_type={{ search_type }}&search={{ query }}">{{ page_number }}</a></span>
+                    {% if query %}
+                    <span><a href="?page={{ page_number }}&search_type={{ search_type }}&search={{ query }}">{{ page_number }}</a></span>
+                    {% else %}
+                    <span><a href="?page={{ page_number }}">{{ page_number }}</a></span>
+                    {% endif %}
                 {% endif %}
-                {% endfor %}
-                {% if page_obj.has_next %}
+            {% endfor %}
+            {% if page_obj.has_next %}
+                {% if query %}
                 <span><a href="?page={{ page_obj.next_page_number }}&search_type={{ search_type }}&search={{ query }}">다음 ▶</a></span>
                 {% else %}
-                <span><a tabindex="-1" aria-disabled="true" href="#!">다음 ▶</a></span>
+                <span><a href="?page={{ page_obj.next_page_number }}">다음 ▶</a></span>
                 {% endif %}
+            {% else %}
+                <span><a href="javascript:void(0)" tabindex="-1" aria-disabled="true">다음 ▶</a></span>
+            {% endif %}
             </div>
             {% else %}
             <div class="no-results">검색 결과가 없습니다.</div>
