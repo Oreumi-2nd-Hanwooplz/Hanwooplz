@@ -234,7 +234,7 @@
         const notificationContainer = document.getElementById("notificationContainer");
         const notificationMessage = document.getElementById("notificationMessage");
         const notificationCount = document.getElementById("notificationCount");
-        let isNotificationVisible = true;
+        let isNotificationVisible = false;
         let notifications = [];
 
         // 함수를 사용하여 알림 갯수 업데이트
@@ -273,7 +273,10 @@
         notificationButton.addEventListener("click", async function (e) {
             e.stopPropagation();
     
-            
+            // notificationContainer를 토글
+            if (isNotificationVisible) {
+                notificationContainer.style.display = "none";
+            } else {
                 notificationContainer.style.display = "block";
                 notificationMessage.innerHTML = "";
 
@@ -335,6 +338,7 @@
                     
                     notificationMessage.appendChild(listItem);
                 });
+            }
             
     
 
