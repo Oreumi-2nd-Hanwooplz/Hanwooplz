@@ -57,39 +57,40 @@
                 {% endif %}
             </div>
             {% include "comment.html" %}
-            {% for answer in answers %}
-            <div class="question-container">
-                <div class="content">{{ answer.content | safe }}</div>
-                <div class="subsidiary">
-                    <div class="card">
-                        작성자: <a href="{% url 'hanwooplz_app:myinfo' answer.author_id %}"><strong>{{ answer.username }}</strong> 님</a>
-                        {% if user.is_authenticated and answer.author_id != request.user.id %}
-                        <button onclick="window.location.href = '{% url "hanwooplz_app:chat" 0 answer.author_id %}'" style="display: block; margin: 0 auto; background-color: #0077b5; color: #fff; border: none; padding: 6px 12px; border-radius: 4px; font-size: 14px; cursor: pointer; transition: background-color 0.3s;">
-                            채팅하기
-                        </button>
-                        {% elif not user.is_authenticated %}
-                        <button onclick="alert('로그인이 필요합니다.')" style="display: block; margin: 0 auto; background-color: #0077b5; color: #fff; border: none; padding: 6px 12px; border-radius: 4px; font-size: 14px; cursor: pointer; transition: background-color 0.3s;">
-                            채팅하기
-                        </button>
-                        {% endif %}
-                        <p>작성 일시: {{ answer.created_at }}</p>
+            <div class="answer-container-wrapper">
+                {% for answer in answers %}
+                <div class="answer-container">
+                    <div class="content">{{ answer.content | safe }}</div>
+                    <div class="subsidiary">
+                        <div class="card">
+                            작성자: <a href="{% url 'hanwooplz_app:myinfo' answer.author_id %}"><strong>{{ answer.username }}</strong> 님</a>
+                            {% if user.is_authenticated and answer.author_id != request.user.id %}
+                            <button onclick="window.location.href = '{% url "hanwooplz_app:chat" 0 answer.author_id %}'" style="display: block; margin: 0 auto; background-color: #0077b5; color: #fff; border: none; padding: 6px 12px; border-radius: 4px; font-size: 14px; cursor: pointer; transition: background-color 0.3s;">
+                                채팅하기
+                            </button>
+                            {% elif not user.is_authenticated %}
+                            <button onclick="alert('로그인이 필요합니다.')" style="display: block; margin: 0 auto; background-color: #0077b5; color: #fff; border: none; padding: 6px 12px; border-radius: 4px; font-size: 14px; cursor: pointer; transition: background-color 0.3s;">
+                                채팅하기
+                            </button>
+                            {% endif %}
+                            <p>작성 일시: {{ answer.created_at }}</p>
+                        </div>
+                    </div>
+                    <div class="action-buttons">
+                        <a href="">댓글</a>
+                        <a href="">추천</a>
+                        <br>
+                        <br>
+                        <p>{{ answer.likes }} 회</p>
                     </div>
                 </div>
-                <div class="action-buttons">
-                    <a href="">댓글</a>
-                    <a href="">추천</a>
-                    <br>
-                    <br>
-                    <p>{{ answer.likes }} 회</p>
+                <div class="button_list_edit">
+                    {% if answer.author_id == request.user.id %}
+                    <button class="button-black" onclick="window.location.href = '{% url "hanwooplz_app:write_answer" post_question_id answer.id %}'">수정하기</button>
+                    {% endif %}
                 </div>
+                {% endfor %}
             </div>
-            <div class="button_list_edit">
-                <button class="button-black" onclick="window.location.href = '{% url 'hanwooplz_app:question_list' %}'">목록으로</button>
-                {% if answer.author_id == request.user.id %}
-                <button class="button-black" onclick="window.location.href = '{% url "hanwooplz_app:write_answer" post_question_id answer.id %}'">수정하기</button>
-                {% endif %}
-            </div>
-            {% endfor %}
         </main>
 
     </div>

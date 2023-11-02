@@ -18,41 +18,41 @@
                 <section id="welcome-section">
                         <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;">
                                 <img src="{% static 'img/project.jpg' %}" alt="" width="2600" height="700">
-                                <h1 style="font-size: 5.1em; color: black;">Hanwooplz</h1>
+                                <h1 style="text-shadow: 0 0 20px rgba(0, 0, 255, 0.8); font-size: 5.1em; color: black;">Hanwooplz</h1>
                                 <h2 style="color: black;">최고의 팀원과 프로젝트를 진행하여</h2>
                                 <h2 style="color: black;">멋진 포트폴리오를 만드세요</h2>
-                            </div>
+                        </div>
                 </section>
                 <section id="projects">
                         <h1>About Hanwooplz team members</h1>
                         <div id="projects-grid">
-                                <a href="" class="project-tile" target="_blank">
-                                        <img src='https://www.sanoee.co.kr/shopimages/isanoee/0460010000993.jpg?1626754270'
+                                <a href="https://github.com/hwan3526" class="project-tile" target="_blank">
+                                        <img src='https://avatars.githubusercontent.com/u/41356191?v=4'
                                                 alt="">
                                         <p style="color: white;">이지환</p>
                                 </a>
-                                <a href="" class="project-tile" target="_blank">
-                                        <img src="https://thehelpfultipper.com/wp-content/uploads/2022/05/loading-dot-animation-css.png"
+                                <a href="https://github.com/ted1117" class="project-tile" target="_blank">
+                                        <img src="https://avatars.githubusercontent.com/u/24566481?v=4"
                                                 alt="">
                                         <p style="color: white;">양승조</p>
                                 </a>
-                                <a href="" class="project-tile" target="_blank">
-                                        <img src='https://www.sanoee.co.kr/shopimages/isanoee/0460010000993.jpg?1626754270'
+                                <a href="https://github.com/SGTRyon" class="project-tile" target="_blank">
+                                        <img src='https://avatars.githubusercontent.com/u/137133599?v=4'
                                                 alt="">
                                         <p style="color: white;">최성진</p>
                                 </a>
-                                <a href="" class="project-tile" target="_blank">
-                                        <img src='https://www.sanoee.co.kr/shopimages/isanoee/0460010000993.jpg?1626754270'
+                                <a href="https://github.com/giyong-choi" class="project-tile" target="_blank">
+                                        <img src='https://avatars.githubusercontent.com/u/137133519?v=4'
                                                 alt="">
                                         <p style="color: white;">최기용</p>
                                 </a>
-                                <a href="" class="project-tile" target="_blank">
-                                        <img src="https://thehelpfultipper.com/wp-content/uploads/2022/03/beating-heart-css-html-project.jpg"
+                                <a href="https://github.com/GITMINHUBHO" class="project-tile" target="_blank">
+                                        <img src="https://avatars.githubusercontent.com/u/137133492?v=4"
                                                 alt="">
                                         <p style="color: white;">이민호</p>
                                 </a>
-                                <a href="https://github.com/byunduhyeon/" class="project-tile" target="_blank">
-                                        <img src='https://www.sanoee.co.kr/shopimages/isanoee/0460010000993.jpg?1626754270'
+                                <a href="https://github.com/byunduhyeon" class="project-tile" target="_blank">
+                                        <img src='https://avatars.githubusercontent.com/u/137134077?v=4'
                                                 alt="">
                                         <p style="color: white;">변두현</p>
                                 </a>
@@ -111,14 +111,24 @@
                         jQuery("#portfolio-section").html(data);
                         jQuery("#portfolio-section .navbar").remove();
                         jQuery("#portfolio-section .footer").remove();
-                        jQuery("#portfolio-section .container-fluid").remove();
+                        jQuery("#portfolio-section .chatbot-container").remove();
+                        jQuery("#portfolio-section .select-group").remove();
+                        jQuery("#portfolio-section .page").remove();
+                        jQuery("#portfolio-section .button-black").text("더보기");
+                        jQuery("#portfolio-section .button-black").css("margin-top","15px");
+                        jQuery("#portfolio-section .button-black").attr("onclick","window.location.href = '{% url "hanwooplz_app:portfolio_list" %}'");
                 });
                 // 팀원모집 섹션 로드
                 jQuery.get("{% url 'hanwooplz_app:project_list' %}", function (data) {
                         jQuery("#project-section").html(data);
                         jQuery("#project-section .navbar").remove();
                         jQuery("#project-section .footer").remove();
-                        jQuery("#project-section .container-fluid").remove();
+                        jQuery("#project-section .chatbot-container").remove();
+                        jQuery("#project-section .select-group").remove();
+                        jQuery("#project-section .page").remove();
+                        jQuery("#project-section .button-black").text("더보기");
+                        jQuery("#project-section .button-black").css("margin-top","15px");
+                        jQuery("#project-section .button-black").attr("onclick","window.location.href = '{% url "hanwooplz_app:project_list" %}'");
                 });
 
                 // 질의응답 섹션 로드
@@ -126,7 +136,12 @@
                         jQuery("#question-section").html(data);
                         jQuery("#question-section .navbar").remove();
                         jQuery("#question-section .footer").remove();
-                        jQuery("#question-section .container-fluid").remove();
+                        jQuery("#question-section .chatbot-container").remove();
+                        jQuery("#question-section .select-group").remove();
+                        jQuery("#question-section .page").remove();
+                        jQuery("#question-section .button-black").text("더보기");
+                        jQuery("#question-section .button-black").css("margin-top","15px");
+                        jQuery("#question-section .button-black").attr("onclick","window.location.href = '{% url "hanwooplz_app:question_list" %}'");
                 });
         });
 </script>

@@ -6,57 +6,319 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.0.0/animate.min.css" />
+<style>
+    #chat-circle {
+        position: fixed;
+        bottom: 50px;
+        right: 50px;
+        background: #1e1e1e;
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        color: white;
+        padding: 28px;
+        cursor: pointer;
+        box-shadow: 0px 3px 16px 0px rgba(0, 0, 0, 0.6), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+        background-image: url('../img/logo.png');
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: 200%;
+        transition: background-color 0.3s;
+    }
 
-<div class="container-fluid">
-    <div style="position : fixed; bottom: 5px; right: 0px; z-index:9999">
-        <div id="chatBox" class="orca-chat closed animate__animated animate__heartbeat">
-            <div class=" contact bar" onclick="openChatBox()">
+    #chat-circle:hover {
+        background-color: #ffffff;
+    }
 
-                <div class="pic stark"
-                    style="background-image: url('https://cdn.huffingtonpost.kr/news/photo/202102/106356_200066.jpeg');">
-                </div>
-                <span id="online-status"></span>
-                <div class="name">
-                    AI 한우
-                </div>
-                <div class="seen">
-                    온라인
 
-                </div>
+    .chatbot-container {
+        position: fixed;
+        bottom: 50px;
+        right: 50px;
+        width: 500px;
+        margin: 0 auto;
+        background-color: #f5f5f5;
+        border: 2px solid #cccccc;
+        border-radius: 10px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        animation: fadeIn 0.5s ease;
+    }
+
+    #chatbot {
+        background-color: #f5f5f5;
+        border: 1px solid #eef1f5;
+        box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.1);
+        border-radius: 4px;
+        background: linear-gradient(45deg, #fd0202, #1e1e1e);
+    }
+
+    #header-close {
+        cursor: pointer;
+    }
+
+    #header {
+        background: linear-gradient(45deg, #ff00cc, #3333ff, #ff6600);
+        color: #ffffff;
+        padding: 5px;
+        font-size: 1.5em;
+        font-weight: bold;
+        display: flex;
+        justify-content: space-between;
+        position: relative;
+    }
+
+    #header::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        height: 3px;
+        background: linear-gradient(45deg, #ff00cc, #3333ff, #ff6600);
+    }
+
+    message-container {
+        background: #ffffff;
+        width: 100%;
+        display: flex;
+        align-items: center;
+    }
+
+
+    #conversation {
+        height: 500px;
+        overflow-y: auto;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    @keyframes message-fade-in {
+        from {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .chatbot-message {
+        display: flex;
+        align-items: flex-start;
+        position: relative;
+        font-size: 16px;
+        line-height: 20px;
+        border-radius: 20px;
+        word-wrap: break-word;
+        white-space: pre-wrap;
+        max-width: 100%;
+        padding: 0 15px;
+        margin-top: 10px;
+    }
+
+    .user-message {
+        justify-content: flex-end;
+    }
+
+
+    .chatbot-text {
+        background-color: white;
+        color: #333333;
+        font-size: 1.1em;
+        padding: 15px;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    #input-form {
+        display: flex;
+        align-items: center;
+        border-top: 1px solid #eef1f5;
+    }
+
+    #input-field {
+        flex: 1;
+        height: 60px;
+        border: 1px solid #eef1f5;
+        border-radius: 4px;
+        padding: 0 10px;
+        font-size: 14px;
+        transition: border-color 0.3s;
+        background: #ffffff;
+        color: #333333;
+        border: none;
+    }
+
+    .send-icon {
+        margin-right: 10px;
+        cursor: pointer;
+    }
+
+    #input-field:focus {
+        border-color: #333333;
+        outline: none;
+    }
+
+    #submit-button {
+        background-color: transparent;
+        border: none;
+    }
+
+    p[sentTime]:hover::after {
+        content: attr(sentTime);
+        position: absolute;
+        top: -3px;
+        font-size: 14px;
+        color: gray;
+    }
+
+    .chatbot p[sentTime]:hover::after {
+        left: 15px;
+    }
+
+    .user-message p[sentTime]:hover::after {
+        right: 15px;
+    }
+
+    ::-webkit-scrollbar {
+        width: 10px;
+    }
+
+    ::-webkit-scrollbar-track {
+        background: #f1f1f1;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: #888;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+        background: #555;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes message-fade-in {
+        from {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .chatbot-message {
+        animation: message-fade-in 0.3s ease;
+    }
+</style>
+<div id="chat-circle"
+    style="background-image: url('https://cdn.huffingtonpost.kr/news/photo/202102/106356_200066.jpeg');">
+    <div id="chat-overlay"></div>
+</div>
+<div class="chatbot-container" style="display: none;">
+    <div id="header">
+        <h1>AI 한우</h1>
+        <p id="header-close">X</p>
+    </div>
+    <div id="chatbot">
+        <div id="conversation">
+            <div class="chatbot-message">
+                <p class="chatbot-text">안녕하세요 무엇을 도와드릴까요?</p>
             </div>
-            <div id="closeButton" style="position: absolute; top: 2rem; right: 2rem;" onclick="closeChatBox()">
-                <i class="fas fa-times"></i>
-            </div>
-
-
-            <div class="messages" id="chat">
-
-                <div class="message stark" id="initial-message">
-                    안녕하세요! 무엇을 도와드릴까요?
-                </div>
-                <img id="preview" />
-            </div>
-
-
-            <div>
-                <div id="hidden_emoji_box" class="emojisArea">
-                    <div id="hidden_emoji_box1">
-
-                    </div>
-                </div>
-
-            </div>
-
-            <div class="input">
-                <i class="far fa-laugh-beam" id="emoji_select_inactive" onclick="emojifn(this)"></i>
-                <input type="file" id="real-file" hidden="hidden" name="file" accept="image/*"
-                    onchange="previewImage();" />
-
-                <input id="Query" placeholder="Type your message here!" type="text" autocomplete="off" name="msg-txt"
-                    onkeyup="changeIcon('micIcon')" />
-                <i class="fas fa-microphone" onclick="iconFunction()" id="micIcon"></i>
-            </div>
-
         </div>
+        <form id="input-form">
+            <message-container>
+                <input id="input-field" type="text" placeholder="Type your message here">
+                <button id="submit-button" type="submit">
+                    <i class="fas fa-paper-plane send-icon"></i>
+                </button>
+                <input type="text" id="emojionearea" class="emojionearea" placeholder="Choose an emoji">
+            </message-container>
+        </form>
     </div>
 </div>
+<script>
+    const csrftoken = "{{ csrf_token }}";
+</script>
+<script>
+    const chat_circle = document.getElementById('chat-circle');
+    const chat_container = document.querySelector('.chatbot-container');
+    const header_close = document.getElementById('header-close');
+    const chatbot = document.getElementById('chatbot');
+    const conversation = document.getElementById('conversation');
+    const inputForm = document.getElementById('input-form');
+    const inputField = document.getElementById('input-field');
+
+    chat_circle.addEventListener('click', function () {
+        chat_container.style.display = 'block';
+        chat_circle.style.display = 'none';
+    })
+
+    header_close.addEventListener('click', function () {
+        chat_container.style.display = 'none';
+        chat_circle.style.display = 'block';
+    })
+
+
+    inputForm.addEventListener('submit', function (event) {
+        event.preventDefault();
+
+        const input = inputField.value;
+
+        inputField.value = '';
+        const currentTime = new Date().toLocaleTimeString([], { hour: '2-digit', minute: "2-digit" });
+
+        let message = document.createElement('div');
+        message.classList.add('chatbot-message', 'user-message');
+        message.innerHTML = `<p class="chatbot-text" sentTime="${currentTime}">${input}</p>`;
+        conversation.appendChild(message);
+
+        generateResponse(input)
+            .then(response => {
+                message = document.createElement('div');
+                message.classList.add('chatbot-message', 'chatbot');
+                message.innerHTML = `<p class="chatbot-text" sentTime="${currentTime}">${response['response']}</p>`;
+                conversation.appendChild(message);
+                message.scrollIntoView({ behavior: "smooth" });
+            })
+            .catch(error => {
+                console.error(error);
+            });
+    });
+</script>
+<script>
+    async function generateResponse(input) {
+        const response = await fetch('/execute_chatbot/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': '{{ csrf_token }}',
+            },
+            body: JSON.stringify({ question: input }),
+        });
+
+        const data = await response.json();
+        return data;
+    }
+</script>
+<script>
+    $(document).ready(function () {
+        $("#emojionearea").emojioneArea();
+    });
+</script>
