@@ -28,6 +28,9 @@ def project_list(request, page_num=1):
             filtered_projects = post_project.filter(
                 Q(post__author__username__icontains=query)
             )
+    else:
+        query = ''
+        search_type = ''
 
     # 모집 여부 필터링
     filter_option = request.GET.get('filter_option')
