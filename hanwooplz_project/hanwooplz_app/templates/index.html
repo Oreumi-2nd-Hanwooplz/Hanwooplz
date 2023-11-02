@@ -18,10 +18,10 @@
                 <section id="welcome-section">
                         <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;">
                                 <img src="{% static 'img/project.jpg' %}" alt="" width="2600" height="700">
-                                <h1 style="font-size: 5.1em; color: black;">Hanwooplz</h1>
+                                <h1 style="text-shadow: 0 0 20px rgba(0, 0, 255, 0.8); font-size: 5.1em; color: black;">Hanwooplz</h1>
                                 <h2 style="color: black;">최고의 팀원과 프로젝트를 진행하여</h2>
                                 <h2 style="color: black;">멋진 포트폴리오를 만드세요</h2>
-                            </div>
+                        </div>
                 </section>
                 <section id="projects">
                         <h1>About Hanwooplz team members</h1>
@@ -111,7 +111,7 @@
                         jQuery("#portfolio-section").html(data);
                         jQuery("#portfolio-section .navbar").remove();
                         jQuery("#portfolio-section .footer").remove();
-                        jQuery("#portfolio-section .container-fluid").remove();
+                        jQuery("#portfolio-section .chatbot-container").remove();
                         jQuery("#portfolio-section .select-group").remove();
                         jQuery("#portfolio-section .page").remove();
                         jQuery("#portfolio-section .button-black").text("더보기");
@@ -123,7 +123,7 @@
                         jQuery("#project-section").html(data);
                         jQuery("#project-section .navbar").remove();
                         jQuery("#project-section .footer").remove();
-                        jQuery("#project-section .container-fluid").remove();
+                        jQuery("#project-section .chatbot-container").remove();
                         jQuery("#project-section .select-group").remove();
                         jQuery("#project-section .page").remove();
                         jQuery("#project-section .button-black").text("더보기");
@@ -136,7 +136,7 @@
                         jQuery("#question-section").html(data);
                         jQuery("#question-section .navbar").remove();
                         jQuery("#question-section .footer").remove();
-                        jQuery("#question-section .container-fluid").remove();
+                        jQuery("#question-section .chatbot-container").remove();
                         jQuery("#question-section .select-group").remove();
                         jQuery("#question-section .page").remove();
                         jQuery("#question-section .button-black").text("더보기");

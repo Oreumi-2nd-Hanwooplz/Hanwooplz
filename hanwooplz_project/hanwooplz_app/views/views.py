@@ -194,19 +194,15 @@ class ChatBot():
     def clear(self):
         self.messages.clear()
 
+
 def execute_chatbot(request):
     if request.method == "POST":
         data = json.loads(request.body.decode('utf-8'))
         question = data.get('question')
         chatbot = ChatBot()
         response = chatbot.ask(question)
-        chat_messages = chatbot.show_messages()
-        
-        chat_messages_json = [{'role': message['role'], 'content': message['content']} for message in chat_messages]
-        
-        return JsonResponse({"response": response, "chat_messages": chat_messages_json})
-    
-    return HttpResponse("Invalid Request")
+        return JsonResponse({"response": response})
+    return render(request, 'index.html')
 
 @login_required
 @ensure_csrf_cookie
