@@ -77,7 +77,7 @@
                     </div>
                     <div class="action-buttons">
                         <a href="">댓글</a>
-                        <a href="">추천</a>
+                        <a href="{% url "hanwooplz_app:question_like" post_question_id answer.id %}">추천</a>
                         <br>
                         <br>
                         <p>{{ answer.like }} 회</p>
