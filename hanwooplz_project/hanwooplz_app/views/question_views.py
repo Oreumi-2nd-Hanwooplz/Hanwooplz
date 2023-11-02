@@ -1,5 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
+from django.db.models import Q
 from django.contrib import messages
 from ..forms import *
 from ..models import *
@@ -8,50 +10,50 @@ from ..serializers import *
 def question_list(request, page_num=1):
     items_per_page = 10  # 페이지 당 항목 수
 
-    # 페이지 번호를 이용해 해당 페이지의 포트폴리오 검색
-    start_index = (page_num - 1) * items_per_page
-    end_index = page_num * items_per_page
-
-    post_question = PostQuestion.objects.order_by('-id')[start_index:end_index]
+    post_question = PostQuestion.objects.order_by('-id')
     question_lists = []
 
     query = request.GET.get('search')
     search_type = request.GET.get('search_type')  # 검색 옵션을 가져옵니다
 
-    for question in post_question:
+    # 검색
+    filtered_questions = post_question
+    if query:
+        if search_type == "title_content":
+            filtered_questions = post_question.filter(
+                Q(post__title__icontains=query) | Q(post__content__icontains=query)
+            )
+        elif search_type == "writer":
+            filtered_questions = post_question.filter(
+                Q(post__author__username__icontains=query)
+            )
+    else:
+        query = ''
+        search_type = ''
+
+    # 페이지네이션
+    page = request.GET.get("page", page_num)
+    paginator = Paginator(filtered_questions, items_per_page)
+    page_obj = paginator.get_page(page)
+
+
+    for question in page_obj:
         post = Post.objects.get(id=question.post_id)
         author = UserProfile.objects.get(id=post.author_id)
 
-        if query:
-            # 검색 쿼리와 검색 옵션에 따라 검색 결과 필터링
-            if search_type == "title_content" and ((query in post.title) or (query in post.content)):
-                question_lists.append({
+        question_lists.append({
                     'title': post.title,
                     'created_at': post.created_at,
                     'author_id': post.author_id,
                     'post_question': question.id,
                     'author': author.username,
                 })
-            elif search_type == "writer" and (query in author.username):
-                question_lists.append({
-                    'title': post.title,
-                    'created_at': post.created_at,
-                    'author_id': post.author_id,
-                    'post_question': question.id,
-                    'author': author.username,
-                })
-        else:
-            # 검색 쿼리가 없는 경우, 모든 포트폴리오 추가
-            question_lists.append({
-                'title': post.title,
-                'created_at': post.created_at,
-                'author_id': post.author_id,
-                'post_question': question.id,
-                'author': author.username,
-            })
 
     context = {
-        "question_lists": question_lists,
+        "post_lists": question_lists,
+        "page_obj": page_obj,
+        "query": query,
+        "search_type": search_type,
     }
 
     return render(request, 'question_list.html', context)
