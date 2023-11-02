@@ -112,6 +112,7 @@ h1+p {
     max-width: 1280px;
     margin: 0 auto;
     display: grid;
+    justify-content: center;
     grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
     gap: 2em;
 }
@@ -246,6 +247,7 @@ h1+p {
     max-width: 1280px;
     margin: 0 auto;
     display: grid;
+    justify-content: center;
     grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
     gap: 2em;
 }

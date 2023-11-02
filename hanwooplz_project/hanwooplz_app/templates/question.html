@@ -8,6 +8,156 @@
     <link rel="stylesheet" type="text/css" href="{% static 'css/nav.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/question.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/footer.css' %}">
+    <style>
+        picture {
+            width: 100%;
+            background-color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+        
+        picture img {
+            width: 100%;
+            /* height: 150px; */
+            object-fit: contain;
+            background-color: white;
+        }
+        
+        #deprecated {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            z-index: 1;
+            background-color: #777;
+            opacity: 0.7;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 48px;
+        }
+        
+        .main-container {
+            padding-top: 70px;
+            padding-bottom: 20px;
+            height: auto;
+        }
+        
+        main {
+            width: 100%;
+            max-width: 600px;
+            height: 100%;
+        }
+        
+        .question-container {
+            max-width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: start;
+            gap: 10px;
+        }
+        
+        .question-container:hover {
+            transform: scale(1);
+        }
+        
+        .title {
+            font-size: 36px;
+            height: inherit;
+            line-height: normal;
+        }
+        
+        .info-box,
+        .content-box {
+            display: flex;
+            flex-direction: column;
+            align-items: start;
+        }
+        
+        .info-title,
+        .content-title {
+            color: #777;
+        }
+        
+        .info-content,
+        .content {
+            font-size: large;
+            background-color: #eaeaea;
+            padding: 5px;
+            display: flex;
+            align-items: center;
+            border-radius: 8px;
+            line-height: normal;
+        }
+        
+        .content-box {
+            width: 100%;
+        }
+        
+        .content {
+            width: 100%;
+            margin-top: 0px;
+        }
+        
+        .card {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        
+        .card button {
+            display: block;
+            margin: 0 auto;
+            background-color: #0077b5;
+            color: #fff;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            width: 100%;
+        }
+        
+        #status-form {
+            height: inherit;
+        }
+        
+        #status-select {
+            width: 85px;
+            height: inherit;
+            border: 0px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding-left: 5px;
+        }
+        .title-box {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+            height: 36px;
+            width: 100%;
+        }
+        .project-status {
+            width: 85px;
+            height: 100%;
+            border-radius: 8px;
+            background-color: #0077b5;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        a:hover {
+            cursor: pointer;
+        }
+    </style>
     <title>{{ title }}</title>
 </head>
 
