@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
     var commentText = document.getElementById("comment-input");
-    var submitButton = document.getElementById("submit-button");
+    var submitButton = document.getElementById("comment-submit-button");
     var csrfToken = document.querySelector("input[name=csrfmiddlewaretoken]").value;
 
     // 댓글 불러오기
@@ -34,19 +34,24 @@ document.addEventListener("DOMContentLoaded", function () {
                     var formattedDate = date.toLocaleString("ko-KR", { year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit" });
                     commentTimestamp.textContent = formattedDate;
 
+                    // 댓글 좋아요 + 삭제
+                    var commentBottomWrapper = document.createElement("div");
+                    commentBottomWrapper.classList.add("comment-bottom-wrapper");
+
                     // 댓글 좋아요
                     var commentLike = document.createElement("a");
                     commentLike.classList.add("comment-like");
                     commentLike.setAttribute("id", comment.id);
-                    commentLike.textContent = comment.like.length;
+                    commentLike.textContent = "👍 " + comment.like.length;
                     commentLike.addEventListener("click", function () {
                         upvoteComment(comment.id);
                     })
                     
+                    commentBottomWrapper.appendChild(commentLike);
                     commentBox.appendChild(commentAuthor);
                     commentBox.appendChild(commentTimestamp);
                     commentBox.appendChild(commentContent);
-                    commentBox.appendChild(commentLike);
+                    commentBox.appendChild(commentBottomWrapper);
                     commentList.appendChild(commentBox);
 
                     // 댓글 삭제
@@ -60,7 +65,7 @@ document.addEventListener("DOMContentLoaded", function () {
                                 deleteComment(comment.id);
                             }
                         })
-                        commentBox.appendChild(commentDelete);
+                        commentBottomWrapper.appendChild(commentDelete);
                     }
                     
                 });

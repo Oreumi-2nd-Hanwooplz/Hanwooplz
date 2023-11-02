@@ -42,10 +42,21 @@ def register(request):
 @login_required
 def edit_profile(request):
     if request.method == 'POST':
-        form = UserProfileForm(request.POST, instance=request.user)
+        form = UserProfileForm(request.POST, request.FILES, instance=request.user)
 
         if form.is_valid():
-            form.save()
+            # Save the form data
+            user_profile = form.save(commit=False)
+            
+            # Handle user_img upload
+            if 'user_img' in request.FILES:
+                user_img = request.FILES['user_img']
+                # Generate a unique filename, for example, based on the user's ID
+                filename = f'user_img_{user_profile.id}_{user_img.name}'
+                user_profile.user_img.save(filename, user_img)
+            
+            user_profile.save()
+            
             user_id = request.user.id
             return redirect(reverse('hanwooplz_app:myinfo', args=[user_id]))
     else:
@@ -136,7 +147,7 @@ def myinfo(request, user_id):
         "github_link": userinfo.github_link,
         "linkedin_link": userinfo.linkedin_link,
         "selected_category": selected_category,
-        
+        "user": userinfo,
     }
     return render(request, "myinfo.html", context)
 
@@ -241,14 +252,18 @@ def get_notifications(request):
         notifications_list = []
         for notification in notifications:
             postinfo = Post.objects.get(id=notification.post.id)
+            projectinfo = PostProject.objects.get(post_id=postinfo.id)
             senderinfo = UserProfile.objects.get(id=notification.sender.id)
             created_at_formatted = notification.created_at.strftime('%Y-%m-%d %H:%M')
             notifications_list.append({
                 'id': notification.id,
+                'user': notification.user.username,
                 'title': postinfo.title,
                 'sender': senderinfo.username,
                 'created_at': created_at_formatted,
                 'accept_or_not': notification.accept_or_not,
+                'titlelink': f'/project/{projectinfo.id}',
+                'senderlink': f'/myinfo/{senderinfo.id}',
             })
 
         context = {

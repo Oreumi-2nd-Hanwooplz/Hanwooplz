@@ -30,6 +30,13 @@ cd ~/hanwooplz
 pip3 install -r requirements.txt
 ```
 
+Copy your TinyMCE static folder into static folder:
+```sh
+cd ~/hanwooplz
+chmod 744 tinymce_setup.sh
+./tinymce_setup.sh
+```
+
 Do not forget create `secrets.json` in `hanwooplz_project/hanwooplz_project` directory
 
 ## How to set PostgreSQL database using AWS RDS

@@ -8,7 +8,6 @@
     <link rel="stylesheet" type="text/css" href="{% static 'css/myinfo.css' %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'css/nav.css' %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'css/footer.css' %}" />
-    <link rel="stylesheet" type="text/css" href="{% static 'css/chatbot.css' %}" />
     <style>
         h2 {
             padding-bottom: 10px;
@@ -141,7 +140,11 @@
                     {{ profile_form.as_p }}
                 </form>
                 <div class="profile-pic-wrapper">
-                    <a class="profile-pic"><img src="{{ user_profile.profile_picture.url }}" alt="">
+                    {% if user.user_img %}
+                        <a class="profile-pic"><img src="{{ user.user_img.url }}" alt="Profile Image" class="current-profile-image">
+                    {% else %}
+                        <a class="profile-pic"><img src="{% static 'img/basicuser.png' %}" alt="Default Profile Image" class="default-profile-image">
+                    {% endif %}
                         {% if user_id == request.user.id %}
                         <input type="submit" value="프로필 업데이트" onclick="window.location.href = '{% url "hanwooplz_app:edit_profile" %}'">
                         {% endif %}

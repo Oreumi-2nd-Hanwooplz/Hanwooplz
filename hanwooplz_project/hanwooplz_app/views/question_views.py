@@ -74,7 +74,8 @@ def question(request, post_question_id=None):
                 a_.pop('id')
             answers = []
             for i in range(len(post_answer)):
-                answers.append({**post_answer[i],**post_[i],**author_[i]})
+                likes = AnswerLike.objects.filter(answer=post_answer[i]["id"]).count()
+                answers.append({**post_answer[i],**post_[i],**author_[i],"likes": likes})
             answered = True if request.user.id in post_.values_list('author_id', flat=True) else False
         else:
             answers = []
@@ -86,7 +87,7 @@ def question(request, post_question_id=None):
             'author': author.username,
             'author_id': author.id,
             'created_at': post.created_at,
-            'like': post_question.like,
+            'like': post_question.like.count(),
             'keywords': post_question.keyword,
             'post_question_id' : post_question_id,
             'post_id': post.id,
@@ -258,3 +259,24 @@ def write_answer(request, post_question_id, post_answer_id=None):
                     'post_question_id': post_question_id,
             }
             return render(request, 'write_answer.html', context)
+
+@login_required
+def like(request, post_question_id, answer_id=None):
+    if request.user.is_authenticated:
+        if not answer_id:
+            post = get_object_or_404(PostQuestion, pk=post_question_id)
+        else:
+            post = get_object_or_404(PostAnswer, pk=answer_id)
+        user = get_object_or_404(UserProfile, pk=request.user.id)
+
+        if user in post.like.all():
+            post.like.remove(user)
+            message = '추천이 취소됐습니다.'
+        else:
+            post.like.add(user)
+            message = ''
+
+        post.save()
+        return redirect('hanwooplz_app:question', post_question_id);
+        return render(request, 'question.html', {'message': message})
+    return redirect('hanwooplz_app:question', post_question_id);

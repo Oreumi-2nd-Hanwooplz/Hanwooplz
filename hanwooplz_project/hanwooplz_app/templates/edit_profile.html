@@ -21,10 +21,10 @@
 
         .profile-container {
             background-color: rgba(255, 255, 255, 0.817);
-            padding: 200px;
+            padding: 50px 100px;
             border-radius: 50px;
             text-align: left;
-            margin-top: 300px;
+            margin-top: 500px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
         }
 
@@ -174,8 +174,20 @@
     <div class="main-container">
         <div class="profile-container">
             <h1>Edit Profile</h1>
-            <form method="post" class="login-form">
+            <form method="post" class="login-form" enctype="multipart/form-data">
                 {% csrf_token %}
+                <div class="form-group">
+                    <label for="{{ form.user_img.id_for_label }}">기존 프로필 이미지:</label>
+                    {% if user.user_img %}
+                        <img src="{{ user.user_img.url }}" alt="Profile Image" class="current-profile-image">
+                    {% else %}
+                        <img src="{% static 'img/basicuser.png' %}" alt="Default Profile Image" class="default-profile-image">
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    <label for="{{ form.user_img.id_for_label }}">프로필 이미지:</label>
+                    {{ form.user_img }}
+                </div>   
                 <div class="form-group">
                     <label for="{{ form.username.id_for_label }}">유저 아이디:</label>
                     {{ form.username }}
@@ -183,14 +195,6 @@
                 <div class="form-group">
                     <label for="{{ form.email.id_for_label }}">이메일:</label>
                     {{ form.email }}
-                </div>
-                <div class="form-group">
-                    <label for="{{ form.password1.id_for_label }}">비밀번호:</label>
-                    {{ form.password1 }}
-                </div>
-                <div class="form-group">
-                    <label for="{{ form.password2.id_for_label }}">비밀번호 확인:</label>
-                    {{ form.password2 }}
                 </div>
                 <div class="form-group">
                     <label for="{{ form.full_name.id_for_label }}">이름:</label>
@@ -225,7 +229,7 @@
                     {{ form.linkedin_link }}
                 </div>
                 <input type="submit" value="Update Profile">
-                <input type="button" value="비밀번호 변경하기" onclick='window.location.href="{% url 'hanwooplz_app:change_password' %}"'>
+                <input type="button" value="비밀번호 변경하기" onclick="window.location.href='{% url "hanwooplz_app:change_password" %}'">
             </form>
         </div>
     </div>
