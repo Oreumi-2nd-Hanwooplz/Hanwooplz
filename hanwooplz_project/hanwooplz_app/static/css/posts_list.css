@@ -63,7 +63,7 @@ h2 {
 
 .select-textbox {
     height: 30px;
-    border: 0px;
+    border: 1px solid black;
     border-radius: 5px;
 }
 
