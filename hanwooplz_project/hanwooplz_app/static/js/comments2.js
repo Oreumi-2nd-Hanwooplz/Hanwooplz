@@ -6,12 +6,19 @@ document.addEventListener("DOMContentLoaded", function () {
         var commentText = answerContainer.querySelector("#comment-input");
         var submitButton = answerContainer.querySelector("#comment-submit-button");
         var csrfToken = answerContainer.querySelector("input[name=csrfmiddlewaretoken]").value;
-
+        let hidden = true;
         // 댓글 펼치기
         showComments.addEventListener("click", function(event) {
             event.preventDefault();
 
-            answerContainer.style.display = "block";
+            if (hidden) {
+                answerContainer.style.display = "block";
+                hidden = false;
+            } else {
+                answerContainer.style.display = "none";
+                hidden = true;
+            }
+            
         })
 
         // 댓글 불러오기
