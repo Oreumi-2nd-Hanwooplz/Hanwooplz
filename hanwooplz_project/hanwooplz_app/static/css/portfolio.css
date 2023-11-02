@@ -3,6 +3,7 @@
     justify-content: center;
     align-items: center;
     height: 100vh;
+    margin-bottom: 100px;
 }
 
 .post-container {
@@ -13,7 +14,7 @@
     max-width: 400px;
     text-align: center;
     transition: transform 0.3s;
-    margin: 0 auto;
+    margin-top: 100px;
 }
 
 .post-container:hover {
@@ -60,7 +61,7 @@
 }
 
 .subsidiary {
-    width:100%;
+    width: 100%;
     display: flex;
     justify-content: center;
     font-size: 12px;
