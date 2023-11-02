@@ -116,12 +116,20 @@
         // 댓글 보기 링크 클릭 시 댓글 컨테이너를 보여줌
         const showCommentsLink = document.getElementById("show-comments");
         const commentContainer = document.getElementById("comment-wrapper");
+        let is_hidden = true;
 
         showCommentsLink.addEventListener("click", function (event) {
-        event.preventDefault(); // 링크 클릭 기본 동작 방지
+        event.preventDefault();
 
         // 댓글 컨테이너를 표시
-        commentContainer.style.display = "block";
+        if (is_hidden) {
+            commentContainer.style.display = "block";
+            is_hidden = false;
+        } else {
+            commentContainer.style.display = "none";
+            is_hidden = true;
+        }
+        
         });
     });
 </script>
