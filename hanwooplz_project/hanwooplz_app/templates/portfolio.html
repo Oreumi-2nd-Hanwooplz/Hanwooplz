@@ -39,16 +39,12 @@
                         <p>작성 일시: {{ created_at }}</p>
                     </div>
                 </div>
-                <div class="action-buttons">
-                    <a href="">댓글</a>
-                </div>
-                <br>
             </div>
             <div class="button_list_edit">
-                <button class="button-black" onclick="window.location.href = '{% url "hanwooplz_app:portfolio_list" %}'">목록으로</button>
                 {% if author_id == request.user.id %}
                 <button class="button-black" onclick="window.location.href = '{% url "hanwooplz_app:write_portfolio" post_portfolio_id %}'">수정하기</button>
                 {% endif %}
+                <button class="button-black" onclick="window.location.href = '{% url "hanwooplz_app:portfolio_list" %}'">목록으로</button>
             </div>
             {% include "comment.html" %}
         </main>

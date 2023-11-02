@@ -95,7 +95,7 @@
 
 .button_list_edit {
     display: flex;
-    justify-content: space-between;
+    justify-content: right;
     align-items: center;
     flex-direction: row;
     margin-top: 20px;
@@ -105,6 +105,7 @@
     background-color: #333;
     color: #fff;
     border: none;
+    margin-right: 5px;
     padding: 6px 12px;
     border-radius: 4px;
     font-size: 14px;
@@ -112,7 +113,9 @@
     transition: background-color 0.3s;
 }
 
-
+.button-black:last-child {
+    margin-right: 0;
+}
 
 .button-black:hover {
     background-color: #555;
