@@ -1,5 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
+from django.db.models import Q
 from django.contrib import messages
 from ..forms import *
 from ..models import *
@@ -8,24 +10,38 @@ from ..serializers import *
 def portfolio_list(request, page_num=1):
     items_per_page = 9  # 페이지 당 항목 수
 
-    # 페이지 번호를 이용해 해당 페이지의 포트폴리오 검색
-    start_index = (page_num - 1) * items_per_page
-    end_index = page_num * items_per_page
-
-    post_portfolio = PostPortfolio.objects.order_by('-id')[start_index:end_index]
+    post_portfolio = PostPortfolio.objects.order_by('-id')
     portfolio_lists = []
 
     query = request.GET.get('search')
-    search_type = request.GET.get('search_type')  # 검색 옵션을 가져옵니다
+    search_type = request.GET.get('search_type')
 
-    for portfolio in post_portfolio:
+    # 검색
+    filtered_portfolios = post_portfolio
+    if query:
+        if search_type == "title_content":
+            filtered_portfolios = post_portfolio.filter(
+                Q(post__title__icontains=query) | Q(post__content__icontains=query)
+            )
+        elif search_type == "writer":
+            filtered_portfolios = post_portfolio.filter(
+                Q(post__author__username__icontains=query)
+            )
+    else:
+        query = ''
+        search_type = ''
+
+    # 페이지네이션
+    page = request.GET.get("page", page_num)
+    paginator = Paginator(filtered_portfolios, items_per_page)
+    page_obj = paginator.get_page(page)
+
+
+    for portfolio in page_obj:
         post = Post.objects.get(id=portfolio.post_id)
         author = UserProfile.objects.get(id=post.author_id)
 
-        if query:
-            # 검색 쿼리와 검색 옵션에 따라 검색 결과 필터링
-            if search_type == "title_content" and ((query in post.title) or (query in post.content)):
-                portfolio_lists.append({
+        portfolio_lists.append({
                     'title': post.title,
                     'created_at': post.created_at,
                     'author_id': post.author_id,
@@ -33,30 +49,14 @@ def portfolio_list(request, page_num=1):
                     'author': author.username,
                     'tech_stacks': portfolio.tech_stack,
                 })
-            elif search_type == "writer" and (query in author.username):
-                portfolio_lists.append({
-                    'title': post.title,
-                    'created_at': post.created_at,
-                    'author_id': post.author_id,
-                    'post_portfolio': portfolio.id,
-                    'author': author.username,
-                    'tech_stacks': portfolio.tech_stack,
-                })
-        else:
-            # 검색 쿼리가 없는 경우, 모든 포트폴리오 추가
-            portfolio_lists.append({
-                'title': post.title,
-                'created_at': post.created_at,
-                'author_id': post.author_id,
-                'post_portfolio': portfolio.id,
-                'author': author.username,
-                'tech_stacks': portfolio.tech_stack,
-            })
 
     context = {
         "post_lists": portfolio_lists,
         "board_name": "포트폴리오",
         "is_portfolio": True,
+        "page_obj": page_obj,
+        "query": query,
+        "search_type": search_type,
     }
 
     return render(request, 'project_list.html', context)
