@@ -11,28 +11,34 @@ from ..serializers import *
 def project_list(request, page_num=1):
     items_per_page = 9  # 페이지 당 항목 수
 
-    # 페이지 번호를 이용해 해당 페이지의 포트폴리오 검색
-    start_index = (page_num - 1) * items_per_page
-    end_index = page_num * items_per_page
-
-    post_project = PostProject.objects.order_by('-id')[start_index:end_index]
     post_project = PostProject.objects.order_by('-id')
     project_lists = []
 
-    #paginator
-    page = request.GET.get("page", 1)
-    paginator = Paginator(post_project, 9)
-    page_obj = paginator.get_page(page)
-
     query = request.GET.get('search')
-    search_type = request.GET.get('search_type')  # 검색 옵션을 가져옵니다
-    """
+    search_type = request.GET.get('search_type')
+
+    # 검색
+    filtered_projects = post_project
     if query:
         if search_type == "title_content":
-            post = post_project.filter(Q(title__icontains=query) | Q(content__icontains=query))
-        # else:
-        #     post = post_project.filter( Q())
-    """
+            filtered_projects = post_project.filter(
+                Q(post__title__icontains=query) | Q(post__content__icontains=query)
+            )
+        elif search_type == "writer":
+            filtered_projects = post_project.filter(
+                Q(post__author__username__icontains=query)
+            )
+
+    # 모집 여부 필터링
+    filter_option = request.GET.get('filter_option')
+    if filter_option == 'recruiting':
+        filtered_projects = filtered_projects.filter(status=1)
+    
+    # 페이지네이션
+    page = request.GET.get("page", page_num)
+    paginator = Paginator(filtered_projects, items_per_page)
+    page_obj = paginator.get_page(page)
+
 
     for project in page_obj:
         post = Post.objects.get(id=project.post_id)
@@ -40,10 +46,7 @@ def project_list(request, page_num=1):
         is_recruiting = True if project.status == 1 else False
         project_status = "모집 완료" if project.status == 2 else "모집 중단"
 
-        if query:
-            # 검색 쿼리와 검색 옵션에 따라 검색 결과 필터링
-            if search_type == "title_content" and ((query in post.title) or (query in post.content)):
-                project_lists.append({
+        project_lists.append({
                     'title': post.title,
                     'created_at': post.created_at,
                     'author_id': post.author_id,
@@ -53,40 +56,14 @@ def project_list(request, page_num=1):
                     'isRecruiting': is_recruiting,
                     "project_status": project_status,
                 })
-            elif search_type == "writer" and (query in author.username):
-                project_lists.append({
-                    'title': post.title,
-                    'created_at': post.created_at,
-                    'author_id': post.author_id,
-                    'post_project': project.id,
-                    'author': author.username,
-                    'tech_stacks': project.tech_stack,
-                    'isRecruiting': is_recruiting,
-                    "project_status": project_status,
-                })
-        else:
-            # 검색 쿼리가 없는 경우, 모든 포트폴리오 추가
-            project_lists.append({
-                'title': post.title,
-                'created_at': post.created_at,
-                'author_id': post.author_id,
-                'post_project': project.id,
-                'author': author.username,
-                'tech_stacks': project.tech_stack,
-                'isRecruiting': is_recruiting,
-                "project_status": project_status,
-            })
-
-    # "전체" 및 "모집중"에 따라 포스트 필터링
-    filter_option = request.GET.get('filter_option')
-    if filter_option == 'recruiting':
-        project_lists = [project for project in project_lists if project['isRecruiting']]
 
     context = {
         "post_lists": project_lists,
         "board_name": "프로젝트 팀원 모집",
         "is_portfolio": False,
         "page_obj": page_obj,
+        "query": query,
+        "search_type": search_type,
     }
 
     return render(request, 'project_list.html', context)
