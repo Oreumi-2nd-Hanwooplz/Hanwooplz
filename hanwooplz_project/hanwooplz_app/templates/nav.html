@@ -181,66 +181,11 @@
             display: none;
         }
     }
-
-    .icon-item {
-        position: relative;
-        margin-right: 10px;
-    }
-
-    .icon-item a {
-        text-decoration: none;
-        color: rgb(0, 0, 0);
-        font-size: 24px;
-        transition: color 0.3s;
-    }
-
-    .icon-item a:hover {
-        color: #007bff;
-    }
-
-    .notification-count {
-        position: absolute;
-        top: 30px;
-        right: auto;
-        color: #fff;
-        border-radius: 50%;
-        padding: 4px 8px;
-    }
-
-    .notification-container {
-        position: absolute;
-        top: 100%;
-        right: 0;
-        width: 400px;
-        background-color: white;
-        border: 10px solid #ffffff;
-        border-radius: 10px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        display: none;
-    }
-
-    .notification-message {
-        padding: 20px;
-    }
-
-    .notification-list {
-        list-style: none;
-        padding: 0;
-    }
-
-    .notification-list-item {
-        padding: 50px;
-        border-bottom: 5px solid #eee;
-    }
-
-    .notification-list-item:hover {
-        background-color: #0a9aa2;
-    }
 </style>
 <nav class="navbar">
     <div class="navbar-container container">
         <input type="checkbox" name="yourCheckboxName" id="yourCheckboxId">
-        <h2 class="logo" id="logo" style="text-shadow: 0 0 20px rgba(0, 0, 255, 0.8);">Hanwooplz</h2>
+        <h2 class="logo" id="logo">Hanwooplz</h2>
         <div class="hamburger-lines">
             <span class="line line1"></span>
             <span class="line line2"></span>
@@ -328,6 +273,7 @@
 
         notificationButton.addEventListener("click", async function (e) {
             e.stopPropagation();
+    
             // notificationContainer를 토글
             if (isNotificationVisible) {
                 notificationContainer.style.display = "none";
