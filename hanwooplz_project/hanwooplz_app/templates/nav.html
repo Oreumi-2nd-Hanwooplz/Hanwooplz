@@ -185,7 +185,7 @@
 <nav class="navbar">
     <div class="navbar-container container">
         <input type="checkbox" name="yourCheckboxName" id="yourCheckboxId">
-        <h2 class="logo" id="logo">Hanwooplz</h2>
+        <h2 class="logo" id="logo" style="text-shadow: 0 0 20px rgba(0, 0, 255, 0.8);">Hanwooplz</h2>
         <div class="hamburger-lines">
             <span class="line line1"></span>
             <span class="line line2"></span>
@@ -297,12 +297,12 @@
 
                 notificationMessage.appendChild(responseMessageContainer);
 
-                // 알림 리스트를 accept_or_not=null 우선 순위로 정렬
-                notifications.sort((a, b) => {
-                    if (a.accept_or_not === null && b.accept_or_not !== null) return -1;
-                    if (a.accept_or_not !== null && b.accept_or_not === null) return 1;
-                    return 0;
-                });
+            // 알림 리스트를 accept_or_not=null 우선 순위로 정렬
+            notifications.sort((a, b) => {
+                if (a.accept_or_not === null && b.accept_or_not !== null) return -1;
+                if (a.accept_or_not !== null && b.accept_or_not === null) return 1;
+                return 0;
+            });
 
                 notifications.forEach(notification => {
                     if (notification.accept_or_not === null && currentUser === notification.user) {
