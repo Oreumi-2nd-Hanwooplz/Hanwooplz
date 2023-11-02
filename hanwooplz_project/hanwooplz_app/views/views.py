@@ -263,16 +263,28 @@ def accept_reject_notification(request):
         try:
             data = json.loads(request.body)
             notification_id = data.get('notificationId')
-            
             result = data.get('result')
+            
             if notification_id is not None and result is not None:
-                # 알림을 처리하고 결과를 저장하거나 다른 작업 수행
                 try:
                     notification = Notifications.objects.get(id=notification_id)
+
                     if result == '수락':
                         notification.accept_or_not = True
                         notification.save()
-                    if result == '거절':
+                        
+                        # 추가적인 작업을 수행 (예: ProjectMembers에 멤버 추가)
+                        sender = notification.sender.id
+                        projectinfo = PostProject.objects.get(post_id=notification.post.id)
+                        projectid = projectinfo.id
+                        ProjectMembers.objects.create(members_id=sender, project_id=projectid)
+                        members = ProjectMembers.objects.filter(project_id=projectid).count()
+                        if members >= projectinfo.target_members:
+                            projectinfo.status = 2
+                            projectinfo.save()
+                        
+
+                    elif result == '거절':
                         notification.accept_or_not = False
                         notification.save()
 
@@ -294,6 +306,7 @@ def accept_reject_notification(request):
     else:
         response_data = {'success': False, 'error': 'POST 요청이 필요합니다.'}
         return JsonResponse(response_data)
+
       
 def check_duplicate_notification(request):
     if request.method == 'POST':
