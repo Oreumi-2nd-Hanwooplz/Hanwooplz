@@ -44,6 +44,8 @@ urlpatterns = [
     path("write-question/<int:post_question_id>", question_views.write_question, name="write_question"),
     path("write-answer/<int:post_question_id>", question_views.write_answer, name="write_answer"),
     path("write-answer/<int:post_question_id>/<int:post_answer_id>", question_views.write_answer, name="write_answer"),
+    path("question-like/<int:post_question_id>", question_views.like, name="question_like"),
+    path("question-like/<int:post_question_id>/<int:answer_id>", question_views.like, name="question_like"),
     
     # comment_views.py
     path("api/post/<int:post_id>/comments/", comment_views.CommentList.as_view(), name="comment_list"),
