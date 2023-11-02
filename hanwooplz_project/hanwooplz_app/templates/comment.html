@@ -3,10 +3,6 @@
 <div class="comment-container">
   {% csrf_token %}
   <div class="comment-list">
-    <div class="comment-box">
-      <div class="comment-author">댓쓴이</div>
-      <div class="comment-content">한우존맛</div>
-    </div>
   </div>
   {% if user.is_authenticated %}
   <form action="" method="post">
