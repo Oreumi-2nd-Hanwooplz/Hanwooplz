@@ -42,10 +42,21 @@ def register(request):
 @login_required
 def edit_profile(request):
     if request.method == 'POST':
-        form = UserProfileForm(request.POST, instance=request.user)
+        form = UserProfileForm(request.POST, request.FILES, instance=request.user)
 
         if form.is_valid():
-            form.save()
+            # Save the form data
+            user_profile = form.save(commit=False)
+            
+            # Handle user_img upload
+            if 'user_img' in request.FILES:
+                user_img = request.FILES['user_img']
+                # Generate a unique filename, for example, based on the user's ID
+                filename = f'user_img_{user_profile.id}_{user_img.name}'
+                user_profile.user_img.save(filename, user_img)
+            
+            user_profile.save()
+            
             user_id = request.user.id
             return redirect(reverse('hanwooplz_app:myinfo', args=[user_id]))
     else:
