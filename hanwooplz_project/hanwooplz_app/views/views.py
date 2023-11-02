@@ -147,7 +147,7 @@ def myinfo(request, user_id):
         "github_link": userinfo.github_link,
         "linkedin_link": userinfo.linkedin_link,
         "selected_category": selected_category,
-        
+        "user": userinfo,
     }
     return render(request, "myinfo.html", context)
 
