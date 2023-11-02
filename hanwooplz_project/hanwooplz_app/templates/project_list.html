@@ -33,6 +33,12 @@
             </div>
             {% if post_lists %}
             {% if not is_portfolio %}
+            {% if query %}
+            <div class="search-result">
+                <a class="refresh" href="{% url "hanwooplz_app:project_list" %}">전체 목록 다시 불러오기</a>
+                <p class="search-type" style="display: none"></p>
+            </div>
+            {% endif %}
             <div class="tab-container">
                 <ul class="tab-list">
                     <li class="tab"><a href="?filter_option=all">전체</a></li>
@@ -57,19 +63,19 @@
             </div>
             <div class="page">
                 {% if page_obj.has_previous %}
-                <span><a href="?page={{ page_obj.previous_page_number }}">◀ 이전</a></span>
+                <span><a href="?page={{ page_obj.previous_page_number }}&search_type={{ search_type }}&search={{ query }}">◀ 이전</a></span>
                 {% else %}
                 <span><a href="#" tabindex="-1">◀ 이전</a></span>
                 {% endif %}
                 {% for page_number in page_obj.paginator.page_range %}
                 {% if page_number == page_obj.number %}
-                <span><a href="?page={{ page_number }}">{{ page_number }}</a></span>
+                <span><a href="?page={{ page_number }}&search_type={{ search_type }}&search={{ query }}">{{ page_number }}</a></span>
                 {% else %}
-                <span><a href="?page={{ page_number }}">{{ page_number }}</a></span>
+                <span><a href="?page={{ page_number }}&search_type={{ search_type }}&search={{ query }}">{{ page_number }}</a></span>
                 {% endif %}
                 {% endfor %}
                 {% if page_obj.has_next %}
-                <span><a href="?page={{ page_obj.next_page_number }}">다음 ▶</a></span>
+                <span><a href="?page={{ page_obj.next_page_number }}&search_type={{ search_type }}&search={{ query }}">다음 ▶</a></span>
                 {% else %}
                 <span><a tabindex="-1" aria-disabled="true" href="#!">다음 ▶</a></span>
                 {% endif %}
@@ -109,7 +115,7 @@
     });
     document.addEventListener("DOMContentLoaded", function() {
         var searchType = new URLSearchParams(window.location.search).get('search_type');
-        var titleElement = document.querySelector('.posts-list h2');
+        var titleElement = document.querySelector('.search-type');
         if (searchType === 'title_content') {
             titleElement.textContent = '프로젝트 팀원 모집: 제목+내용 검색결과';
         } else if (searchType === 'writer') {
@@ -129,5 +135,19 @@
     } else {
         document.querySelector('.tab a[href="?filter_option=all"]').parentElement.classList.add('active');
     }
+
+    // 탭을 클릭할 때 현재 주소에 필터 옵션을 업데이트합니다.
+    const tabLinks = document.querySelectorAll('.tab a');
+
+    tabLinks.forEach(link => {
+        link.addEventListener('click', function (e) {
+            e.preventDefault();
+            const tabFilterOption = link.getAttribute('href').split('=')[1];
+            const currentUrl = new URL(window.location.href);
+            currentUrl.searchParams.set('filter_option', tabFilterOption);
+
+            window.location.href = currentUrl.toString();
+        });
+    });
 </script>
 </html>
