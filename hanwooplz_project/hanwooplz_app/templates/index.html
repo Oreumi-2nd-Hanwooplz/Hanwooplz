@@ -112,6 +112,10 @@
                         jQuery("#portfolio-section .navbar").remove();
                         jQuery("#portfolio-section .footer").remove();
                         jQuery("#portfolio-section .container-fluid").remove();
+                        jQuery("#portfolio-section .select-group").remove();
+                        jQuery("#portfolio-section .page").remove();
+                        jQuery("#portfolio-section .button-black").text("더보기");
+                        jQuery("#portfolio-section .button-black").attr("onclick","window.location.href = '{% url "hanwooplz_app:portfolio_list" %}'");
                 });
                 // 팀원모집 섹션 로드
                 jQuery.get("{% url 'hanwooplz_app:project_list' %}", function (data) {
@@ -119,6 +123,10 @@
                         jQuery("#project-section .navbar").remove();
                         jQuery("#project-section .footer").remove();
                         jQuery("#project-section .container-fluid").remove();
+                        jQuery("#project-section .select-group").remove();
+                        jQuery("#project-section .page").remove();
+                        jQuery("#project-section .button-black").text("더보기");
+                        jQuery("#project-section .button-black").attr("onclick","window.location.href = '{% url "hanwooplz_app:project_list" %}'");
                 });
 
                 // 질의응답 섹션 로드
@@ -127,6 +135,10 @@
                         jQuery("#question-section .navbar").remove();
                         jQuery("#question-section .footer").remove();
                         jQuery("#question-section .container-fluid").remove();
+                        jQuery("#question-section .select-group").remove();
+                        jQuery("#question-section .page").remove();
+                        jQuery("#question-section .button-black").text("더보기");
+                        jQuery("#question-section .button-black").attr("onclick","window.location.href = '{% url "hanwooplz_app:question_list" %}'");
                 });
         });
 </script>

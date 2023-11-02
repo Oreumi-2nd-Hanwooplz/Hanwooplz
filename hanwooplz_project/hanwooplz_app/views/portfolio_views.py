@@ -6,7 +6,7 @@ from ..models import *
 from ..serializers import *
 
 def portfolio_list(request, page_num=1):
-    items_per_page = 10  # 페이지 당 항목 수
+    items_per_page = 9  # 페이지 당 항목 수
 
     # 페이지 번호를 이용해 해당 페이지의 포트폴리오 검색
     start_index = (page_num - 1) * items_per_page
