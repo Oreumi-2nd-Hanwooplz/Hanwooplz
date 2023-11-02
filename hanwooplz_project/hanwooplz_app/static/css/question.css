@@ -2,7 +2,13 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+main {
+    width: 100%;
 }
 
 .question-container {
@@ -10,10 +16,10 @@
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     padding: 20px;
-    max-width: 400px;
+    width: 100%;
     text-align: center;
     transition: transform 0.3s;
-    margin: 300px 0px 0px 0px;
+    margin: 70px 0px 0px 0px;
 }
 
 .question-container:hover {
@@ -116,7 +122,8 @@
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     padding: 20px;
-    max-width: 400px;
+    /* max-width: 400px; */
+    width: 100%;
     text-align: center;
     transition: transform 0.3s;
     margin: 30px 0px 0px 0px;
@@ -124,4 +131,8 @@
 
 .answer-container:hover {
     transform: scale(1.05);
+}
+
+#comment-wrapper {
+    display: none;
 }

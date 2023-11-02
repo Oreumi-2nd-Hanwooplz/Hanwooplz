@@ -69,17 +69,21 @@ def question(request, post_question_id=None):
             author_ = UserProfile.objects.filter(id__in=post_.values_list('author_id', flat=True))
             post_answer, post_ , author_ = post_answer.values(), post_.values(), author_.values()
             for p_ in post_:
+                p_['answer_id'] = p_['id']
                 p_.pop('id')
             for a_ in author_:
                 a_.pop('id')
             answers = []
+            answer_post_id_list = []
             for i in range(len(post_answer)):
                 likes = AnswerLike.objects.filter(answer=post_answer[i]["id"]).count()
                 answers.append({**post_answer[i],**post_[i],**author_[i],"likes": likes})
+                answer_post_id_list.append(post_answer[i]["post_id"])
             answered = True if request.user.id in post_.values_list('author_id', flat=True) else False
         else:
             answers = []
             answered = False
+            answer_post_id_list = []
 
         context = {
             'title': post.title,
@@ -92,6 +96,7 @@ def question(request, post_question_id=None):
             'post_question_id' : post_question_id,
             'post_id': post.id,
             'answers': answers,
+            'answer_post_id_list': answer_post_id_list,
             'answered': answered,
         }
         return render(request, 'question.html', context)

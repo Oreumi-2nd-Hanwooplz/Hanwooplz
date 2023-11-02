@@ -39,6 +39,7 @@
                     </div>
                 </div>
                 <div class="action-buttons">
+                    <a href="" id="show-comments">댓글</a>
                     <a href="{% url "hanwooplz_app:question_like" post_question_id %}">추천 {{ like }} 회</a>
                 </div>
             </div>
@@ -51,10 +52,10 @@
                 {% endif %}
                 <button class="button-black" onclick="window.location.href = '{% url 'hanwooplz_app:question_list' %}'">목록으로</button>
             </div>
-            {% include "comment.html" %}
+            <div id="comment-wrapper">{% include "comment.html" %}</div>
             <div class="answer-container-wrapper">
                 {% for answer in answers %}
-                <div class="answer-container">
+                <div class="answer-container"  data-answer-id="{{ answer.answer_id }}">
                     <div class="content">{{ answer.content | safe }}</div>
                     <div class="subsidiary">
                         <div class="card">
@@ -72,8 +73,10 @@
                         </div>
                     </div>
                     <div class="action-buttons">
+                        <a href="" id="unpack-comments">댓글</a>
                         <a href="{% url "hanwooplz_app:question_like" post_question_id answer.id %}">추천 {{ answer.likes }} 회</a>
                     </div>
+                    <div id="answer-comment-wrapper">{% include "comment.html" %}</div>
                 </div>
                 <div class="button_list_edit">
                     {% if answer.author_id == request.user.id %}
@@ -92,8 +95,42 @@
 <script>
     var postId = "{{ post_id }}"
     var currentUser = "{{ request.user }}"
-    var postAnswerId = "{{ answers.post_id }}"
+    var answerPostIdList = "{{ answer_post_id_list }}"
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const showCommentsLink = document.getElementById("show-comments");
+        const commentContainer = document.getElementById("comment-wrapper");
+
+        showCommentsLink.addEventListener("click", function (event) {
+        event.preventDefault();
+
+        commentContainer.style.display = "block";
+        });
+    });
 </script>
 <script src="{% static 'js/comments.js' %}"></script>
+<script src="{% static "js/comments2.js" %}"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // 댓글 보기 링크 클릭 시 댓글 컨테이너를 보여줌
+        const showCommentsLink = document.getElementById("show-comments");
+        const commentContainer = document.getElementById("comment-wrapper");
+        let is_hidden = true;
 
+        showCommentsLink.addEventListener("click", function (event) {
+        event.preventDefault();
+
+        // 댓글 컨테이너를 표시
+        if (is_hidden) {
+            commentContainer.style.display = "block";
+            is_hidden = false;
+        } else {
+            commentContainer.style.display = "none";
+            is_hidden = true;
+        }
+        
+        });
+    });
+</script>
 </html>

@@ -5,6 +5,8 @@
 <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="{% static 'css/chatbot.css' %}" />
         <link rel="stylesheet" type="text/css" href="{% static 'css/index.css' %}" />
         <link rel="stylesheet" type="text/css" href="{% static 'css/nav.css' %}" />
         <link rel="stylesheet" type="text/css" href="{% static 'css/footer.css' %}" />
@@ -143,7 +145,7 @@
                         jQuery("#portfolio-section").html(data);
                         jQuery("#portfolio-section .navbar").remove();
                         jQuery("#portfolio-section .footer").remove();
-                        jQuery("#portfolio-section .container-fluid").remove();
+                        jQuery("#portfolio-section .chatbot-container").remove();
                         jQuery("#portfolio-section .select-group").remove();
                         jQuery("#portfolio-section .page").remove();
                         jQuery("#portfolio-section .button-black").text("더보기");
@@ -155,7 +157,7 @@
                         jQuery("#project-section").html(data);
                         jQuery("#project-section .navbar").remove();
                         jQuery("#project-section .footer").remove();
-                        jQuery("#project-section .container-fluid").remove();
+                        jQuery("#project-section .chatbot-container").remove();
                         jQuery("#project-section .select-group").remove();
                         jQuery("#project-section .page").remove();
                         jQuery("#project-section .button-black").text("더보기");
@@ -168,7 +170,7 @@
                         jQuery("#question-section").html(data);
                         jQuery("#question-section .navbar").remove();
                         jQuery("#question-section .footer").remove();
-                        jQuery("#question-section .container-fluid").remove();
+                        jQuery("#question-section .chatbot-container").remove();
                         jQuery("#question-section .select-group").remove();
                         jQuery("#question-section .page").remove();
                         jQuery("#question-section .button-black").text("더보기");
