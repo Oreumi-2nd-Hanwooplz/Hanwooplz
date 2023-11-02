@@ -147,8 +147,7 @@
                         {% endif %}
                     </a>
                     {% if user.is_authenticated and user_id != request.user.id %}
-                    <button onclick="window.location.href = '{% url "hanwooplz_app:chat" 0 user_id %}'"
-                        style="display: block; margin: 0 auto; background-color: #0077b5; color: #fff; border: none; padding: 6px 12px; border-radius: 4px; font-size: 14px; cursor: pointer; transition: background-color 0.3s;">
+                    <button onclick="window.location.href = '{% url "hanwooplz_app:chat" 0 user_id %}'"style="display: block; margin: 0 auto; background-color: #0077b5; color: #fff; border: none; padding: 6px 12px; border-radius: 4px; font-size: 14px; cursor: pointer; transition: background-color 0.3s;">
                         채팅하기
                     </button>
                     {% elif not user.is_authenticated %}
@@ -193,14 +192,15 @@
                     <br>
                     <h1 class="profile-name" style="font-size: 24px; margin-bottom: 10px; color: #000000;">{{ full_name }}</h1>
                 </div>
-                <div class="profile-right-bottom" style="margin-top: 20px; text-align: center;">
-                    <div class="profile-bio-wrapper" style="margin-top: 10px; text-align: center;">
-                        <div style="margin-bottom: 10px; text-align: center;">
+                <div class="profile-right-bottom"
+                    style="display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; margin-top: 20px;">
+                    <div class="profile-bio-wrapper"
+                        style="display: grid; justify-content: center; text-align: center; margin-top: 10px; text-align: center;">
+                        <div style="margin-bottom: 10px; display: grid; justify-content: center; text-align: center;">
                             <span class="profile-info" style="font-size: 16px; color: blue;">직무:{{ job }}</span>
                             <br>
-                            <span class="profile-info"
-                                style="text-align: center; margin-top: 10px; font-size: 16px; color: #ff0000;">
-                                주요 기술 스택:
+                            <span class="profile-info" style="margin-top: 10px; font-size: 16px; color: #ff0000;">
+                                주요 기술스택:
                                 {% if tech_stack|length > 1 %}
                                 {{ tech_stack|join:", " }}
                                 {% else %}
@@ -218,12 +218,13 @@
                             </span>
                             <br>
                             <span class="profile-info" style="font-size: 16px; color: #000000;">상세 경력:{{ career_detail }}</span>
-                            <p class="profile-bio"
-                                style="font-size: 16px; margin-top: 20px; color: rgb(0, 0, 0); max-height: 100px;">한줄소개:{{ introduction }}</p>
+                            <p class="profile-bio" style="font-size: 16px; margin-top: 20px; color: rgb(0, 0, 0); max-height: 100px;">
+                                한줄소개:{{ introduction }}</p>
                         </div>
                     </div>
                 </div>
             </div>
+
         </div>
         <div class="profile-page flexbox-col">
             <div class="profile-page-nav flexbox">
