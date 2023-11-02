@@ -247,6 +247,31 @@ def send_application(request):
 
     return JsonResponse({'success': success})
 
+def mark_notifications_as_read(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            notification_ids = data.get('notificationIds', [])
+            print(notification_ids)
+
+            for notification_id in notification_ids:
+                try:
+                    notification = Notifications.objects.get(id=notification_id)
+
+                    # 현재 사용자가 해당 알림을 소유하고 있는지 확인
+                    if request.user == notification.sender:
+                        notification.read_or_not = True  # 알림을 "읽음"으로 표시
+                        notification.save()  # 데이터베이스에 변경사항 저장
+                    else:
+                        return JsonResponse({'success': False, 'error': '권한이 없습니다.'})
+                except Notifications.DoesNotExist:
+                    return JsonResponse({'success': False, 'error': f'알림을 찾을 수 없습니다: {notification_id}'})
+            return JsonResponse({'success': True})
+        except json.JSONDecodeError:
+            return JsonResponse({'success': False, 'error': '잘못된 JSON 데이터입니다.'})
+    else:
+        return JsonResponse({'success': False, 'error': '잘못된 요청입니다.'})
+
 def get_notifications(request):
     if request.user.is_authenticated:
         notifications = Notifications.objects.filter(Q(user=request.user) | Q(sender=request.user)).order_by('-created_at')
@@ -264,6 +289,7 @@ def get_notifications(request):
                 'sender': senderinfo.username,
                 'created_at': created_at_formatted,
                 'accept_or_not': notification.accept_or_not,
+                'read_or_not': notification.read_or_not,
                 'titlelink': f'/project/{projectinfo.id}',
                 'senderlink': f'/myinfo/{senderinfo.id}',
             })
