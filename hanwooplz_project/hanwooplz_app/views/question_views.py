@@ -69,6 +69,7 @@ def question(request, post_question_id=None):
             author_ = UserProfile.objects.filter(id__in=post_.values_list('author_id', flat=True))
             post_answer, post_ , author_ = post_answer.values(), post_.values(), author_.values()
             for p_ in post_:
+                p_['answer_id'] = p_['id']
                 p_.pop('id')
             for a_ in author_:
                 a_.pop('id')
