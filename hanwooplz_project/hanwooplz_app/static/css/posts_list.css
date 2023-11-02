@@ -222,3 +222,15 @@ main {
     align-items: center;
     font-weight: bold;
 }
+
+.footer {
+    z-index: 500;
+}
+
+.chatbot-container {
+    z-index: 999;
+}
+
+#chat-circle {
+    z-index: 600;
+}
