@@ -70,6 +70,7 @@ h2 {
 table.board-table {
     width: 100%;
     border-spacing: 0;
+    padding-top: 5px;
 }
 
 .posts-list {

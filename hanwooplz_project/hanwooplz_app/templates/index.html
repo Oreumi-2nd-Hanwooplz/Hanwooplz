@@ -115,6 +115,7 @@
                         jQuery("#portfolio-section .select-group").remove();
                         jQuery("#portfolio-section .page").remove();
                         jQuery("#portfolio-section .button-black").text("더보기");
+                        jQuery("#portfolio-section .button-black").css("margin-top","15px");
                         jQuery("#portfolio-section .button-black").attr("onclick","window.location.href = '{% url "hanwooplz_app:portfolio_list" %}'");
                 });
                 // 팀원모집 섹션 로드
@@ -126,6 +127,7 @@
                         jQuery("#project-section .select-group").remove();
                         jQuery("#project-section .page").remove();
                         jQuery("#project-section .button-black").text("더보기");
+                        jQuery("#project-section .button-black").css("margin-top","15px");
                         jQuery("#project-section .button-black").attr("onclick","window.location.href = '{% url "hanwooplz_app:project_list" %}'");
                 });
 
@@ -138,6 +140,7 @@
                         jQuery("#question-section .select-group").remove();
                         jQuery("#question-section .page").remove();
                         jQuery("#question-section .button-black").text("더보기");
+                        jQuery("#question-section .button-black").css("margin-top","15px");
                         jQuery("#question-section .button-black").attr("onclick","window.location.href = '{% url "hanwooplz_app:question_list" %}'");
                 });
         });
