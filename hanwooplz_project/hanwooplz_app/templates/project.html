@@ -7,7 +7,6 @@
     <link rel="stylesheet" type="text/css" href="{% static 'css/nav.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/portfolio.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/project.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'css/chatbot.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/footer.css' %}">
     <title>{{ title }}</title>
 </head>
@@ -84,7 +83,7 @@
                 </div>
             </div>
             <div class="button_list_edit">
-                <button class="button-black" onclick="window.location.href = '{% url 'hanwooplz_app:project_list' %}'">목록으로</button>
+                <button class="button-black" onclick="window.location.href = '{% url "hanwooplz_app:project_list" %}'">목록으로</button>
                 {% if author_id == request.user.id %}
                 <button class="button-black" onclick="window.location.href = '{% url "hanwooplz_app:write_project" post_project_id %}'">수정하기</button>
                 {% endif %}
@@ -152,5 +151,5 @@
         }
     }
 </script>
-<script src="{% static "js/updateStatus.js" %}"></script>
+<script src="{% static 'js/updateStatus.js' %}"></script>
 </html>

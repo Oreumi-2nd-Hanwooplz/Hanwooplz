@@ -33,7 +33,7 @@
     color: #f189a9;
 }
 
-#submit-button {
+#comment-submit-button {
     background-color: #3498db;
     color: #fff;
     padding: 10px 20px;
@@ -43,7 +43,7 @@
     transition: background-color 0.3s ease;
 }
 
-#submit-button:hover {
+#comment-submit-button:hover {
     background-color: #217dbb;
 }
 
