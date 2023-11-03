@@ -114,18 +114,6 @@ def write_project(request, post_project_id=None):
         if 'delete-button' in request.POST:
             post.delete()
             return redirect('hanwooplz_app:project_list')
-        if 'temp-save-button' in request.POST:
-            messages.info(request, '임시저장은 현재 지원되지 않는 기능입니다.')
-            context={
-                'title': request.POST.get('title'),
-                'start_date': request.POST.get('start_date'),
-                'end_date': request.POST.get('end_date'),
-                'target_members': request.POST.get('target_members'),
-                'tech_stack': request.POST.get('tech_stack'),
-                'ext_link': request.POST.get('ext_link'),
-                'content': request.POST.get('content'),
-            }
-            return render(request, 'write_project.html', context)
         
         request.POST._mutable = True
         request.POST['tech_stack'] = request.POST.get('tech_stack').split()
