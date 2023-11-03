@@ -344,6 +344,54 @@
     });
   });
 
+  const ws2 = new WebSocket('ws://127.0.0.1:8000/ws/chat_list/');
+
+  ws2.onmessage = function (e) {
+    const chatListData = JSON.parse(e.data);
+
+    // 채팅 목록 업데이트 로직
+    chatList.innerHTML = '';  // 기존 목록 초기화
+
+    chatListData.forEach(msg => {
+      const chatBox = document.createElement('div');
+      chatBox.className = 'chat-box between';
+      chatBox.dataset.chatRoomId = msg.chat_room_id;
+
+      // 채팅방 목록 항목 구성
+      const flexBox = document.createElement('div');
+      flexBox.className = 'flex-box';
+      const receiverSpan = document.createElement('span');
+      receiverSpan.className = 'bold';
+      receiverSpan.textContent = msg.receiver;
+      const dateSpan = document.createElement('span');
+      dateSpan.className = 's-text';
+      dateSpan.textContent = msg.created_at;
+
+      flexBox.appendChild(receiverSpan);
+      flexBox.appendChild(dateSpan);
+
+      chatBox.appendChild(flexBox);
+
+      const messageContent = document.createElement('div');
+      messageContent.className = 'message-content';
+      const chatThumbText = document.createElement('p');
+      chatThumbText.className = 'chat-thumb-text';
+      chatThumbText.textContent = msg.message;
+
+      messageContent.appendChild(chatThumbText);
+
+      chatBox.appendChild(messageContent);
+
+      if (msg.unread_message_count > 0) {
+        const unreadMessageCount = document.createElement('span');
+        unreadMessageCount.className = 'unread_message_count';
+        unreadMessageCount.textContent = msg.unread_message_count;
+        chatBox.appendChild(unreadMessageCount);
+      }
+
+      chatList.appendChild(chatBox);
+    });
+  };
 </script>
 
 </html>

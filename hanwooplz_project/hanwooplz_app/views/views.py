@@ -351,6 +351,15 @@ def accept_reject_notification(request):
         return JsonResponse(response_data)
 
       
+def check_duplicate_notification(request):
+    if request.method == 'POST':
+        recipient_id = request.POST.get('recipient_id')
+        post_id = request.POST.get('post_id')
+
+        # 중복 알림 확인 로직
+        duplicate = Notifications.objects.filter(user=recipient_id, post=post_id).exists()
+
+        return JsonResponse({'duplicate': duplicate})
 # 아이디 찾기
 
 def find_id(request):
