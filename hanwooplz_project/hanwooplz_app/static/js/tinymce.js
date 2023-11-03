@@ -33,7 +33,8 @@ tinymce.init({
   },
 });
 
-let question_container = document.getElementsByClassName("question-container");
+let question_container = document.querySelector(".question-container");
 if (question_container != null) {
-  question_container[0].style.margin = "0px 20px 0px 0px";
+  question_container.style.width = "30%";
+  question_container.style.margin = "0px 20px 0px 0px";
 }
