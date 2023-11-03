@@ -55,6 +55,7 @@ body{
   background-color: #f8f9fa;
   justify-content: center;
   color: #1e1e1e;
+  cursor: pointer;
 }
 
 .save-button {
@@ -67,4 +68,5 @@ body{
   background-color: #1e1e1e;
   justify-content: center;
   color: #f9f8f4;
+  cursor: pointer;
 }
