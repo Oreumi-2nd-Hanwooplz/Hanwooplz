@@ -19,7 +19,7 @@ body{
 }
 
 .main > form {
-  display: flex;
+  display: block;
   flex-direction: row; 
   gap: 20px;
 }
@@ -36,33 +36,12 @@ body{
   margin-bottom: 18px;
 }
 
-aside {
-  width: 250px;
-}
-
-.box {
-  display: block;
-  border: 1px solid #cac8c5;
-  border-radius: 3px;
-  padding: 10px 0px 0px 10px;
-  justify-content: left;
-  height: 150px;
-  line-height: 1.5;
-  background-color: #fff;
-}
-
-.save-box {
-  display: inline-block;
-  width: 100%;
-  height: 30%;
-  margin-top: 10%;
-}
-
 .save-button-wrapper {
-  display: inline-flex;
+  display: flex;
   width: 100%;
   height: 25px;
-  justify-content: space-evenly;
+  justify-content: right;
+  margin-top: 5px;
 }
 
 .temp-save-button {
@@ -72,6 +51,7 @@ aside {
   height: 25px;
   border: 1px solid #1e1e1e;
   border-radius: 3px;
+  margin-right: 5px;
   background-color: #f8f9fa;
   justify-content: center;
   color: #1e1e1e;
@@ -87,27 +67,4 @@ aside {
   background-color: #1e1e1e;
   justify-content: center;
   color: #f9f8f4;
-}
-
-.temp-post-box {
-  margin-top: 15px;
-  border: 1px solid #cac8c5;
-  border-radius: 3px;
-  width: 100%;
-  padding: 10px;
-}
-
-.temp-post-box > h5 {
-  padding-bottom: 10px;
-}
-
-.popup-title {
-  display: flex;
-  gap: 10px;
-  flex-direction: column;
-  padding-bottom: 10px;
-}
-
-.popup-title:hover {
-  cursor: pointer;
 }

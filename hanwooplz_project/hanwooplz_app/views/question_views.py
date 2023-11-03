@@ -119,14 +119,6 @@ def write_question(request, post_question_id=None):
         if 'delete-button' in request.POST:
             post.delete()
             return redirect('hanwooplz_app:question_list')
-        if 'temp-save-button' in request.POST:
-            messages.info(request, '임시저장은 현재 지원되지 않는 기능입니다.')
-            context={
-                'title': request.POST.get('title'),
-                'content': request.POST.get('content'),
-                'keyword': request.POST.get('keyword'),
-            }
-            return render(request, 'write_question.html', context)
         
         request.POST._mutable = True
         request.POST['keyword'] = request.POST.get('keyword').split()
