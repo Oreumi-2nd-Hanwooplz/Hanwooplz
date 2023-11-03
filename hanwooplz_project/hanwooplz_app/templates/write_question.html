@@ -21,38 +21,14 @@
                 <input id="keyword" type="text" name="keyword" placeholder="#주제" value="{{ keyword }}">
                 <textarea id="content" name="content">{{ content }}</textarea>
             </div>
-
-            <aside>
-                <div class="box">
-                    <div class="info-box">
-                        <h2>UPLOAD INFO</h2>
-                    </div>
-                    <div class="save-box">
-                        <div class="save-button-wrapper">
-                        {% if post_author_id == request.user.id %}
-                            <input type="submit" class="temp-save-button" name="delete-button" value="삭제"/>
-                            <input type="submit" class="save-button" value="수정"/>
-                        {% else %}
-                            <input type="submit" class="temp-save-button" name="temp-save-button" value="임시저장"/>
-                            <input type="submit" class="save-button" value="글 작성"/>
-                        {% endif %}
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="temp-post-box" style="display: none;">
-                    <h5>임시저장된 글</h5>
-
-                    {% for temp in temporary %}
-                        <div class="popup-title">
-                            <input type="hidden" id="{{temp.id}}" value="{{temp.id}}">
-                            <p class="top-title">제목: <span>{{ temp.title }}</span></p>
-                            <input type="hidden" class="top-content" style="display:none;" value="{{ temp.content }}">
-                            <p class="top-created">작성 날짜: {{temp.upload_date | date:'Y-m-d H:i:s'}}</p>
-                        </div>
-                    {% endfor %}
-                </div>
-            </aside>
+            <div class="save-button-wrapper">
+                {% if post_author_id == request.user.id %}
+                  <input type="submit" class="temp-save-button" name="delete-button" value="삭제"/>
+                  <input type="submit" class="save-button" value="수정"/>
+                {% else %}
+                  <input type="submit" class="save-button" value="글 작성"/>
+                {% endif %}
+            </div>
         </form>
     </section>
     
